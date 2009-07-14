@@ -1,0 +1,75 @@
+<html>
+<head>
+<title>Pileup Format</title>
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<script language="JavaScript" src="jsInclude.js"></script>
+<body onLoad="jsInclude('header', 'inc/header.html', 'inc/left0.html');">
+<div id="wrap">
+<span id="header"></span>
+
+<div id="main">
+<!-- BEGIN OF THE MAIN BODY  -->
+<h2>Pileup Format</h2>
+<p>Pileup format is first used by Tony Cox and Zemin Ning at the Sanger
+Institute. It desribes the base-pair information at each chromosomal
+position. This format facilitates SNP/indel calling and brief alignment
+viewing by eyes.</p>
+<p>The pileup format has several variants. The default output by
+SAMtools looks like this:
+<ul><pre>
+seq1 272 T 24  ,.$.....,,.,.,...,,,.,..^+. <<<+;<<<<<<<<<<<=<;<;7<&
+seq1 273 T 23  ,.....,,.,.,...,,,.,..A <<<;<<<<<<<<<3<=<<<;<<+
+seq1 274 T 23  ,.$....,,.,.,...,,,.,...    7<7;<;<<<<<<<<<=<;<;<<6
+seq1 275 A 23  ,$....,,.,.,...,,,.,...^l.  <+;9*<<<<<<<<<=<<:;<<<<
+seq1 276 G 22  ...T,,.,.,...,,,.,....  33;+<<7=7<<7<&<<1;<<6<
+seq1 277 T 22  ....,,.,.,.C.,,,.,..G.  +7<;<<<<<<<&<=<<:;<<&<
+seq1 278 G 23  ....,,.,.,...,,,.,....^k.   %38*<<;<7<<7<=<<<;<<<<<
+seq1 279 C 23  A..T,,.,.,...,,,.,..... ;75&<<<<<<<<<=<<<9<<:<<
+</pre></ul>
+
+where each line consists of <u>chromosome</u>, <u>1-based
+coordinate</u>, <u>reference base</u>, <u>the number of reads covering
+the site</u>, <u>read bases</u> and <u>base qualities</u>. At the read
+base column, <u>a dot</u> stands for a match to the reference base on
+the forward strand, <u>a comma</u> for a match on the reverse strand,
+`<u><tt>ACGTN</tt></u>' for a mismatch on the forward strand and
+`<u><tt>acgtn</tt></u>' for a mismatch on the reverse strand. A pattern
+`<u><tt>\+[0-9]+[ACGTNacgtn]+</tt></u>' indicates there is an insertion
+between this reference position and the next reference position. The
+length of the insertion is given by the integer in the pattern, followed
+by the inserted sequence. Here is an example of 2bp insertions on three
+reads:
+<ul><pre>
+seq2 156 A 11  .$......+2AG.+2AG.+2AGGG    <975;:<<<<<
+</pre></ul>
+Similarly, a pattern `<u><tt>-[0-9]+[ACGTNacgtn]+</tt></u>' represents a
+deletion from the reference. Here is an exmaple of a 4bp deletions from
+the reference, supported by two reads:
+<ul><pre>
+seq3 200 A 20 ,,,,,..,.-4CACC.-4CACC....,.,,.^~. ==<<<<<<<<<<<::<;2<<
+</pre></ul>
+Also at the read base column, a symbol `<u><tt>^</tt></u>'
+marks the start of a read segment which is a contiguous subsequence on
+the read separated by `N/S/H' CIGAR operations. The ASCII of the
+<u>character following `^'</u> minus 33 gives the mapping quality. A
+symbol `<u><tt>$</tt></u>' marks the end of a read segment. Start and
+end markers of a read are largely inspired by Phil
+Green's <a href="http://www.phrap.org/phredphrap/calf.pdf">CALF
+format</a>. These markers make it possible to reconstruct the read
+sequences from pileup.
+</p>
+<p>SAMtools can optionally append mapping qualities to each line of the
+output. This makes the output much larger, but is necessary when a
+subset of sites are selected.</p>
+<!-- END OF THE MAIN BODY  -->
+</div>
+
+<div style="clear: both;"> </div>
+<div id="footer">
+<hr/>
+<p style="text-align: right;">Last modified: 2009-04-15</p>
+</div>
+</div>
+</body>
+</html>

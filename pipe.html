@@ -1,0 +1,70 @@
+<html>
+<head>
+<title>Working with Pipe</title>
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+</head>
+<script language="JavaScript" src="jsInclude.js"></script>
+<body onLoad="jsInclude('header', 'inc/header.html');">
+<div id="wrap">
+<span id="header"></span>
+
+<div id="mainwide">
+<!-- BEGIN OF THE MAIN BODY  -->
+<h2>Working on a stream</h2>
+<p>
+  SAMtools is designed to work on a stream. You can output SAM/BAM to
+  the standard output (stdout) and pipe it to a SAMtools command via
+  standard input (stdin) without generating a temporary file. For
+  example, the following command runs pileup for reads from
+  library <tt>libSC_NA12878_1</tt>:
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60"
+			rows="10">samtools view -ul libSC_NA12878_1 aln.bam | samtools pileup -cf ref.fa -</textarea>
+
+  where `-u' asks samtools to output an uncompressed BAM. Option `-u' is
+  similar to `-b', but is preferred in piping because it saves time on
+  compression/decompression. Similarly, you can get the pileup of a
+  particular region with:
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60"
+			rows="10">samtools view -u aln.bam X:1,000,000-1,100,000 | samtools pileup -</textarea>
+
+  For more complex filtering, you can print out SAM and use Unix
+  commands to filter it. For example, if we want to exclude reads in the
+  read group ERR00001 and generate a new BAM, we can do in this way:
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60"
+			rows="10">samtools view -h in.bam | grep -v "\<RG:Z:ERR00001\>" | samtools view -bS - > out.bam</textarea>
+  or if you want to exclude all the gapped alignments in pileup:
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60"
+			rows="10">samtools view -h aln.bam | awk '$6!~/[ID]/' | samtools pileup -S -</textarea>
+</p>
+
+<p>
+  In the examples above, we only see how to combine the `view' and
+  `pileup' commands. In fact, most of samtools commands, except indexing
+  and external sorting, recognize an input file `-' as stdin and an
+  output file `-' as stdout. You can run several samtools commands on
+  one stream, which extends the ability of each single command, saves
+  diskspace and reduces wall-clock time.
+</p>
+<p>
+  <b>NOTE: some options in the examples are implemented in the latest
+  SVN (r347 or above) which is not released at the time of my writing
+  this page.</b>
+</p>
+
+<link type="text/css" rel="stylesheet" href="SyntaxHighlighter.css"></link>
+<script language="javascript" src="shCore.js"></script>
+<script language="javascript" src="shBrushCpp.js"></script>
+<script language="javascript">
+  dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+<!-- END OF THE MAIN BODY  -->
+</div>
+
+<div style="clear: both;"> </div>
+<div id="footer">
+<hr/>
+<p style="text-align: right;">Last modified: 2009-06-13</p>
+</div>
+</div>
+</body>
+</html>

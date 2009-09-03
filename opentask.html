@@ -1,0 +1,132 @@
+<html>
+<head>
+<title>Open Tasks</title>
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+<style type="text/css">
+ol, ul { margin: 0.5em; }
+li { margin: 0; }
+</style>
+</head>
+<script language="JavaScript" src="jsInclude.js"></script>
+<body onLoad="jsInclude('header', 'inc/header.html');">
+<div id="wrap">
+<span id="header"></span>
+<div id="widemain">
+<!-- BEGIN OF THE MAIN BODY  -->
+<h2>Open Tasks for SAMtools-C</h2>
+<ol>
+  <li>Parsing SAM headers
+	<ul>
+	  <li><b>Priority</b>: High
+	  <li><b>Difficulty</b>: Hard
+	  <li><b>Background</b>: Currently samtools only parses part of the SAM
+		header, which causes problems in maintaining a proper header in
+		merging, sorting and several other operations.
+	  <li><b>Description</b>: Write a set of rountines that parse the
+		SAM header into a dictionary structure, write the dictionary
+		into the SAM header format, merge dictionaries, add or remove
+		tags and so on. Proposed function prototypes may be:
+		<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+		  HeaderDict *sam_header_parse(const char *headerText);
+		  char *sam_header_write(const HeaderDict *headerDict);
+		  HeaderDict *sam_header_merge(int n, const HeaderDict **dicts);
+		  char *sam_header_get(const HeaderDict *d, char type[2], int i, char tag[2]);
+		  int sam_header_ins(HeaderDict *d, char tp[2], int i, char tg[2], const char *s);
+		  int sam_header_del(HeaderDict *d, char type[2], int i, char tag[2]);
+		</textarea>
+
+	  <li>Temporary solution to endusers: use Picard for merging.
+	</ul>
+  <li>Duplicate removal
+	<ul>
+	  <li><b>Priority</b>: Medium
+	  <li><b>Difficulty</b>: Hard
+	  <li><b>Background</b>: Samtools rmdup only works for paired-end
+		reads with both ends mapped to the same chromosomes. It does not
+		work for single-end data, one end unmapped or ends mapped to
+		different chromosomes.
+	  <li><b>Description</b>: Implement a proper rmdup for mixed
+		single-end and paired-end reads. Better aware of the library
+		information. The proposed interface is:
+		<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+		  int bam_rmdup(int argc, char *argv[]);
+		</textarea>
+	  <li>Temporary solution to endusers: use Picard for rmdup.
+	</ul>
+  <li>Converting samtools pileup output to VCF and implementing VCF
+  filtration
+	<ul>
+	  <li><b>Priority</b>: Medium
+	  <li><b>Difficulty</b>: Easy
+	  <li><b>Background</b>: <a href="http://1000genomes.org/wiki/doku.php?id=1000_genomes:analysis:vcfv3.2">VCF</a>
+		is the new format for storing SNP calls, but samtools does not
+		support that at the moment.
+	  <li><b>Description</b>: A perl/python script to convert the pileup
+		output to VCF and to filter a VCF with the rules similar to
+		samtools.pl varFilter.
+	</ul>
+  <li>Converting phrap ACE and/or CAF and/or AMOS formats to SAM
+	<ul>
+	  <li><b>Priority</b>: Low
+	  <li><b>Difficulty</b>: Medium
+	  <li><b>Background</b>: By design SAM is able to describe de novo
+		assembly. When an assembly converted to SAM, we can build
+		consensus and view the assembly very efficiently.
+	  <li><b>Description</b>: Implement a converter for the phrap ACE
+	  and/or the CAF and/or AMOS assembly format. A perl or python
+	  standalone script would be ideal.
+	</ul>
+  <li>Converting the PSL format to SAM
+	<ul>
+	  <li><b>Priority</b>: Low
+	  <li><b>Difficulty</b>: Easy
+	  <li><b>Background</b>: PSL is widely used by UCSC. Samtools
+		provides a simple converter, but it only translates coordinates.
+	  <li><b>Description</b>: Implement a proper converter for PSL. A
+		perl/python script would be ideal.
+	  <li><b>Note</b>: It would be better for someone to maintain the
+		converters for other formats. It is hard for one person to keep
+		track of the development of all the aligners.
+	</ul>
+  <li>Converting BAM to FASTQ
+	<ul>
+	  <li><b>Priority</b>: Low
+	  <li><b>Difficulty</b>: Easy
+	  <li><b>Description</b>: Better a C function with an interface:
+		<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+		  int bam_bam2fastq(int argc, char *argv[]);
+		</textarea>
+		or a Perl script.
+	</ul>
+  <li>Generic program/library to support fast record retrieval.
+	<ul>
+	  <li><b>Priority</b>: Low to samtools (but will be very useful to
+		the community)
+	  <li><b>Difficulty</b>: Hard
+	  <li><b>Background</b>: Samtools implements an indexable
+		compression format (BGZF) and a novel indexing scheme that
+		typically requires one seek() function call per interval query
+		(i.e. retrieving records overlapping a specified region). These
+		techniques can surely be used for other formats like GLF, VCF
+		and GFF.
+	  <li><b>Description</b>: Practical implementation needs more thoughts.
+	</ul>
+</ol>
+
+<!-- END OF THE MAIN BODY  -->
+<link type="text/css" rel="stylesheet" href="SyntaxHighlighter.css"></link>
+<script language="javascript" src="shCore.js"></script>
+<script language="javascript" src="shBrushCpp.js"></script>
+<script language="javascript">
+  dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+</div>
+
+<div style="clear: both;"> </div>
+<div id="footer">
+<hr/>
+<p style="text-align: right;">Last modified: 2009-09-02</p>
+</div>
+</div>
+</body>
+</html>

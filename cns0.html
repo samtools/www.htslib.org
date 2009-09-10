@@ -9,6 +9,17 @@
 <span id="header"></span>
 <div id="main">
 <!-- BEGIN OF THE MAIN BODY  -->
+<h2>Quick Overview</h2>
+<p>
+  From a sorted BAM alignment, raw SNP and indel calls are acquired by:
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+	samtools pileup -vcf ref.fa aln.bam &gt; raw.pileup</textarea>
+  The resultant output should be further filtered by:
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+	samtools.pl varFilter raw.pileup | awk '$6&gt;=20' &gt; final.pileup</textarea> to rule out error-prone variant calls caused
+  by factors not considered in the statistical model.
+</p>
+<br>
 <h2>Consensus Calling</h2>
 <p>The <a href="pileup.html"><b>pileup</b> command</a> is able to
 optionally generate the consensus sequence with the model implemented
@@ -33,7 +44,7 @@ seq1  68  C  C  69  0  99  14  ..............  576<;7<<<<<8<<
 
 Note that consensus quality is the Phred-scaled probability that the
 consensus is wrong. SNP quality is the Phred-scaled probability that the
-consensus is different from the reference.  They are different in
+consensus is identical to the reference. They are different in
 concept. For SNP calling, SNP quality is of more importance.
 </p>
 <br>
@@ -73,13 +84,22 @@ the <a href="tview.html">alignment viewer</a>:<br><br>
 this case, 3 reads are aligned with gaps, but 13 reads show the evidence
 of the insertion):<br><br> <img src="images/seq1-288.png" width=520/>
 </p>
+<br>
+
+<link type="text/css" rel="stylesheet" href="SyntaxHighlighter.css"></link>
+<script language="javascript" src="shCore.js"></script>
+<script language="javascript" src="shBrushCpp.js"></script>
+<script language="javascript">
+  dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+
 <!-- END OF THE MAIN BODY  -->
 </div>
 
 <div style="clear: both;"> </div>
 <div id="footer">
 <hr/>
-<p style="text-align: right;">Last modified: 2009-04-15</p>
+<p style="text-align: right;">Last modified: 2009-09-07</p>
 </div>
 </div>
 </body>

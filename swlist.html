@@ -1,0 +1,100 @@
+<html>
+<head>
+<title>Related Software</title>
+<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+<style type="text/css">
+ol, ul { margin: 0.5em; }
+li { margin: 0; }
+</style>
+</head>
+<script language="JavaScript" src="jsInclude.js"></script>
+<body onLoad="jsInclude('header', 'inc/header.html', 'inc/left0.html');">
+<div id="wrap">
+<span id="header"></span>
+<div id="main">
+<!-- BEGIN OF THE MAIN BODY  -->
+<p>
+  All software are listed in the alphabic order.
+</p>
+<br>
+<h3>Aligners natively generating SAM</h3>
+<ul>
+  <li><a href="http://bio-bwa.sourceforge.net">BWA</a>, Burrows-Wheeler Aligner for short and long reads.
+  <li><a href="http://sourceforge.net/apps/mediawiki/gemlibrary/index.php?title=The_GEM_library">GEM
+	  library</a>. Short read aligner.
+  <li><a href="http://www.sph.umich.edu/csg/pha/karma/">Karma</a>, the K-tuple Alignment with Rapid Matching Algorithm.
+  <li><a href="http://novocraft.com">Novoalign</a>. An accurate aligner
+	capable of gapped alignment for Illumina short reads. Academic free
+	binary.
+  <li><a href="http://snpomatic.sourceforge.net/">SNP-o-matic</a>, short
+	read aligner and SNP caller.
+  <li><a href="http://solidsoftwaretools.com/gf/project/sam/">SOLiD
+	  BaseQV Tool</a>. Developed by Applied Biosystems for converting
+	  SOLiD output files.
+  <li><a href="http://www.sanger.ac.uk/Software/analysis/SSAHA2/">SSAHA2</a>
+	(since v2.4). Classical aligner for both short and long reads.
+  <li>Stampy, by <a href="http://wwwfgu.anat.ox.ac.uk/~gerton/">Gerton
+	  Lunter</a>. An accurate read aligner capable of gapped alignment
+	  for Illumina short reads. Used for indel discovery on the 1000
+	  genomes data. Not released.
+  <li><a href="http://tophat.cbcb.umd.edu/">TopHat</a> for mapping short
+	RNA-seq reads bridging exon junctions.
+</ul>
+<br>
+<h3>Programs processing SAM/BAM</h3>
+<ul>
+  <li><a href="http://staden.sourceforge.net/">GAP5</a>, sequence
+	assembly viewer, editor and analyzer. Capable of importing BAM files
+	and outputing SAM.
+  <li><a href="http://www.broadinstitute.org/gsa/wiki/index.php/The_Genome_Analysis_Toolkit">GATK</a>, the
+	Genome Analysis Toolkit. Rich funtionality including an accurate SNP
+	caller. Built upon Picard.
+  <li><a href="http://www.broadinstitute.org/igv/">IGV</a>, the
+	Integrative Genomics Viewer. Elegant alignment viewer supporting
+	multiple tracks and genome annotations. Built upon Picard.
+  <li><a href="http://www.sanger.ac.uk/Software/analysis/lookseq/">LookSeq</a>,
+	web-based alignment/annotation viewer.
+  <li><a href="http://people.virginia.edu/~arq5x/utilities.html">samToBed</a>
+	by <a href="http://people.virginia.edu/~arq5x/">Aaron
+	  Quinlan</a>. Converting alignments in the SAM format to the BED format.
+  <li><a href="http://vancouvershortr.sourceforge.net/">Vancouver Short
+	  Read Analysis Package</a> (in particular FindPeaks), post
+	  alignment processing of new sequencing data.
+</ul>
+<br>
+<h3>Aligners supported via 3rd-party convertors</h3>
+<ul>
+  <li><a href="http://hgwdev.cse.ucsc.edu/~kent/src/">BLAT</a> (PSL
+	format). Convertor included in samtools. Incomplete. CIGAR output is
+	not tested.
+  <li><a href="http://bowtie-bio.sourceforge.net/index.shtml">Bowtie</a>. Highly
+	efficient short read aligner. Convertor included in samtools. Not
+	supporting multiple hits.
+  <li>Illumina GA pileline export format. Covertor included in samtools.
+  <li><a href="http://maq.sourceforge.net">MAQ</a>, Mapping and Assembly
+	with Qualities. Convertor included in samtools. Reasonably complete.
+  <li><a href="http://blast.ncbi.nlm.nih.gov/Blast.cgi">NCBI
+	  BLAST</a>. Convertor included in samtools. Not thoroughly tested.
+  <li><a href="http://soap.genomics.org.cn">SOAP2</a>, fast short read
+	aligner. Convertor included in samtools.
+  <li><a href="http://www.bioinformaticssolutions.com/products/zoom/index.php">ZOOM</a>,
+	fast short read aligner. Convertor included in samtools. Only the
+	standard ungapped output is supported.
+</ul>
+<!-- END OF THE MAIN BODY  -->
+<link type="text/css" rel="stylesheet" href="SyntaxHighlighter.css"></link>
+<script language="javascript" src="shCore.js"></script>
+<script language="javascript" src="shBrushCpp.js"></script>
+<script language="javascript">
+  dp.SyntaxHighlighter.HighlightAll('code');
+</script>
+</div>
+
+<div style="clear: both;"> </div>
+<div id="footer">
+<hr/>
+<p style="text-align: right;">Last modified: 2009-09-10</p>
+</div>
+</div>
+</body>
+</html>

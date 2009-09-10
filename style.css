@@ -15,7 +15,7 @@ a:visited {
 
 /* basic html */
 body, td, th {
-	font: 76% "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
+	font: 12px "Lucida Grande", "Lucida Sans Unicode", Arial, sans-serif;
 }
 body {
 	color: #000;

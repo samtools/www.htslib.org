@@ -13,19 +13,27 @@ li { margin: 0; }
 <span id="header"></span>
 <div id="main">
 <!-- BEGIN OF THE MAIN BODY  -->
+<h2>Related Software</h2>
 <p>
-  All software are listed in the alphabic order.
+  All software are listed in the alphabetic order.
 </p>
 <br>
 <h3>Aligners natively generating SAM</h3>
 <ul>
+  <li><a href="https://secure.genome.ucla.edu/index.php/BFAST">BFAST</a>,
+	`Blat-like Fast Accurate Search Tool' for Illumina and SOLiD reads.
+  <li><a href="http://bowtie-bio.sourceforge.net/index.shtml">Bowtie</a>. Highly
+	efficient short read aligner. Natively support SAM output in recent
+	version. A convertor is also available in samtools-C.
   <li><a href="http://bio-bwa.sourceforge.net">BWA</a>, Burrows-Wheeler Aligner for short and long reads.
   <li><a href="http://sourceforge.net/apps/mediawiki/gemlibrary/index.php?title=The_GEM_library">GEM
-	  library</a>. Short read aligner.
+	  library</a>. Short read aligner. Convertor provided by the
+	  developers.
   <li><a href="http://www.sph.umich.edu/csg/pha/karma/">Karma</a>, the K-tuple Alignment with Rapid Matching Algorithm.
+  <li><a href="http://code.google.com/p/mosaik-aligner/">Mosaik</a>. The latest version support SAM output.
   <li><a href="http://novocraft.com">Novoalign</a>. An accurate aligner
 	capable of gapped alignment for Illumina short reads. Academic free
-	binary.
+	binary. Convertor is also available in samtools.
   <li><a href="http://snpomatic.sourceforge.net/">SNP-o-matic</a>, short
 	read aligner and SNP caller.
   <li><a href="http://solidsoftwaretools.com/gf/project/sam/">SOLiD
@@ -43,23 +51,50 @@ li { margin: 0; }
 <br>
 <h3>Programs processing SAM/BAM</h3>
 <ul>
+  <li><a href="http://sourceforge.net/projects/bamtools/">BAMTools</a>,
+	C++ APIs (not based on C APIs) for processing BAM files.
+  <li><a href="http://bamview.sourceforge.net/">BamView</a>, BAM
+	alignment viewer. It can be integrated
+	to <a href="http://www.sanger.ac.uk/resources/software/artemis/">Artemis</a>.
+  <li><a href="http://code.google.com/p/bedtools/">BEDTools</a>, a
+	software package for manipulating BED files, with some utilities
+	working with BAM. Built upon BAMTools.
+  <li><a href="http://sourceforge.net/projects/breakdancer/">BreakDancer</a>,
+	structural variation caller for paired-end data.
+  <li><a href="http://dnaa.sourceforge.net/">DNAA</a>, DNA Analysis
+	package including various post-alignment processing.
+  <li><a href="http://code.google.com/p/gambit-viewer/">Gambit</a>,
+	graphical BAM alignment viewer.
   <li><a href="http://staden.sourceforge.net/">GAP5</a>, sequence
 	assembly viewer, editor and analyzer. Capable of importing BAM files
 	and outputing SAM.
   <li><a href="http://www.broadinstitute.org/gsa/wiki/index.php/The_Genome_Analysis_Toolkit">GATK</a>, the
 	Genome Analysis Toolkit. Rich funtionality including an accurate SNP
 	caller. Built upon Picard.
+  <li><a href="http://gmod.org/wiki/Main_Page">GBrowse</a>, generic
+	genome browser. Experimental SAM/BAM alignment viewing. Built upon
+	Perl APIs.
+  <li><a href="http://genomeview.sourceforge.net/">GenomeView</a>, a
+	Java based genome browser.
   <li><a href="http://www.broadinstitute.org/igv/">IGV</a>, the
 	Integrative Genomics Viewer. Elegant alignment viewer supporting
 	multiple tracks and genome annotations. Built upon Picard.
   <li><a href="http://www.sanger.ac.uk/Software/analysis/lookseq/">LookSeq</a>,
 	web-based alignment/annotation viewer.
+  <li><a href="http://bioinformatics.zj.cn/magicviewer/">MagicViewer</a>,
+	graphical BAM alignment viewer.
   <li><a href="http://people.virginia.edu/~arq5x/utilities.html">samToBed</a>
 	by <a href="http://people.virginia.edu/~arq5x/">Aaron
 	  Quinlan</a>. Converting alignments in the SAM format to the BED format.
+  <li><a href="http://compbio.cs.toronto.edu/savant/">Savant</a>, a
+	Java based genome browser.
+  <li><a href="http://bioinf.scri.ac.uk/tablet/">Tablet</a>, alignment
+	viewer. It also supports tons of other alignment/assembly formats.
   <li><a href="http://vancouvershortr.sourceforge.net/">Vancouver Short
 	  Read Analysis Package</a> (in particular FindPeaks), post
 	  alignment processing of new sequencing data.
+  <li><a href="http://varscan.sourceforge.net/">VarScan</a>, variant
+	caller for short sequence reads.
 </ul>
 <br>
 <h3>Aligners supported via 3rd-party convertors</h3>
@@ -67,9 +102,6 @@ li { margin: 0; }
   <li><a href="http://hgwdev.cse.ucsc.edu/~kent/src/">BLAT</a> (PSL
 	format). Convertor included in samtools. Incomplete. CIGAR output is
 	not tested.
-  <li><a href="http://bowtie-bio.sourceforge.net/index.shtml">Bowtie</a>. Highly
-	efficient short read aligner. Convertor included in samtools. Not
-	supporting multiple hits.
   <li>Illumina GA pileline export format. Covertor included in samtools.
   <li><a href="http://maq.sourceforge.net">MAQ</a>, Mapping and Assembly
 	with Qualities. Convertor included in samtools. Reasonably complete.
@@ -93,7 +125,7 @@ li { margin: 0; }
 <div style="clear: both;"> </div>
 <div id="footer">
 <hr/>
-<p style="text-align: right;">Last modified: 2009-09-10</p>
+<p style="text-align: right;">Last modified: 2010-03-25</p>
 </div>
 </div>
 </body>

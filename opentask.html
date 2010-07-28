@@ -15,29 +15,7 @@ li { margin: 0; }
 <!-- BEGIN OF THE MAIN BODY  -->
 <h2>Open Tasks for SAMtools-C</h2>
 <ol>
-  <li>Parsing SAM headers
-	<ul>
-	  <li><b>Priority</b>: High
-	  <li><b>Difficulty</b>: Hard
-	  <li><b>Background</b>: Currently samtools only parses part of the SAM
-		header, which causes problems in maintaining a proper header in
-		merging, sorting and several other operations.
-	  <li><b>Description</b>: Write a set of rountines that parse the
-		SAM header into a dictionary structure, write the dictionary
-		into the SAM header format, merge dictionaries, add or remove
-		tags and so on. Proposed function prototypes may be:
-		<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
-		  HeaderDict *sam_header_parse(const char *headerText);
-		  char *sam_header_write(const HeaderDict *headerDict);
-		  HeaderDict *sam_header_merge(int n, const HeaderDict **dicts);
-		  char *sam_header_get(const HeaderDict *d, char type[2], int i, char tag[2]);
-		  int sam_header_ins(HeaderDict *d, char tp[2], int i, char tg[2], const char *s);
-		  int sam_header_del(HeaderDict *d, char type[2], int i, char tag[2]);
-		</textarea>
-
-	  <li>Temporary solution to endusers: use Picard for merging.
-	</ul>
-  <li>Duplicate removal
+  <li>Duplicate removal (samtools' rmdup is library aware now, but the algorithms should be improved further)
 	<ul>
 	  <li><b>Priority</b>: Medium
 	  <li><b>Difficulty</b>: Hard
@@ -65,7 +43,10 @@ li { margin: 0; }
 		output to VCF and to filter a VCF with the rules similar to
 		samtools.pl varFilter.
 	</ul>
-  <li>Converting phrap ACE and/or CAF and/or AMOS formats to SAM
+  <li>Converting phrap ACE and/or CAF and/or AMOS formats to SAM (the
+	development version
+	of <a href="http://sourceforge.net/apps/mediawiki/amos/index.php?title=AMOS">AMOS</a>
+	now supports AMOS->SAM conversion)
 	<ul>
 	  <li><b>Priority</b>: Low
 	  <li><b>Difficulty</b>: Medium
@@ -97,6 +78,32 @@ li { margin: 0; }
 		  int bam_bam2fastq(int argc, char *argv[]);
 		</textarea>
 		or a Perl script.
+	</ul>
+</ol>
+<br>
+<h2>Closed Tasks for SAMtools-C</h2>
+<ol>
+  <li>Parsing SAM headers (DONE by Petr Danecek)
+	<ul>
+	  <li><b>Priority</b>: High
+	  <li><b>Difficulty</b>: Hard
+	  <li><b>Background</b>: Currently samtools only parses part of the SAM
+		header, which causes problems in maintaining a proper header in
+		merging, sorting and several other operations.
+	  <li><b>Description</b>: Write a set of rountines that parse the
+		SAM header into a dictionary structure, write the dictionary
+		into the SAM header format, merge dictionaries, add or remove
+		tags and so on. Proposed function prototypes may be:
+		<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+		  HeaderDict *sam_header_parse(const char *headerText);
+		  char *sam_header_write(const HeaderDict *headerDict);
+		  HeaderDict *sam_header_merge(int n, const HeaderDict **dicts);
+		  char *sam_header_get(const HeaderDict *d, char type[2], int i, char tag[2]);
+		  int sam_header_ins(HeaderDict *d, char tp[2], int i, char tg[2], const char *s);
+		  int sam_header_del(HeaderDict *d, char type[2], int i, char tag[2]);
+		</textarea>
+
+	  <li>Temporary solution to endusers: use Picard for merging.
 	</ul>
   <li>Generic program/library to support fast record retrieval.
 	<ul>

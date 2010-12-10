@@ -53,6 +53,7 @@ hr {
 }
 li {
 	margin: 0.5em 0;
+	line-height: 1.5;
 }
 table {
 	border: solid 1px #ccc;

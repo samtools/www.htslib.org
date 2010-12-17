@@ -44,7 +44,7 @@
   VCFs (e.g. calling SNPs from GL-tagged VCFs), but not for all VCFs;
   VCF to BCF conversion is not working at the moment, either.
 </p>
-<h3>Tuning the command line</h3>
+<h3>Tuning the parameters</h3>
 <p>
   One should consider to apply the following parameters
   to <b>mpileup</b> in different scenarios:
@@ -283,6 +283,89 @@ SNPs.
 	comes with the source code package, and will be fixed in future
 	(fixed in r880+).
 </ul>
+
+<h2>Appendix: Use Cases</h2>
+<h3>SNP/INDEL calling for hundreds of exomes</h3>
+<p>
+  The following shows the detailed procedure on how to call SNPs/INDELs
+  for hundreds of exomes. It only aims to provide an overview of how to
+  handle huge data sets. Some command lines given below may not work for
+  all systems. Advanced users may also want to modify based on their own
+  system configurations.</p>
+<p>In the following, the key and the most
+  difficult part is the command line calling <b>samtools
+  mpileup</b>. Once that is done, one can use 3rd party tools or write
+  their own scsripts to achieve the rest.
+</p>
+<h4>Input and preparation</h4>
+<ul>
+  <li>Obtain auxiliary scripts/programs: array job submission
+	script <b><a href="http://lh3lh3.users.sourceforge.net/download/asub">asub</a></b>,
+	basic BED processing
+	utility <b><a href="http://lh3lh3.users.sourceforge.net/download/bedutils.pl">bedutils.pl</a></b>,
+	<a href="http://lh3lh3.users.sourceforge.net/download/sort-20101217.tar.bz2">alphanumeric sort</a>
+	and <b><a href="http://sourceforge.net/projects/samtools/files/tabix/">tabix</a></b>:
+<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  export PATH="$HOME/bin:$PATH"
+  wget http://lh3lh3.users.sourceforge.net/download/asub
+  wget http://lh3lh3.users.sourceforge.net/download/bedutils.pl
+  cp asub bedutils.pl $HOME/bin
+  wget http://lh3lh3.users.sourceforge.net/download/sort-20101217.tar.bz2
+  tar -jxf sort-20101217.tar.bz2
+  (cd sort-20101217; make; cp sort $HOME/bin/sort-alt)
+  wget http://sourceforge.net/projects/samtools/files/tabix/tabix-0.2.3.tar.bz2/download
+  tar -jxf tabix-0.2.3.tar.bz2;
+  (cd tabix-0.2.3; make; cp tabix bgzip $HOME/bin)</textarea>
+  <li>Check out a more recent version of samtools
+<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  svn co https://samtools.svn.sourceforge.net/svnroot/samtools/trunk/samtools
+  (cd samtools; make; cp samtools bcftools/{bcftools,vcfutils.pl} $HOME/bin)</textarea>
+  <li>The reference sequence file <i>ref.fa</i>. To avoid potential
+	mistakes, <i>ref.fa</i> is better the one that is used for read
+	mapping. File <i>ref.fa</i> should be indexed by samtools' faidx, if
+	this has not been done.
+<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  samtools faidx ref.fa</textarea>
+  <li>File <i>bam.list</i> which gives the paths of indexed BAM files,
+	one line per file. These files should be better tagged with read
+	groups; if not, one BAM per sample.
+</ul>
+<h4>Procedure</h4>
+<ul>
+  <li>Calling SNPs/INDELs in small regions 
+<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  vcfutils.pl splitchr -l 500000 | xargs -i \
+    echo samtools mpileup -C50 -m3 -F0.0002 -DSuf ref.fa -r {} -b bam.list \| bcftools \
+    view -bcvg - \> part-{}.bcf | aub -j run-part</textarea>
+  <li>Merge regions
+<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  cut -f1 ref.fa.fai | xargs -i echo grep ^part-{} \| sort-alt -N \| xargs \
+    bcftools cat \> chr-{}.bcf
+  awk '{print "chr-"$1".bcf"}' ref.fa.fai | xargs bcftools cat > merge.bcf
+  bcftools index merge.bcf</textarea>
+To make sure <i>merge.bcf</i> is correctly generated, one should use bcftools view
+to retrieve data towards the end of the last chromosome. If something goes wrong
+in data processing, no data will be retrieved. When we confirm <i>merge.bcf</i> is
+correct, we may delete intermediate files <i>part-*.bcf</i> and <i>chr-*.bcf</i>.
+  <li>Extract target regions
+<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  bcftools view -G merge.bcf | vcfutils.pl varFilter -w0 -10 -20 -30 -40 -Q0 \
+    | bgzip > merge.vcf.gz
+  tabix -fpvcf merge.vcf.gz
+  sort-alt -k1,1N -k2,2n target.bed | bedutils.pl union \
+    | awk '{print $1":"($2+1)"-"$3}' | xargs tabix merge.vcf.gz \
+    | bgzip > target.vcf.gz
+  bcftools view -bl target.vcf.gz > target.bcf</textarea>
+Here we use <b>tabix</b> to retrieve target regions, which is a little complicated.
+In future new functionality may be added to <b>bcftools</b> to simplify this step.
+  <li>Filtering. For now, an effective way of filtering is unknown. For
+  indels, one may consider the following:
+<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  vcfutils.pl varFilter -10 -20 -30 -40 -a4 -G90 -S30</textarea>
+  although more effective filters may be existing. For INDELs, one may
+  use the fraction of frameshift indels as a proxy to specificity.
+</ul>
+
 <!-- END OF THE MAIN BODY  -->
 <link type="text/css" rel="stylesheet" href="SyntaxHighlighter.css"></link>
 <script language="javascript" src="shCore.js"></script>
@@ -295,7 +378,7 @@ SNPs.
 <div style="clear: both;"> </div>
 <div id="footer">
 <hr/>
-<p style="text-align: right;">Last modified: 2010-12-10</p>
+<p style="text-align: right;">Last modified: 2010-12-17</p>
 </div>
 </div>
 </body>

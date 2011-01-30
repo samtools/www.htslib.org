@@ -17,7 +17,7 @@ li { margin: 0; }
 <ol>
   <li>Duplicate removal (samtools' rmdup is library aware now, but the algorithms should be improved further)
 	<ul>
-	  <li><b>Priority</b>: Medium
+	  <li><b>Priority</b>: Low
 	  <li><b>Difficulty</b>: Hard
 	  <li><b>Background</b>: Samtools rmdup only works for paired-end
 		reads with both ends mapped to the same chromosomes. It does not
@@ -30,18 +30,6 @@ li { margin: 0; }
 		  int bam_rmdup(int argc, char *argv[]);
 		</textarea>
 	  <li>Temporary solution to endusers: use Picard for rmdup.
-	</ul>
-  <li>Converting samtools pileup output to VCF and implementing VCF
-  filtration
-	<ul>
-	  <li><b>Priority</b>: Medium
-	  <li><b>Difficulty</b>: Easy
-	  <li><b>Background</b>: <a href="http://1000genomes.org/wiki/doku.php?id=1000_genomes:analysis:vcfv3.2">VCF</a>
-		is the new format for storing SNP calls, but samtools does not
-		support that at the moment.
-	  <li><b>Description</b>: A perl/python script to convert the pileup
-		output to VCF and to filter a VCF with the rules similar to
-		samtools.pl varFilter.
 	</ul>
   <li>Converting phrap ACE and/or CAF and/or AMOS formats to SAM (the
 	development version
@@ -72,7 +60,7 @@ li { margin: 0; }
   <li>Converting BAM to FASTQ
 	<ul>
 	  <li><b>Priority</b>: Low
-	  <li><b>Difficulty</b>: Easy
+	  <li><b>Difficulty</b>: Easy/Hard (depending on functionality)
 	  <li><b>Description</b>: Better a C function with an interface:
 		<textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
 		  int bam_bam2fastq(int argc, char *argv[]);
@@ -118,6 +106,18 @@ li { margin: 0; }
 		and GFF.
 	  <li><b>Description</b>: Practical implementation needs more thoughts.
 	</ul>
+  <li>Converting samtools pileup output to VCF and implementing VCF
+  filtration
+	<ul>
+	  <li><b>Priority</b>: Medium
+	  <li><b>Difficulty</b>: Easy
+	  <li><b>Background</b>: <a href="http://1000genomes.org/wiki/doku.php?id=1000_genomes:analysis:vcfv3.2">VCF</a>
+		is the new format for storing SNP calls, but samtools does not
+		support that at the moment.
+	  <li><b>Description</b>: A perl/python script to convert the pileup
+		output to VCF and to filter a VCF with the rules similar to
+		samtools.pl varFilter.
+	</ul>
 </ol>
 
 <!-- END OF THE MAIN BODY  -->
@@ -132,7 +132,7 @@ li { margin: 0; }
 <div style="clear: both;"> </div>
 <div id="footer">
 <hr/>
-<p style="text-align: right;">Last modified: 2009-09-02</p>
+<p style="text-align: right;">Last modified: 2011-01-29</p>
 </div>
 </div>
 </body>

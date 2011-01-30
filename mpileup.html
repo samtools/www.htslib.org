@@ -329,6 +329,7 @@ SNPs.
   <li>File <i>bam.list</i> which gives the paths of indexed BAM files,
 	one line per file. These files should be better tagged with read
 	groups; if not, one BAM per sample.
+  <li>File <i>target.bed</i> which gives the target regions in the BED format.
 </ul>
 <h4>Procedure</h4>
 <ul>
@@ -361,7 +362,8 @@ In future new functionality may be added to <b>bcftools</b> to simplify this ste
   <li>Filtering. For now, an effective way of filtering is unknown. For
   indels, one may consider the following:
 <textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
-  vcfutils.pl varFilter -10 -20 -30 -40 -a4 -G90 -S30</textarea>
+  bcftools view -GM target.bcf | grep INDEL \
+    | vcfutils.pl varFilter -10 -20 -30 -40 -a4 -G90 -S30</textarea>
   although more effective filters may be existing. For INDELs, one may
   use the fraction of frameshift indels as a proxy to specificity.
 </ul>

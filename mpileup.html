@@ -19,7 +19,7 @@
   files <i>aln1.bam</i> and <i>aln2.bam</i>, the following command lines
   call SNPs and short INDELs:
   <textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
-  samtools mpileup -ugf ref.fa aln1.bam aln2.bam | bcftools view -bvcg - > var.raw.bcf
+  samtools mpileup -uf ref.fa aln1.bam aln2.bam | bcftools view -bvcg - > var.raw.bcf
   bcftools view var.raw.bcf | vcfutils.pl varFilter -D100 > var.flt.vcf</textarea>
 
   where the <b>-D</b> option sets the maximum read depth to call a
@@ -29,6 +29,10 @@
   alignment files. SAMtools will regroup the reads anyway. In addition,
   if no <b>@RG</b> lines are present, each alignment file is taken as
   one sample.
+</p>
+<p>Since r865, it is possible to generate the consensus sequence with
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  samtools mpileup -uf ref.fa aln.bam | bcftools view -cg - | vcfutils.pl vcf2fq > cns.fq</textarea>
 </p>
 <h3>Understanding the command line</h3>
 <p>
@@ -153,9 +157,16 @@
 		calling. Sum can be smaller than DP because low-quality bases are not counted.</tr>
   <tr><th>PV4<td>P-values for 1) strand bias (exact test); 2) baseQ bias
   (t-test); 3) mapQ bias (t); 4) tail distance bias (t)</tr>
+  <tr><th>FQ<td>Consensus quality. If positive, FQ equals the phred-scaled probability of there being two or more different alleles.
+  	If negative, FQ equals the minus phred-scaled probability of all chromosomes being identical. Notably,
+	given one sample, FQ is positive at hets and negative at homs.</tr>
   <tr><th>AF1<td>EM estimate of the site allele frequency of the strongest non-reference allele.</tr>
   <tr><th>CI95<td>Equal-tail (Bayesian) credible interval of the site allele frequency at the 95% level.</tr>
-  <tr><th>HWE<td>P-value for Hardy-Weinberg equillibrium (chi-square test)</tr>
+  <tr><th>PC2<td>Phred-scaled probability of the alternate allele frequency of group1 samples being
+  		larger (,smaller) than of group2 samples.</tr>
+  <tr><th>PCHI2<td>Posterior weighted chi^2 P-value between group1 and group2 samples. This P-value is conservative.</tr>
+  <tr><th>QCHI2<td>Phred-scaled PCHI2</tr>
+  <tr><th>RP<td>Number of permutations yeilding a smaller PCHI2</tr>
 </table>
 <ul>
   <li>For a read, suppose the k-th base is overlapping the reference
@@ -167,19 +178,38 @@
 	an base has not been seen from the alignment data. Such a base is
 	necessary to evaluate the probability of missing a non-ref allele
 	due to sampling fluctuation.
+  <li>FQ is computed by taking a folded prior (i.e. p'(k)=[p(k)+p(n-k)]/2). It measures
+  	if the locus is polymophic among samples. The <b>vcf2fq</b> command
+	replies on this annotation.
   <li>SAMtools/BCFtools writes genotype likelihoods in the PL format
 	which is a comma delimited list of phred-scaled data likelihoods of
 	each possible genotype. For example, suppose REF=C and ALT=A,G,
-	PL=7,0,13,37,40,49 means for the sample we are looking at,
-	P(D|CC)=10^{-0.7}, P(D|CA)=1, P(D|CG)=10^{-1.3}, P(D|AA)=10^{-3.7},
-	P(D|AG)=1e-4 and P(D|GG)=10^{-4.9}.
+	PL=7,0,37,13,40,49 means for the sample we are looking at,
+	P(D|CC)=10^{-0.7}, P(D|CA)=1, P(D|AA)=10^{-3.7}, P(D|CG)=10^{-1.3},
+	P(D|AG)=1e-4 and P(D|GG)=10^{-4.9}. This ordering has been changed
+	since r921.
+  <li>PC2, PCHI2 and QCHI2 are only present with `view -1' is set.
 </ul>
-<h2>Estimating the Allele Frequency Spectrum</h2>
-<p>
-  In addition to SNP/INDEL calling, <b>bcftools</b> is also able to
-  estimate the Allele Frequency Spectrum (AFS) using the same model for
-  variant calling.
+<h2>Performing Association Test</h2>
+<p>The following command performs association test:
+  <textarea name="code" class="c:nocontrols:nogutter" cols="60" rows="10">
+  samtools mpileup -uf ref.fa all-aln.bam | bcftools view -vcs xxx -1 yyy - > out.vcf</textarea>
+
+  where `xxx' is a file containing the list of samples with the first `yyy'
+  samples being cases (or controls) and the rest being controls (or cases).
+  In the output, the PCHI2 INFO field gives the P-value of association.
+  This P-value is known to be conservative, in the sense that the true P-value
+  is probably smaller (more significant). Nonetheless, in practice PCHI2 appears to be a good
+  indicator of associations. On a QQ-plot for negative controls, expected P-value and observed PCHI2 fall
+  on a straight line, though not on the diagonal.</p>
+  
+<p>To further calibrate P-value, one
+  may perform a permutation test with the `-U' option. The `RP' INFO field
+  will give the number of permutations which yield a smaller PCHI2 test statistics.
+  Permutation test is very slow, due to the genotype ambiguity in sequencing data.
 </p>
+<br>
+<h2>Estimating the Allele Frequency Spectrum</h2>
 <p>
   While calling SNPs, <b>bcftools</b> will print the estimated AFS to
   the error output at lines starting with <tt>[afs]</tt>. However, to

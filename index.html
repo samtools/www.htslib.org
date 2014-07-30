@@ -10,18 +10,38 @@
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<style>
+			.mainbox { width:450px; height: 450px; background-color: #EEEEEE; margin: 10px; display:table; }
+			.mainimage{
+				opacity: 0.4;
+				position:absolute; width:100%; height:100%;
+				text-align: center;
+				margin-top:20%;
+			}
+			.mainlabel{
+				position: absolute; width:100%; height:45pt;
+				z-index:1;
+				font-size:45pt;
+				color: #000000;
+				text-align: center;
+				margin-top:45%;
+				opacity:.3;
+			}
+			.mainlabel:hover{
+				opacity:1;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="container">
 			<h1>Samtools</h1>
 			<div class="row">
-				<span class="col-md-6"><a href="download.html"><img src="images/download.svg" alt="Download" /></a>Download</span>
-				<span><a href="workflow.html"><img src="images/workflow.svg" alt="Workflows" /></a>Workflows</span>
+				<span class="col-md-6 mainbox"><a href="download.html"><span class="mainimage"><img src="images/download.svg" alt="Download" /></span><span class="mainlabel">Download</span></a></span>
+				<span class="col-md-6 mainbox"><a href="workflow.html"><span class="mainimage"><img src="images/workflow.svg" alt="Workflows" /></span><span class="mainlabel">Workflows</span></a></span>
 			</div>
-
 			<div class="row">
-				<span class="col-md-6"><a href="doc.html"><img src="images/doc.svg" alt="Documentation" /></a>Documentation</span>
-				<span class="col-md-6"><a href="support.html"><img src="images/support.svg" alt="Support" /></a>Support</span>
+				<span class="col-md-6 mainbox"><a href="doc.html"><span class="mainimage"><img src="images/doc.svg" alt="Documentation" /></span><span class="mainlabel">Documentation</span></a></span>
+				<span class="col-md-6 mainbox"><a href="support.html"><span class="mainimage"><img src="images/support.svg" alt="Support" /></span><span class="mainlabel">Support</span></a></span>
 			</div>
 		</div>
 	</body>

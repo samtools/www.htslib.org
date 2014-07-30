@@ -1,1 +1,38 @@
-.small_icon {width: 12pt;height 12pt}
+.small_icon {
+    width: 12pt;
+    height: 12pt;
+}
+.mainbox {
+    height: 280px;
+	width: 280px;
+    background-color: #EEE;
+	border-width:10px;
+	border-color: white;
+}
+.mainimage {
+    opacity: .4;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    padding-top: 15%;
+	padding-bottom: 5%;
+}
+.mainimage>img {
+    width: 80%;
+    height: 80%;
+}
+.mainlabel {
+    position: absolute;
+    width: 100%;
+    height: 20%;
+    z-index: 1;
+    font-size: 45pt;
+    color: #000;
+    text-align: center;
+    padding-top: 20%;
+    opacity: .3;
+}
+.mainlabel:hover {
+    opacity: 1;
+}

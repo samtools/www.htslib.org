@@ -14,27 +14,29 @@
    id="svg2985"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="New document 2">
-  <defs
-     id="defs2987" />
+   sodipodi:docname="support.svg">
   <sodipodi:namedview
-     id="base"
      pagecolor="#ffffff"
      bordercolor="#666666"
-     borderopacity="1.0"
-     inkscape:pageopacity="0.0"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="93.754792"
-     inkscape:cy="230.00299"
-     inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:window-width="1040"
+     inkscape:window-height="889"
+     id="namedview7"
      showgrid="false"
-     inkscape:window-width="1220"
-     inkscape:window-height="987"
-     inkscape:window-x="40"
-     inkscape:window-y="62"
-     inkscape:window-maximized="0" />
+     inkscape:zoom="0.78666667"
+     inkscape:cx="150"
+     inkscape:cy="251.69492"
+     inkscape:window-x="0"
+     inkscape:window-y="22"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg2985" />
+  <defs
+     id="defs2987" />
   <metadata
      id="metadata2990">
     <rdf:RDF>
@@ -43,27 +45,14 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <g
-     inkscape:label="Layer 1"
-     inkscape:groupmode="layer"
-     id="layer1"
-     transform="translate(0,-752.36218)">
-    <flowRoot
-       xml:space="preserve"
-       id="flowRoot2993"
-       style="font-size:250px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
-       transform="translate(85.714286,750.21932)"><flowRegion
-         id="flowRegion2995"><rect
-           id="rect2997"
-           width="300.71429"
-           height="301.42856"
-           x="0"
-           y="-0.71428603"
-           style="font-size:250px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans" /></flowRegion><flowPara
-         id="flowPara2999"
-         style="font-size:250px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans">?</flowPara></flowRoot>  </g>
+  <text
+     x="83.898308"
+     y="245.33899"
+     style="font-size:250px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"
+     id="text5"
+     sodipodi:linespacing="125%">?</text>
 </svg>

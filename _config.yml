@@ -1,0 +1,11 @@
+# Site settings
+title: SAMtools
+email: your-email@domain.com
+description: "SAMtools"
+baseurl: ""
+url: "http://samtools.github.io"
+twitter_username: htslib
+
+# Build settings
+markdown: kramdown
+permalink: pretty

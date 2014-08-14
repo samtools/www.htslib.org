@@ -1,9 +1,9 @@
 # Site settings
-title: SAMtools
+title: Samtools
 email: your-email@domain.com
-description: "SAMtools"
+description: "Samtools"
 baseurl: ""
-url: "http://samtools.github.io"
+url: "http://www.htslib.org"
 twitter_username: htslib
 
 # Build settings

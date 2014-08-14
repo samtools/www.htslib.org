@@ -41,8 +41,8 @@ To sort them from name order into coordinate order:
 <h3>Improvement</h3>
 In order to reduce the number of miscalls of INDELs in your data it is helpful to realign your raw gapped alignment with the Broad's <a href="https://www.broadinstitute.org/gatk/">GATK</a> Realigner.
 <pre>
-	java -Xmx2g -jar GenomeAnalysisTK.jar -T RealignerTargetCreator -R &lt;ref.fa&gt; -I &lt;lane.bam&gt; -o &lt;lane.intervals&gt; --known &gt;bundle/b38/Mills1000G.b38.vcf&gt;
-	java -Xmx4g -jar GenomeAnalysisTK.jar -T IndelRealigner -R &lt;ref.fa&gt; -I &lt;lane.bam&gt; -targetIntervals &lt;lane.intervals&gt; --known &gt;bundle/b38/Mills1000G.b38.vcf&gt; -o &lt;lane_realigned.bam&gt;
+	java -Xmx2g -jar GenomeAnalysisTK.jar -T RealignerTargetCreator -R &lt;ref.fa&gt; -I &lt;lane.bam&gt; -o &lt;lane.intervals&gt; --known &lt;bundle/b38/Mills1000G.b38.vcf&gt;
+	java -Xmx4g -jar GenomeAnalysisTK.jar -T IndelRealigner -R &lt;ref.fa&gt; -I &lt;lane.bam&gt; -targetIntervals &lt;lane.intervals&gt; --known &lt;bundle/b38/Mills1000G.b38.vcf&gt; -o &lt;lane_realigned.bam&gt;
 </pre>
 
 <p>BQSR from the Broad's GATK allows you to reduce the effects of analysis artefacts produced by your sequencing machines.  It does this in two steps, the first analyses your data to
@@ -72,8 +72,8 @@ Lastly we index our BAM using samtools:
 	samtools index &lt;sample_realigned.bam&gt;
 </pre>
 <h3>Variant Calling</h3>
-<p>To convert your BAM file into genomic positions we first use mpileup to produce a BCF file that contains all of the locations in the genome.  We reduce this to variant sites and call genotypes
-by passing this into bcftools call.</p>
+<p>To convert your BAM file into genomic positions we first use mpileup to produce a BCF file that contains all of the locations in the genome.  We use this information to call genotypes
+and reduce our list of sites to those found to be variant by passing this file into bcftools call.</p>
 
 You can do this using a pipe as shown here:
 <pre>

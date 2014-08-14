@@ -11,10 +11,10 @@ layout: default
 </ul>
 
 <h3>Mapping</h3>
-<p>For reads from 70bp up to a few megabases we recommend the use of the <a href="https://github.com/lh3/bwa">BWA MEM</a> program to map the data to
-a given reference.  The reference you use will differ depending on the species your data came from and the resources you want to use with it. For example
+<p>For reads from 70bp up to a few megabases we recommend using <a href="http://bio-bwa.sourceforge.net/">BWA MEM</a> to map the data to
+a given reference genome. The reference you use will differ depending on the species your data came from and the resources you want to use with it. For example
 for a new research project consisting of Human data you would probably use the Genome Reference Consortium's <a href="ftp://ftp.ncbi.nlm.nih.gov/genbank/genomes/Eukaryotes/vertebrates_mammals/Homo_sapiens/GRCh38//seqs_for_alignment_pipelines">
-build 38 analysis set</a>. With BWA 0.7.10 mapping to alternative haplotypes has been deemed unready for production use, so you will probably wish to use
+build 38 analysis set</a>. Note that with BWA 0.7.10, mapping to alternative haplotypes has been deemed unready for production use, so you will probably wish to use
 the analysis set that does not contain them.</p>
 <p>
 To prepare the reference for mapping you must first index it by typing the following command where &lt;ref.fa&gt; is the path to your reference file:
@@ -28,7 +28,7 @@ Once you have finished preparing your indexed reference you can map your reads t
 	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' &lt;ref.fa&gt; &lt;read1.fa&gt; &lt;read1.fa&gt; &gt; lane.sam
 </pre>
 <p>Typically your reads will be supplied to you in two files written in the FASTQ format.  It is particularly important to ensure that the @RG information here is correct as this information is used
-by later tools. The SM field must be set to the name of the sample being processed, and LB field to the library.  The resulting mapped reads will be delivered to you in a mapping format known as SAM.</p>
+by later tools. The SM field must be set to the name of the sample being processed, and LB field to the library.  The resulting mapped reads will be delivered to you in a mapping format known as <a href="http://samtools.github.io/hts-specs/">SAM</a>.</p>
 <p>Because BWA can sometimes leave unusual FLAG information on SAM records, it is helpful when working with many tools to first clean up read pairing information and flags:</p>
 <pre>
 	samtools fixmate -O bam &lt;lane.sam&gt; &lt;lane_fixmate.bam&gt;
@@ -38,7 +38,7 @@ To sort them from name order into coordinate order:
 	samtools sort -O bam -o &lt;lane_sorted.bam&gt; -T &lt;/tmp/lane_temp&gt; &lt;lane_fixmate.sam&gt;
 </pre>
 <h3>Improvement</h3>
-In order to reduce the number of miscalls of INDELs in your data it is helpful to realign your raw gapped alignment with the Broad's Realigner.
+In order to reduce the number of miscalls of INDELs in your data it is helpful to realign your raw gapped alignment with the Broad's <a href="https://www.broadinstitute.org/gatk/">GATK</a> Realigner.
 <pre>
 	java -Xmx2g -jar GenomeAnalysisTK.jar -T RealignerTargetCreator -R &lt;ref.fa&gt; -I &lt;lane.bam&gt; -o &lt;lane.intervals&gt; --known &gt;bundle/b38/Mills1000G.b38.vcf&gt;
 	java -Xmx4g -jar GenomeAnalysisTK.jar -T IndelRealigner -R &lt;ref.fa&gt; -I &lt;lane.bam&gt; -targetIntervals &lt;lane.intervals&gt; --known &gt;bundle/b38/Mills1000G.b38.vcf&gt; -o &lt;lane_realigned.bam&gt;
@@ -50,13 +50,11 @@ detect covariates and the second compensates for those covariates by adjusting q
 	java -Xmx4g -jar GenomeAnalysisTK.jar -T BaseRecalibrator -R &lt;ref.fa&gt; -knownSites &gt;bundle/b38/dbsnp_142.b38.vcf&gt; -I &lt;lane.bam&gt; -o &lt;lane_recal.table&gt;
 	java -Xmx2g -jar GenomeAnalysisTK.jar -T PrintReads -R &lt;ref.fa&gt; -I &lt;lane.bam&gt; --BSQR &lt;lane_recal.table&gt; -o &lt;lane_recal.bam&gt;
 </pre>
-It is helpful at this point to compile all of the reads from each library together into one BAM:
+It is helpful at this point to compile all of the reads from each library together into one BAM, which can be done at the same time as marking PCR and optical duplicates. To identify duplicates we
+currently recommend the use of either the <a href="http://picard.sourceforge.net/command-line-overview.shtml#MarkDuplicates">Picard</a> or <a href="https://github.com/gt1/biobambam">biobambam</a>'s
+mark duplicates tool.
 <pre>
-	samtools merge &lt;library.bam&gt; &lt;lane1.bam&gt; &lt;lane2.bam&gt; &lt;lane3.bam&gt;
-</pre>
-To identify PCR duplicates we currently recommend the use of <a href="http://picard.sourceforge.net/command-line-overview.shtml#MarkDuplicates">Picard's Mark Duplicates</a> tool:
-<pre>
-	java -Xmx2g -jar MarkDuplicates.jar VALIDATION_STRINGENCY=LENIENT INPUT=&lt;library.bam&gt; OUTPUT=&lt;library_mkdup.bam&gt;
+	java -Xmx2g -jar MarkDuplicates.jar VALIDATION_STRINGENCY=LENIENT INPUT=&lt;lane_1.bam&gt; INPUT=&lt;lane_2.bam&gt; INPUT=&lt;lane_3.bam&gt; OUTPUT=&lt;library.bam&gt;
 </pre>
 Once this is done you can perform another merge step to produce your sample BAM files.
 <pre>
@@ -73,18 +71,33 @@ Lastly we index our BAM using samtools:
 	samtools index &lt;sample_realigned.bam&gt;
 </pre>
 <h3>Variant Calling</h3>
-To convert your BAM file into genomic positions we first use mpileup:
+<p>To convert your BAM file into genomic positions we first use mpileup to produce a BCF file that contains all of the locations in the genome.  We reduce this to variant sites and call genotypes
+by passing this into bcftools call.</p>
+
+You can do this using a pipe as shown here:
+<pre>
+	samtools mpileup -ugf &lt;ref.fa&gt; &lt;sample1.bam&gt; &lt;sample2.bam&gt; &lt;sample3.bam&gt; | bcftools call -vmO z -o &lt;study.vcf.gz&gt;
+</pre>
+Alternatively if you need to see why a specific site was not called by examining the BCF, or wish to spread the load slightly you can break it down into two steps as follows:
 <pre>
 	samtools mpileup -go &lt;study.bcf&gt; -f &lt;ref.fa&gt; &lt;sample1.bam&gt; &lt;sample2.bam&gt; &lt;sample3.bam&gt;
-</pre>
-The BCF file produced by mpileup contains all of the locations in the genome, next we reduce this to variant sites and call genotypes by doing:
-<pre>
 	bcftools call -vmO z -o &lt;study.vcf.gz&gt; &lt;study.bcf&gt;
 </pre>
-Finally we can index our genome using:
+To prepare our VCF for querying we next index it using tabix:
 <pre>
 	tabix -p vcf &lt;study.vcf.gz&gt;
 </pre>
+Additionally you may find it helpful to prepare graphs and statistics to assist you in filtering your variants:
+<pre>
+	bcftools stats -F &lt;ref.fa&gt; -s - &lt;study.vcf.gz&gt; &gt; &lt;study.vcf.gz.stats&gt;
+	mkdir plots
+	plot-vcfstats -p plots/ &lt;study.vcf.gz.stats&gt;
+</pre>
+Finally you will probably need to filter your data using commands such as:
+<pre>
+	bcftools filter -O z -o &lt;study_filtered..vcf.gz&gt; -s LOWQUAL -i'%QUAL>10' &lt;study.vcf.gz&gt;
+</pre>
+Variant filtration is a subject worthy of an article in itself and the exact filters you will need to use will depend on the purpose of your study and quality and depth of the data used to call the variants.
 
 <h3>References</h3>
 <ul>

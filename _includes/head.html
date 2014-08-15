@@ -6,7 +6,7 @@
 		<link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
 					
 		<!-- Custom CSS -->
-		<link rel="stylesheet" type="text/css" href="{{ "/css/sitewide.css" | prepend: site.baseurl }}">
+		<link rel="stylesheet" type="text/css" href="{{ "/css/sitewide.css" | prepend: site.baseurl }}">{% if page.highlighting %}<link rel="stylesheet" type="text/css" href="{{ "/css/highlight.css" | prepend: site.baseurl }}">{% endif %}
 		<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<!-- Optional theme -->

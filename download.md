@@ -1,6 +1,7 @@
 ---
 layout: default
 title: SAMtools/BCFtools/HTSlib - Downloads
+highlighting: yes
 ---
 Current releases
 ----------------

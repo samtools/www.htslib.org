@@ -5,6 +5,7 @@ description: "Samtools"
 baseurl: ""
 url: "http://www.htslib.org"
 twitter_username: htslib
+exclude: [CNAME]
 
 # Build settings
 markdown: kramdown

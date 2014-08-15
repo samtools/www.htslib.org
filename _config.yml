@@ -10,3 +10,6 @@ exclude: [CNAME]
 # Build settings
 markdown: kramdown
 permalink: pretty
+
+# Plugins
+gems: [jekyll-sitemap]

@@ -33,3 +33,7 @@
 .main_menu:hover {
     opacity: 1;
 }
+.copyright {
+	font-size: 80%;
+	color: gray;
+}

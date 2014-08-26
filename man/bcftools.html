@@ -1,0 +1,2173 @@
+---
+layout: default
+title: bcftools man page 
+---
+
+<h1 align=center>BCFTOOLS</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#LIST OF COMMANDS">LIST OF COMMANDS</a><br>
+<a href="#LIST OF SCRIPTS">LIST OF SCRIPTS</a><br>
+<a href="#COMMANDS AND OPTIONS">COMMANDS AND OPTIONS</a><br>
+<a href="#EXPRESSIONS">EXPRESSIONS</a><br>
+<a href="#SCRIPTS AND OPTIONS">SCRIPTS AND OPTIONS</a><br>
+<a href="#PERFORMANCE">PERFORMANCE</a><br>
+<a href="#BUGS">BUGS</a><br>
+<a href="#AUTHORS">AUTHORS</a><br>
+<a href="#RESOURCES">RESOURCES</a><br>
+<a href="#COPYING">COPYING</a><br>
+
+<hr>
+
+
+<a name="NAME"></a>
+<h2>NAME</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bcftools
+&minus; utilities for variant calling and manipulating VCFs
+and BCFs</p>
+
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools</b>
+[<i>COMMAND</i>] [<i>OPTIONS</i>]</p>
+
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">BCFtools is a
+set of utilities that manipulate variant calls in the
+Variant Call Format (VCF) and its binary counterpart BCF.
+All commands work transparently with both VCFs and BCFs,
+both uncompressed and BGZF&minus;compressed.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Most commands
+accept VCF, bgzipped VCF and BCF with filetype detected
+automatically even when streaming from a pipe. Indexed VCF
+and BCF will work in all situations. Un&minus;indexed VCF
+and BCF and streams will work in most, but not all
+situations.</p>
+
+<p style="margin-left:11%; margin-top: 1em">BCFtools is
+designed to work on a stream. It regards an input file
+&quot;&minus;&quot; as the standard input (stdin) and
+outputs to the standard output (stdout). Several commands
+can thus be combined with Unix pipes.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>BCF1</b>
+<br>
+The BCF1 format output by versions of samtools &lt;= 0.1.19
+is <b>not</b> compatible with this version of bcftools. To
+read BCF1 files one can use the view command from old
+versions of bcftools packaged with samtools versions &lt;=
+0.1.19 to convert to VCF, which can then be read by this
+version of bcftools.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">samtools&minus;0.1.19/bcftools/bcftools
+view file.bcf1 | bcftools view</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>VARIANT
+CALLING</b> <br>
+See <i>bcftools call</i> for variant calling from the output
+of the <i>samtools mpileup</i> command. In versions of
+samtools &lt;= 0.1.19 calling was done with <i>bcftools
+view</i>. Users are now required to choose between the old
+samtools calling model
+(<i>&minus;c/&minus;&minus;consensus&minus;caller</i>) and
+the new multiallelic calling model
+(<i>&minus;m/&minus;&minus;multiallelic&minus;caller</i>).
+The multiallelic calling model is recommended for most
+tasks.</p>
+
+<a name="LIST OF COMMANDS"></a>
+<h2>LIST OF COMMANDS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">For a full list
+of available commands, run <b>bcftools</b> without
+arguments. For a full list of available options, run
+<b>bcftools</b> <i>COMMAND</i> without arguments.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>annotate</b> .. edit VCF files, add or remove
+annotations, apply user plugins</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>call</b> .. SNP/indel calling (former
+&quot;view&quot;)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>concat</b> .. concatenate VCF/BCF files from the same set
+of samples</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>filter</b> .. filter VCF/BCF files using fixed
+thresholds</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>gtcheck</b> .. check sample concordance, detect sample
+swaps and contamination</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>index</b> .. index VCF/BCF</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>isec</b> .. intersections of VCF/BCF files</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>merge</b> .. merge VCF/BCF files files from
+non&minus;overlapping sample sets</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>norm</b> .. normalize indels</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>query</b> .. transform VCF/BCF into user&minus;defined
+formats</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>reheader</b> .. modify VCF/BCF header, change sample
+names</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>roh</b> .. identify runs of homo/auto&minus;zygosity</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>stats</b> .. produce VCF/BCF stats (former vcfcheck)</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>view</b> .. subset, filter and convert VCF and BCF
+files</p>
+
+<a name="LIST OF SCRIPTS"></a>
+<h2>LIST OF SCRIPTS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Some helper
+scripts are bundled with the bcftools code.</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+<b>plot&minus;vcfstats</b> .. plots the output of
+<b>stats</b></p>
+
+<a name="COMMANDS AND OPTIONS"></a>
+<h2>COMMANDS AND OPTIONS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Common
+Options</b> <i><br>
+FILE</i></p>
+
+<p style="margin-left:17%;">Files can be both VCF or BCF,
+uncompressed or BGZF&minus;compressed. The file
+&quot;&minus;&quot; is interpreted as standard input. Some
+tools may require tabix&minus; or CSI&minus;indexed
+files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;c,
+&minus;&minus;collapse</b>
+<i>snps</i>|<i>indels</i>|<i>both</i>|<i>all</i>|<i>some</i>|<i>none</i>|<i>id</i></p>
+
+<p style="margin-left:17%;">Controls how to treat records
+with duplicate positions and defines compatible records
+across multiple input files. Here by &quot;compatible&quot;
+we mean records which should be considered as identical by
+the tools. For example, when performing line intersections,
+the desire may be to consider as identical all sites with
+matching positions (<b>bcftools isec &minus;c</b>
+<i>all</i>), or only sites with matching variant type
+(<b>bcftools isec &minus;c</b> <i>snps&nbsp;</i>
+<b>&minus;c</b> <i>indels</i>), or only sites with all
+alleles identical (<b>bcftools isec &minus;c</b>
+<i>none</i>).</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>none</i></p>
+
+<p style="margin-left:23%;">only records with identical REF
+and ALT alleles are compatible</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>some</i></p>
+
+<p style="margin-left:23%;">only records where some subset
+of ALT alleles match are compatible</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>all</i></p>
+
+<p style="margin-left:23%;">all records are compatible,
+regardless of whether the ALT alleles match or not. In the
+case of records with the same position, only the first will
+be considered and appear on output.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>snps</i></p>
+
+<p style="margin-left:23%;">any SNP records are compatible,
+regardless of whether the ALT alleles match or not. For
+duplicate positions, only the first SNP record will be
+considered and appear on output.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>indels</i></p>
+
+<p style="margin-left:23%;">all indel records are
+compatible, regardless of whether the REF and ALT alleles
+match or not. For duplicate positions, only the first indel
+record will be considered and appear on output.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><i>both</i></p>
+
+<p style="margin-left:23%;">abbreviation of
+&quot;<b>&minus;c</b> <i>indels&nbsp;</i> <b>&minus;c</b>
+<i>snps</i>&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em"><i>id</i></p>
+
+<p style="margin-left:23%;">only records with identical ID
+column are compatible. Supported by <b>bcftools merge</b>
+only.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;apply&minus;filters</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">Skip sites where FILTER column
+does not contain any of the strings listed in <i>LIST</i>.
+For example, to include only sites which have no filters
+set, use <b>&minus;f</b> <i>.,PASS</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">When output consists of a
+single stream, write it to <i>FILE</i> rather than to
+standard output, where it is written by default.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:17%;">Output compressed BCF
+(<i>b</i>), uncompressed BCF (<i>u</i>), compressed VCF
+(<i>z</i>), uncompressed VCF (<i>v</i>).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">Comma&minus;separated list of
+regions, see also <b>&minus;R,
+&minus;&minus;regions&minus;file</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">Regions can be specified either
+on command line or in a VCF, BED, or tab&minus;delimited
+file (the default). The columns of the tab&minus;delimited
+file are: CHROM, POS, and, optionally, POS_TO, where
+positions are 1&minus;based and inclusive. Uncompressed
+files are stored in memory, while bgzip&minus;compressed and
+tabix&minus;indexed region files are streamed. Note that
+sequence names must match exactly, &quot;chr20&quot; is not
+the same as &quot;20&quot;. Also note that chromosome
+ordering in <i>FILE</i> will be respected, the VCF will be
+processed in the order in which chromosomes first appear in
+<i>FILE</i>. However, within chromosomes, the VCF will
+always be processed in ascending genomic coordinate order no
+matter what order they appear in <i>FILE</i>. Note that
+overlapping regions in <i>FILE</i> can result in duplicated
+out of order positions in the output. This option requires
+indexed VCF/BCF files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;samples</b> [^]<i>LIST</i></p>
+
+<p style="margin-left:17%;">Comma&minus;separated list of
+samples to include or exclude if prefixed with
+&quot;\^&quot;.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;samples&minus;file</b> [^]<i>FILE</i></p>
+
+<p style="margin-left:17%;">File of sample names to include
+or exclude if prefixed with &quot;\^&quot;. One sample per
+line. The command <b>bcftools call</b> accepts an optional
+second column indicating ploidy (0, 1 or 2) and can parse
+also PED files. With <b>bcftools call &minus;C</b>
+<i>trio</i>, PED file is expected.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+[^]<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">Similar as <b>&minus;r,
+&minus;&minus;regions</b>, but the next position is accessed
+by streaming the whole VCF/BCF rather than using the tbi/csi
+index. Both <b>&minus;r</b> and <b>&minus;t</b> options can
+be applied simultaneously: <b>&minus;r</b> uses the index to
+jump to a region and <b>&minus;t</b> discards positions
+which are not in the targets. Unlike <b>&minus;r</b>,
+targets can be prefixed with &quot;^&quot; to request
+logical complement. For example, &quot;^X,Y,MT&quot;
+indicates that sequences X, Y and MT should be skipped. Yet
+another difference between the two is that <b>&minus;r</b>
+checks both start and end positions of indels, whereas
+<b>&minus;t</b> checks start positions only.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> [^]<i>FILE</i></p>
+
+<p style="margin-left:17%;">Same <b>&minus;t,
+&minus;&minus;targets</b>, but reads regions from a
+file.</p>
+
+<p style="margin-left:17%; margin-top: 1em">With the
+<b>call &minus;C</b> <i>alleles</i> command, third column of
+the targets file must be comma&minus;separated list of
+alleles, starting with the reference allele. Such a file can
+be easily created from a VCF using:</p>
+
+<p style="margin-left:17%; margin-top: 1em">bcftools query
+&minus;f'%CHROM\t%POS\t%REF,%ALT\n' file.vcf</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+annotate</b> <i>[OPTIONS] FILE</i> <br>
+This command allows to add or remove annotations and apply
+user&minus;written plugins.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;a,
+&minus;&minus;annotations</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Bgzip&minus;compressed and
+tabix&minus;indexed file with annotations. The file can be
+VCF, BED, or a tab&minus;delimited file with mandatory
+columns CHROM, POS (or, alternatively, FROM and TO),
+optional columns REF and ALT, and arbitrary number of
+annotation columns. In case of tab&minus;delimited file, the
+coordinates POS, FROM and TO are one&minus;based and
+inclusive. When REF and ALT are present, only matching VCF
+records will be annotated. When multiple ALT alleles are
+present in the annotation file (given as
+comma&minus;separated list of alleles), at least one must
+match one of the alleles in the corresponding VCF record.
+Similarly, at least one alternate allele from a
+multi&minus;allelic VCF record must be present in the
+annotation file. See also <b>&minus;c,
+&minus;&minus;columns</b> and <b>&minus;h,
+&minus;&minus;header&minus;lines</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;c,
+&minus;&minus;columns</b> <i>list</i></p>
+
+<p style="margin-left:17%;">Comma&minus;separated list of
+columns or tags to carry over from the annotation file (see
+also <b>&minus;a, &minus;&minus;annotations</b>). If the
+annotation file is not a VCF/BCF, <i>list</i> describes the
+columns of the annotation file and must include CHROM, POS
+(or, alternatively, FROM and TO), and optionally REF and
+ALT. Unused columns which should be ignored can be indicated
+by &quot;&minus;&quot;. If the annotation file is a VCF/BCF,
+only the edited columns/tags must be present and their order
+does not matter. Currently the columns ID, QUAL, FILTER and
+INFO can be edited, where INFO tags can be written both as
+&quot;INFO/TAG&quot; or simply &quot;TAG&quot;. If the
+annotation file is not a VCF/BCF, all new annotations must
+be defined via <b>&minus;h,
+&minus;&minus;header&minus;lines</b>. For example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">CHROM,FROM,TO,REF,ALT,&minus;,INFO/TAG</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;e,
+&minus;&minus;exclude</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:17%;">exclude sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;h,
+&minus;&minus;header&minus;lines</b> <i>file</i></p>
+
+<p style="margin-left:17%;">Lines to append to the VCF
+header. For example:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">##INFO=&lt;ID=TAG,Number=1,Type=Integer,Description=&quot;Example
+header line&quot;&gt;</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;i,
+&minus;&minus;include</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:17%;">include only sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;l,
+&minus;&minus;list&minus;plugins</b></p>
+
+<p style="margin-left:17%;">List all available plugins. If
+not installed systemwide, set the environment variable
+LD_LIBRARY_PATH (linux) or DYLD_LIBRARY_PATH (Mac OS X) to
+include directory where <b>libths.so</b> is located. The
+BCFTOOLS_PLUGINS environment variable tells the program
+which directories to search. See also <b>&minus;p,
+&minus;&minus;plugin</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em">List of plugins
+coming with the distribution:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>counts</b></p>
+
+<p style="margin-left:23%;">A minimal plugin which counts
+number of SNPs, Indels, and total number of sites.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>dosage</b></p>
+
+<p style="margin-left:23%;">Prints genotype dosage
+determined from tags requested by the user. By default the
+plugin searches for PL, GL and GT (in that order), therefore
+running <b>&minus;p dosage</b> is equivalent to <b>&minus;p
+dosage:tags=PL,GL,GT</b>.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>fill&minus;AN&minus;AC</b></p>
+
+<p style="margin-left:23%;">Fills INFO fields AN and
+AC.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>frameshifts</b></p>
+
+<p style="margin-left:23%;">Annotate frameshift indels. Run
+as <b>&minus;p frameshifts:exons=path/to/file.tab.gz</b>.
+See the usage of <b>&minus;&minus;targets&minus;file</b>
+above for file format description.</p>
+
+
+<p style="margin-left:17%; margin-top: 1em"><b>missing2ref</b></p>
+
+<p style="margin-left:23%;">Sets missing genotypes
+(&quot;./.&quot;) to ref allele (&quot;0/0&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;p,
+&minus;&minus;plugin</b> <i>name</i>[:'key'=<i>val</i>]</p>
+
+<p style="margin-left:17%;">Run a plugin with optional
+parameters. The option can be given multiple times, the
+plugins will be executed in the same order as they appeared
+on the command line. See also <b>&minus;l,
+&minus;&minus;list&minus;plugins</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;x,
+&minus;&minus;remove</b> <i>list</i></p>
+
+<p style="margin-left:17%;">List of annotations to remove.
+Use <i>FILTER</i> to remove all filters or
+<i>FILTER/SomeFilter</i> to remove a specific filter.
+Similarly, <i>INFO</i> can be used to remove all INFO tags
+and <i>FORMAT</i> to remove all FORMAT tags except GT.
+<i>INFO</i> can be abbreviated to <i>INF</i> and
+<i>FORMAT</i> to <i>FMT</i>. A few examples:</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">ID,INFO/DP,FORMAT/DP</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;v,
+&minus;&minus;verbose</b></p>
+
+<p style="margin-left:17%;">print debugging information on
+plugin failure</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+call</b> <i>[OPTIONS] FILE</i> <br>
+This command replaces the former <b>bcftools view</b>
+caller. Some of the original functionality has been
+temporarily lost in the process of transition under htslib,
+but will be added back on popular demand. The original
+calling model can be invoked with the <b>&minus;c</b>
+option.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>File
+format options:</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;samples</b> <i>LIST</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;samples&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b> <i>LIST</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Input/output
+options:</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;A,
+&minus;&minus;keep&minus;alts</b></p>
+
+<p style="margin-left:23%;">output all alternate alleles
+present in the alignments even if they do not appear in any
+of the genotypes</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;format&minus;fields</b> <i>list</i></p>
+
+<p style="margin-left:23%;">comma&minus;separated list of
+FORMAT fields to output for each sample. Currently GQ and GP
+fields are supported. For convenience, the fields can be
+given as lower case letters.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;g,
+&minus;&minus;gvcf</b> <i>INT</i></p>
+
+<p style="margin-left:23%;">output also gVCF blocks of
+homozygous REF calls. The parameter <i>INT</i> is the
+minimum per&minus;sample depth required to include a site in
+the non&minus;variant block.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;M,
+&minus;&minus;keep&minus;masked&minus;ref</b></p>
+
+<p style="margin-left:23%;">output sites where REF allele
+is N</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;V,
+&minus;&minus;skip&minus;variants</b>
+<i>snps</i>|<i>indels</i></p>
+
+<p style="margin-left:23%;">skip indel/SNP sites</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;v,
+&minus;&minus;variants&minus;only</b></p>
+
+<p style="margin-left:23%;">output variant sites only</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Consensus/variant
+calling options:</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;c,
+&minus;&minus;consensus&minus;caller</b></p>
+
+<p style="margin-left:23%;">the original
+<b>samtools</b>/<b>bcftools</b> calling method (conflicts
+with <b>&minus;m</b>)</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;C,
+&minus;&minus;constrain</b> <i>alleles</i>|<i>trio</i></p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><i>alleles</i></p>
+
+<p style="margin-left:29%;">call genotypes given alleles.
+See also <b>&minus;t, &minus;&minus;targets</b>.</p>
+
+
+<p style="margin-left:23%; margin-top: 1em"><i>trio</i></p>
+
+<p style="margin-left:29%;">call genotypes given the
+father&minus;mother&minus;child constraint. See also
+<b>&minus;s, &minus;&minus;samples</b> and <b>&minus;n,
+&minus;&minus;novel&minus;rate</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;multiallelic&minus;caller</b></p>
+
+<p style="margin-left:23%;">alternative modelfor
+multiallelic and rare&minus;variant calling designed to
+overcome known limitations in <b>&minus;c</b> calling model
+(conflicts with <b>&minus;c</b>)</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;n,
+&minus;&minus;novel&minus;rate</b> <i>float</i>[,...]</p>
+
+<p style="margin-left:23%;">likelihood of novel mutation
+for constrained <b>&minus;C</b> <i>trio</i> calling. The
+trio genotype calling maximizes likelihood of a particular
+combination of genotypes for father, mother and the child
+P(F=i,M=j,C=k) = P(unconstrained) * Pn + P(constrained) *
+(1&minus;Pn). By providing three values, the mutation rate
+Pn is set explictly for SNPs, deletions and insertions,
+respectively. If two values are given, the first is
+interpreted as the mutation rate of SNPs and the second is
+used to calculate the mutation rate of indels according to
+their length as Pn=<i>float</i>*exp(&minus;a&minus;b*len),
+where a=22.8689, b=0.2994 for insertions and a=21.9313,
+b=0.2856 for deletions [pubmed:23975140]. If only one value
+is given, the same mutation rate Pn is used for SNPs and
+indels.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;p,
+&minus;&minus;pval&minus;threshold</b> <i>float</i></p>
+
+<p style="margin-left:23%;">with <b>&minus;c</b>, accept
+variant if P(ref|D) &lt; <i>float</i>.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;P,
+&minus;&minus;prior</b> <i>float</i></p>
+
+<p style="margin-left:23%;">expected substitution rate, or
+0 to disable the prior.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+<i>file</i>|<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;X,
+&minus;&minus;chromosome&minus;X</b></p>
+
+<p style="margin-left:23%;">haploid output for male samples
+(requires PED file with <b>&minus;s</b>)</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;Y,
+&minus;&minus;chromosome&minus;Y</b></p>
+
+<p style="margin-left:23%;">haploid output for males and
+skips females (requires PED file with <b>&minus;s</b>)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+concat</b> <i>[OPTIONS] FILE1 FILE2</i> [...] <br>
+Concatenate or combine VCF/BCF files. All source files must
+have the same sample columns appearing in the same order.
+Can be used, for example, to concatenate chromosome VCFs
+into one VCF, or combine a SNP VCF and an indel VCF into
+one. The input files must be sorted by chr and position. The
+files must be given in the correct order to produce sorted
+VCF on output unless the <b>&minus;a,
+&minus;&minus;allow&minus;overlaps</b> option is
+specified.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;a,
+&minus;&minus;allow&minus;overlaps</b></p>
+
+<p style="margin-left:17%;">First coordinate of the next
+file can precede last record of the current file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;file&minus;list</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">Read the list of files from a
+file.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;l,
+&minus;&minus;ligate</b></p>
+
+<p style="margin-left:17%;">Ligate phased VCFs by matching
+phase at overlapping haplotypes</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;q,
+&minus;&minus;min&minus;PQ</b> <i>INT</i></p>
+
+<p style="margin-left:17%;">Break phase set if phasing
+quality is lower than <i>INT</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+filter</b> <i>[OPTIONS] FILE</i> <br>
+Apply fixed&minus;threshold filters.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;e,
+&minus;&minus;exclude</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:17%;">exclude sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;g,
+&minus;&minus;SnpGap</b> <i>INT</i></p>
+
+<p style="margin-left:17%;">filter SNPs within <i>INT</i>
+base pairs of an indel. The following example demonstrates
+the logic of <b>&minus;&minus;SnpGap</b> <i>3</i> applied on
+a deletion and an insertion:</p>
+
+<p style="margin-left:17%; margin-top: 1em">The SNPs at
+positions 1 and 7 are filtered, positions 0 and 8 are not:
+<br>
+0123456789 <br>
+ref .G.GT..G.. <br>
+del .A.G&minus;..A.. <br>
+Here the positions 1 and 6 are filtered, 0 and 7 are not:
+<br>
+0123&minus;456789 <br>
+ref .G.G&minus;..G.. <br>
+ins .A.GT..A..</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;G,
+&minus;&minus;IndelGap</b> <i>INT</i></p>
+
+<p style="margin-left:17%;">filter clusters of indels
+separated by <i>INT</i> or fewer base pairs allowing only
+one to pass. The following example demonstrates the logic of
+<b>&minus;&minus;IndelGap</b> <i>2</i> applied on a deletion
+and an insertion:</p>
+
+<p style="margin-left:17%; margin-top: 1em">The second
+indel is filtered: <br>
+012345678901 <br>
+ref .GT.GT..GT.. <br>
+del .G&minus;.G&minus;..G&minus;.. <br>
+And similarly here, the second is filtered: <br>
+01 23 456 78 <br>
+ref .A&minus;.A&minus;..A&minus;.. <br>
+ins .AT.AT..AT..</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;i,
+&minus;&minus;include</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:17%;">include only sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;mode</b> [<i>+x</i>]</p>
+
+<p style="margin-left:17%;">define behaviour at sites with
+existing FILTER annotations. The default mode replaces
+existing filters of failed sites with a new FILTER string
+while leaving sites which pass untouched when
+non&minus;empty and setting to &quot;PASS&quot; when the
+FILTER string is absent. The &quot;+&quot; mode appends new
+FILTER strings of failed sites instead of replacing them.
+The &quot;x&quot; mode resets filters of sites which pass to
+&quot;PASS&quot;. Modes &quot;+&quot; and &quot;x&quot; can
+both be set.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;soft&minus;filter</b>
+<i>STRING</i>|<i>+</i></p>
+
+<p style="margin-left:17%;">annotate FILTER column with
+<i>STRING</i> or, with <i>+</i>, a unique filter name
+generated by the program (&quot;Filter%d&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;set&minus;GTs</b> <i>.</i>|<i>0</i></p>
+
+<p style="margin-left:17%;">set genotypes of failed samples
+to missing value (<i>.</i>) or reference allele
+(<i>0</i>)</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+gtcheck [</b><i>OPTIONS</i>] [&minus;g
+<i>genotypes.vcf.gz</i>] <i>query.vcf.gz</i> <br>
+Checks sample identity or, without <b>&minus;g</b>,
+multi&minus;sample cross&minus;check is performed.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;a,
+&minus;&minus;all&minus;sites</b></p>
+
+<p style="margin-left:17%;">output for all sites</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;g,
+&minus;&minus;genotypes</b> <i>genotypes.vcf.gz</i></p>
+
+<p style="margin-left:17%;">reference genotypes to compare
+against</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;G,
+&minus;&minus;GTs&minus;only</b> <i>INT</i></p>
+
+<p style="margin-left:17%;">ignore PLs, use GTs, setting
+<i>INT</i> for the unseen genotypes</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;H,
+&minus;&minus;homs&minus;only</b></p>
+
+<p style="margin-left:17%;">consider only genotypes which
+are homozygous in both <i>genotypes</i> and <i>query</i>
+VCF. This may be useful with low coverage data.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;p,
+&minus;&minus;plot</b> <i>PREFIX</i></p>
+
+<p style="margin-left:17%;">produce plots</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;query&minus;sample</b> <i>STRING</i></p>
+
+<p style="margin-left:17%;">query sample in
+<i>query.vcf.gz</i>. By default, the first sample is
+checked.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;target&minus;sample</b> <i>STRING</i></p>
+
+<p style="margin-left:17%;">target sample in the
+<b>&minus;g</b> file, used only for plotting, not for
+analysis</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Output
+files format:</big></b></p>
+
+<p style="margin-left:17%;">CN, Discordance</p>
+
+<p style="margin-left:23%;">Pairwise discordance for all
+sample pairs is calculated as</p>
+
+<p style="margin-left:23%; margin-top: 1em">\sum_s { min_G
+{ PL_a(G) + PL_b(G) } },</p>
+
+<p style="margin-left:23%; margin-top: 1em">where the sum
+runs over all sites <i>s</i> and <i>G</i> is the the most
+likely genotype shared by both samples <i>a</i> and
+<i>b</i>. When PL field is not present, a constant value
+<i>99</i> is used for the unseen genotypes. With
+<b>&minus;G</b>, the value <i>1</i> can be used instead; the
+discordance value then gives exactly the number of differing
+genotypes.</p>
+
+<p style="margin-left:17%; margin-top: 1em">SM, Average
+Discordance</p>
+
+<p style="margin-left:23%;">Average discordance between
+sample <i>a</i> and all other samples.</p>
+
+<p style="margin-left:17%; margin-top: 1em">SM, Average
+Depth</p>
+
+<p style="margin-left:23%;">Average depth at evaluated
+sites, or 1 if FORMAT/DP field is not present.</p>
+
+<p style="margin-left:17%; margin-top: 1em">SM, Average
+Number of sites</p>
+
+<p style="margin-left:23%;">The average number of sites
+used to calculate the discordance. In other words, the
+average number of non&minus;missing PLs/genotypes seen both
+samples.</p>
+
+<p style="margin-left:17%; margin-top: 1em">MD, Maximum
+Deviation</p>
+
+<p style="margin-left:23%;">The maximum absolute deviation
+from average score of the sample most dissimilar to the
+rest.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+index [</b><i>OPTIONS</i>]
+<i>&lt;in.bcf&gt;|&lt;in.vcf.gz&gt;</i> <br>
+Creates index for bgzip compressed VCF/BCF files for random
+access. CSI (coordinate&minus;sorted index) is created by
+default. The CSI format supports indexing of chromosomes up
+to length 2^31. TBI (tabix index) index files, which support
+chromosome lengths up to 2^29, can be created by using the
+<i>&minus;t/&minus;&minus;tbi</i> option or using the
+<i>tabix</i> program packaged with htslib. When loading an
+index file, bcftools will try the CSI first and then the
+TBI.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;c,
+&minus;&minus;csi</b></p>
+
+<p style="margin-left:17%;">generate CSI&minus;format index
+for VCF/BCF files [default]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;force</b></p>
+
+<p style="margin-left:17%;">overwrite index if it already
+exists</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;min&minus;shift</b> <i>INT</i></p>
+
+<p style="margin-left:17%;">set minimal interval size for
+CSI indices to 2^INT; default: 14</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;tbi</b></p>
+
+<p style="margin-left:17%;">generate TBI&minus;format index
+for VCF files</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+isec [</b><i>OPTIONS</i>] <i>A.vcf.gz B.vcf.gz</i> [...]
+<br>
+Creates intersections, unions and complements of VCF files.
+Depending on the options, the program can output records
+from one (or more) files which have (or do not have)
+corresponding records with the same position in the other
+files.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;c,
+&minus;&minus;collapse</b>
+<i>snps</i>|<i>indels</i>|<i>both</i>|<i>all</i>|<i>some</i>|<i>none</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;C,
+&minus;&minus;complement</b></p>
+
+<p style="margin-left:17%;">output positions present only
+in the first file but missing in the others</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;apply&minus;filters</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;n,
+&minus;&minus;nfiles</b> [+&minus;=]<i>INT</i></p>
+
+<p style="margin-left:17%;">output positions present in
+this many (=), this many or more (+), or this many or fewer
+(&minus;) files</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b>. When
+several files are being output, their names are controlled
+via <b>&minus;p</b> instead.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;p,
+&minus;&minus;prefix</b> <i>DIR</i></p>
+
+<p style="margin-left:17%;">if given, subset each of the
+input files accordingly. See also <b>&minus;w</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;w,
+&minus;&minus;write</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">list of input files to output
+given as 1&minus;based indices. With <b>&minus;p</b> and no
+<b>&minus;w</b>, all files are written.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Examples:</big></b></p>
+
+<p style="margin-left:17%;">Create intersection and
+complements of two sets saving the output in dir/*</p>
+
+<p style="margin-left:23%; margin-top: 1em">bcftools isec
+&minus;p dir A.vcf.gz B.vcf.gz</p>
+
+<p style="margin-left:17%; margin-top: 1em">Extract and
+write records from A shared by both A and B using exact
+allele match</p>
+
+<p style="margin-left:23%; margin-top: 1em">bcftools isec
+&minus;p dir &minus;n=2 &minus;w1 A.vcf.gz B.vcf.gz</p>
+
+<p style="margin-left:17%; margin-top: 1em">Extract records
+private to A or B comparing by position only</p>
+
+<p style="margin-left:23%; margin-top: 1em">bcftools isec
+&minus;p dir &minus;n&minus;1 &minus;c all A.vcf.gz
+B.vcf.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+merge [</b><i>OPTIONS</i>] <i>A.vcf.gz B.vcf.gz</i> [...]
+<br>
+Merge multiple VCF/BCF files from non&minus;overlapping
+sample sets to create one multi&minus;sample file. For
+example, when merging file <i>A.vcf.gz</i> containing
+samples <i>S1</i>, <i>S2</i> and <i>S3</i> and file
+<i>B.vcf.gz</i> containing samples <i>S3</i> and <i>S4</i>,
+the output file will contain four samples named <i>S1</i>,
+<i>S2</i>, <i>S3</i>, <i>2:S3</i> and <i>S4</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that it is
+responsibility of the user to ensure that the sample names
+are unique across all files. If they are not, the program
+will exit with an error unless the option
+<b>&minus;&minus;force&minus;samples</b> is given. Note that
+sample names can be also given explicitly using the
+<b>&minus;&minus;print&minus;header</b> and
+<b>&minus;&minus;use&minus;header</b> options.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;&minus;force&minus;samples</b></p>
+
+<p style="margin-left:17%;">if the merged files contain
+duplicate samples names, proceed anyway. Duplicate sample
+names will be resolved by prepending index of the file as it
+appeared on the command line to the conflicting sample name
+(see <i>2:S3</i> in the above example).</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;&minus;print&minus;header</b></p>
+
+<p style="margin-left:17%;">print only merged header and
+exit</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;&minus;use&minus;header</b>
+<i>FILE</i></p>
+
+<p style="margin-left:17%;">use the VCF header in the
+provided text <i>FILE</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;apply&minus;filters</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;i,
+&minus;&minus;info&minus;rules</b>
+<i>&minus;</i>|<i>TAG:METHOD</i>[,...]</p>
+
+<p style="margin-left:17%;">Rules for merging INFO fields
+(scalars or vectors) or <i>&minus;</i> to disable the
+default rules. <i>METHOD</i> is one of <i>sum</i>,
+<i>avg</i>, <i>min</i>, <i>max</i>, <i>join</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;l,
+&minus;&minus;file&minus;list</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">read file names from
+<i>FILE</i></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;merge</b>
+<i>snps</i>|<i>indels</i>|<i>both</i>|<i>all</i>|<i>none</i></p>
+
+<p style="margin-left:17%;">Defines merging behaviour,
+similar to <b>&minus;c, &minus;&minus;collapse</b>. For
+example, to prevent merging of SNPs and indels into one
+record, use <b>&minus;m</b> <i>both</i>. To prevent creation
+of multi&minus;allelic records altogether, use
+<b>&minus;m</b> <i>none</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+norm [</b><i>OPTIONS</i>] &minus;f <i>ref.fa file.vcf.gz</i>
+<br>
+Left&minus;align and normalize indels, check if REF alleles
+match the reference, split multiallelic sites into multiple
+rows; recover multiallelics from multiple rows.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;D,
+&minus;&minus;remove&minus;duplicates</b></p>
+
+<p style="margin-left:17%;">remove duplicate lines of the
+same type</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;fasta&minus;ref</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">reference sequence</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;multiallelics</b>
+&acirc;|+&gt;[<i>snps</i>|<i>indels</i>|<i>both</i>|<i>any</i>]</p>
+
+<p style="margin-left:17%;">split multiallelic sites into
+biallelic records (<i>&minus;</i>) or join biallelic sites
+into multiallelic records (<i>+</i>). An optional type
+string can follow which controls variant types which should
+be split or merged together: If only SNP records should be
+split or merged, specify <i>snps</i>; if both SNPs and
+indels should be merged separately into two records, specify
+<i>both</i>; if SNPs and indels should be merged into a
+single record, specify <i>any</i>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;w,
+&minus;&minus;site&minus;win</b> <i>INT</i></p>
+
+<p style="margin-left:17%;">maximum distance between two
+records to consider when locally sorting variants which
+changed position during the realignment</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+query [</b><i>OPTIONS</i>] <i>file.vcf.gz</i>
+[<i>file.vcf.gz</i> [...]] <br>
+Extracts fields from VCF or BCF files and outputs them in
+user&minus;defined format.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;a,
+&minus;&minus;annots</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">alias for &minus;f
+<i>%CHROM\t%POS\t%MASK\t%REF\t%ALT\t%TYPE\t</i> and
+tab&minus;separated <i>LIST</i> of tags</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;c,
+&minus;&minus;collapse</b>
+<i>snps</i>|<i>indels</i>|<i>both</i>|<i>all</i>|<i>some</i>|<i>none</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;e,
+&minus;&minus;exclude</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:17%;">exclude sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;format</b> <i>FORMAT</i></p>
+
+<p style="margin-left:17%;">learn by example, see below</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;H,
+&minus;&minus;print&minus;header</b></p>
+
+<p style="margin-left:17%;">print header</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;i,
+&minus;&minus;include</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:17%;">include only sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;l,
+&minus;&minus;list&minus;samples</b></p>
+
+<p style="margin-left:17%;">list sample names and exit</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;samples</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;samples&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;v,
+&minus;&minus;vcf&minus;list</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">process multiple VCFs listed in
+the file</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Format:</big></b></p>
+
+<p style="margin-left:23%;">%CHROM The CHROM column
+(similarly also other columns, such as POS, ID, QUAL, etc.)
+<br>
+%INFO/TAG Any tag in the INFO column <br>
+%TYPE Variant type (REF, SNP, MNP, INDEL, OTHER) <br>
+%MASK Indicates presence of the site in other files (with
+multiple files) <br>
+%TAG{INT} Curly brackets to subscript vectors
+(0&minus;based) <br>
+[] The brackets loop over all samples <br>
+%GT Genotype (e.g. 0/1) <br>
+%TGT Translated genotype (e.g. C/A) <br>
+%LINE Prints the whole line <br>
+%SAMPLE Sample name</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Examples:</big></b></p>
+
+<p style="margin-left:23%;">bcftools query &minus;f
+'%CHROM\t%POS\t%REF\t%ALT[\t%SAMPLE=%GT]\n' file.vcf.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+reheader [</b><i>OPTIONS</i>] <i>file.vcf.gz</i> <br>
+Modify header of VCF/BCF files, change sample names.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;h,
+&minus;&minus;header</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">new VCF header</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;samples</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">new sample names, one name per
+line, in the same order as they appear in the VCF file.
+Alternatively, only samples which need to be renamed can be
+listed as &quot;old_name new_name\n&quot; pairs separated by
+whitespaces, each on separate line.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools roh
+[</b><i>OPTIONS</i>] <i>FILE</i> <br>
+A program for detecting runs of homo/autozygosity.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>The HMM
+model:</big></b></p>
+
+<p style="margin-left:23%;">Notation: <br>
+D = Data, AZ = autozygosity, HW = Hardy&minus;Weinberg
+(non&minus;autozygosity), <br>
+f = non&minus;ref allele frequency</p>
+
+<p style="margin-left:23%; margin-top: 1em">Emission
+probabilities: <br>
+oAZ = P_i(D|AZ) = (1&minus;f)*P(D|RR) + f*P(D|AA) <br>
+oHW = P_i(D|HW) = (1&minus;f)^2 * P(D|RR) + f^2 * P(D|AA) +
+2*f*(1&minus;f)*P(D|RA)</p>
+
+<p style="margin-left:23%; margin-top: 1em">Transition
+probabilities: <br>
+tAZ = P(AZ|HW) .. from HW to AZ, the &minus;a parameter <br>
+tHW = P(HW|AZ) .. from AZ to HW, the &minus;H parameter <br>
+P(AZ|AZ) = 1 &minus; P(HW|AZ) = 1 &minus; tHW <br>
+P(HW|HW) = 1 &minus; P(AZ|HW) = 1 &minus; tAZ</p>
+
+<p style="margin-left:23%; margin-top: 1em">ci = P_i(C) ..
+probability of cross&minus;over at site i, from genetic map
+<br>
+AZi = P_i(AZ) .. probability of site i being
+AZ/non&minus;AZ, scaled so that AZi+HWi = 1 <br>
+HWi = P_i(HW)</p>
+
+<p style="margin-left:23%; margin-top: 1em">P_{i+1}(AZ) =
+oAZ * max[(1&minus;tHW) * (1&minus;ci) * AZ{i&minus;1} , tAZ
+* ci * (1&minus;AZ{i&minus;1})] <br>
+P_{i+1}(HW) = oHW * max[(1&minus;tAZ) * (1&minus;ci) *
+(1&minus;AZ{i&minus;1}) , tHW * ci * AZ{i&minus;1}]</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>General
+Options:</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;b,
+&minus;&minus;biallelic&minus;sites</b></p>
+
+<p style="margin-left:23%;">skip multi&minus;allelic sites,
+consider only bi&minus;allelic sites</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;e,
+&minus;&minus;estimate&minus;AF</b>
+<i>all</i>|<i>subset</i></p>
+
+<p style="margin-left:23%;">recalculate INFO/AC and INFO/AN
+on the fly, using either all samples (<i>all</i>) or samples
+specified via the <b>&minus;s</b> option (<i>subset</i>). By
+default, allele frequency is estimated from AC and AN counts
+which are already present in the INFO field.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;F,
+&minus;&minus;AF&minus;tag</b> <i>TAG</i>|<i>:FILE</i></p>
+
+<p style="margin-left:23%;">use the specified INFO tag
+<i>TAG</i> as an allele frequency estimate instead of the
+defaul AC and AN tags. Optionally, if prefixed with
+<i>:</i>, allele frequencies will be read from a
+tab&minus;delimited file containing the columns:
+CHROM\tPOS\tREF,ALT\tAF. The file can be compressed with
+<b>bgzip</b> and indexed with tabix &minus;s1 &minus;b2
+&minus;e2. Sites which do not have the <i>TAG</i> or are not
+present in the <i>FILE</i> or have different reference or
+alternate allele will be skipped.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;fwd&minus;bwd</b></p>
+
+<p style="margin-left:23%;">run forward&minus;backward
+algorithm instead of Viterbi</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;G,
+&minus;&minus;GTs&minus;only</b> <i>FLOAT</i></p>
+
+<p style="margin-left:23%;">use genotypes (FORMAT/GT
+fields) ignoring genotype likelihoods (FORMAT/PL), setting
+PL of unseen genotypes to <i>FLOAT</i>. Safe value to use is
+30 to account for GT errors.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;I,
+&minus;&minus;skip&minus;indels</b></p>
+
+<p style="margin-left:23%;">skip indels as their genotypes
+are usually enriched for errors</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;genetic&minus;map</b> <i>FILE</i></p>
+
+<p style="margin-left:23%;">genetic map in the format
+required also by IMPUTE2. Only the first and third column
+are used (position and Genetic_Map(cM)). The <i>FILE</i> can
+chromosome name.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;samples</b> <i>LIST</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;samples&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;w,
+&minus;&minus;win</b> <i>INT</i></p>
+
+<p style="margin-left:23%;">maximum number of sites to keep
+in memory</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>HMM
+Options:</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;a,
+&minus;&minus;hw&minus;to&minus;az</b> <i>FLOAT</i></p>
+
+<p style="margin-left:23%;">P(AZ|HW) transition probability
+from AZ (autozygous) to HW (Hardy&minus;Weinberg) state</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;H,
+&minus;&minus;az&minus;to&minus;hw</b> <i>FLOAT</i></p>
+
+<p style="margin-left:23%;">P(HW|AZ) transition probability
+from HW to AZ state</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+stats [</b><i>OPTIONS</i>] <i>A.vcf.gz</i> [<i>B.vcf.gz</i>]
+<br>
+Parses VCF or BCF and produces text file stats which is
+suitable for machine processing and can be plotted using
+<b>plot&minus;vcfstats</b>. When two files are given, the
+program generates separate stats for intersection and the
+complements.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;1,
+&minus;&minus;1st&minus;allele&minus;only</b></p>
+
+<p style="margin-left:17%;">consider only 1st allele at
+multiallelic sites</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;c,
+&minus;&minus;collapse</b>
+<i>snps</i>|<i>indels</i>|<i>both</i>|<i>all</i>|<i>some</i>|<i>none</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;d,
+&minus;&minus;depth</b> <i>INT</i>,<i>INT</i>,<i>INT</i></p>
+
+<p style="margin-left:17%;">ranges of depth distribution:
+min, max, and size of the bin</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;&minus;debug</b></p>
+
+<p style="margin-left:17%;">produce verbose per&minus;site
+and per&minus;sample output</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;e,
+&minus;&minus;exons</b> <i>file.gz</i></p>
+
+<p style="margin-left:17%;">tab&minus;delimited file with
+exons for indel frameshifts statistics. The columns of the
+file are CHR, FROM, TO, with 1&minus;based, inclusive,
+positions. The file is BGZF&minus;compressed and indexed
+with tabix</p>
+
+<p style="margin-left:17%; margin-top: 1em">tabix &minus;s1
+&minus;b2 &minus;e3 file.gz</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;apply&minus;filters</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;F,
+&minus;&minus;fasta&minus;ref</b> <i>ref.fa</i></p>
+
+<p style="margin-left:17%;">faidx indexed reference
+sequence file to determine INDEL context</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;i,
+&minus;&minus;split&minus;by&minus;ID</b></p>
+
+<p style="margin-left:17%;">collect stats separately for
+sites which have the ID column set (&quot;known sites&quot;)
+or which do not have the ID column set (&quot;novel
+sites&quot;).</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;samples</b> <i>LIST</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;samples&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:17%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>bcftools
+view [</b><i>OPTIONS</i>] <i>file.vcf.gz</i> [<i>REGION</i>
+[...]] <br>
+View, subset and filter VCF or BCF files by position and
+filtering expression. Convert between VCF and BCF. Former
+<b>bcftools subset</b>.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Output
+options</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;G,
+&minus;&minus;drop&minus;genotypes</b></p>
+
+<p style="margin-left:23%;">drop individual genotype
+information (after subsetting if <b>&minus;s</b> option is
+set)</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;h,
+&minus;&minus;header&minus;only</b></p>
+
+<p style="margin-left:23%;">output the VCF header only</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;H,
+&minus;&minus;no&minus;header</b></p>
+
+<p style="margin-left:23%;">suppress the header in VCF
+output</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;l,
+&minus;&minus;compression&minus;level</b>
+[<i>0&minus;9</i>]</p>
+
+<p style="margin-left:23%;">compression level. 0 stands for
+uncompressed, 1 for best speed and 9 for best
+compression.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;O,
+&minus;&minus;output&minus;type</b>
+<i>b</i>|<i>u</i>|<i>z</i>|<i>v</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;o,
+&minus;&minus;output&minus;file</b> <i>FILE</i>: output file
+name. If not present, the default is to print to standard
+output (stdout).</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;regions</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;R,
+&minus;&minus;regions&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;targets</b>
+<i>chr</i>|<i>chr:pos</i>|<i>chr:from&minus;to</i>|<i>chr:from&minus;</i>[,...]</p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;targets&minus;file</b> <i>file</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Subset
+options:</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;a,
+&minus;&minus;trim&minus;alt&minus;alleles</b></p>
+
+<p style="margin-left:23%;">trim alternate alleles not seen
+in subset. Type A, G and R INFO and FORMAT fields will also
+be trimmed</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;I,
+&minus;&minus;no&minus;update</b></p>
+
+<p style="margin-left:23%;">do not (re)calculate INFO
+fields for the subset (currently INFO/AC and INFO/AN)</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;samples</b> <i>LIST</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;S,
+&minus;&minus;samples&minus;file</b> <i>FILE</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:11%; margin-top: 1em"><b><big>Filter
+options:</big></b></p>
+
+<p style="margin-left:17%;"><b>&minus;c,
+&minus;&minus;min&minus;ac</b>
+<i>INT</i>[<i>:nref</i>|<i>:alt1</i>|<i>:minor</i>]</p>
+
+<p style="margin-left:23%;">minimum allele count (INFO/AC)
+of sites to be printed. Specifying the type of allele is
+optional and can be set to non&minus;reference (<i>nref</i>,
+the default), 1st alternate (<i>alt1</i>) or minor
+(<i>minor</i>) alleles.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;C,
+&minus;&minus;max&minus;ac</b>
+<i>INT</i>[<i>:nref</i>|<i>:alt1</i>|<i>:minor</i>]</p>
+
+<p style="margin-left:23%;">maximum allele count (INFO/AC)
+of sites to be printed. Specifying the type of allele is
+optional and can be set to non&minus;reference (<i>nref</i>,
+the default), 1st alternate (<i>alt1</i>) or minor
+(<i>minor</i>) alleles.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;e,
+&minus;&minus;exclude</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:23%;">exclude sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;f,
+&minus;&minus;apply&minus;filters</b> <i>LIST</i></p>
+
+<p style="margin-left:23%;">see <b>Common Options</b></p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;g,
+&minus;&minus;genotype</b>
+[^][<i>hom</i>|<i>het</i>|<i>miss</i>]</p>
+
+<p style="margin-left:23%;">include only sites with one or
+more homozygous (<i>hom</i>), heterozygous (<i>het</i>) or
+missing (<i>miss</i>) genotypes. When prefixed with
+<i>^</i>, the logic is reversed; thus <i>^het</i> excludes
+sites with heterozygous genotypes.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;i,
+&minus;&minus;include</b> <i>EXPRESSION</i></p>
+
+<p style="margin-left:23%;">include sites for which
+<i>EXPRESSION</i> is true. For valid expressions see
+<b>EXPRESSIONS</b>.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;k,
+&minus;&minus;known</b></p>
+
+<p style="margin-left:23%;">print known sites only (ID
+column is not &quot;.&quot;)</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;min&minus;alleles</b> <i>INT</i></p>
+
+<p style="margin-left:23%;">print sites with at least
+<i>INT</i> alleles listed in REF and ALT columns</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;M,
+&minus;&minus;max&minus;alleles</b> <i>INT</i></p>
+
+<p style="margin-left:23%;">print sites with at most
+<i>INT</i> alleles listed in REF and ALT columns</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;n,
+&minus;&minus;novel</b></p>
+
+<p style="margin-left:23%;">print novel sites only (ID
+column is &quot;.&quot;)</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;p,
+&minus;&minus;phased</b></p>
+
+<p style="margin-left:23%;">print sites where all samples
+are phased. Haploid genotypes are considered phased. Missing
+genotypes considered unphased unless the phased bit is
+set.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;P,
+&minus;&minus;exclude&minus;phased</b></p>
+
+<p style="margin-left:23%;">exclude sites where all samples
+are phased</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;q,
+&minus;&minus;min&minus;af</b>
+<i>FLOAT</i>[<i>:nref</i>|<i>:alt1</i>|<i>:minor</i>]</p>
+
+<p style="margin-left:23%;">minimum allele frequency
+(INFO/AC / INFO/AN) of sites to be printed. Specifying the
+type of allele is optional and can be set to
+non&minus;reference (<i>nref</i>, the default), 1st
+alternate (<i>alt1</i>) or minor (<i>minor</i>) alleles.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;Q,
+&minus;&minus;max&minus;af</b>
+<i>FLOAT</i>[<i>:nref</i>|<i>:alt1</i>|<i>:minor</i>]</p>
+
+<p style="margin-left:23%;">maximum allele frequency
+(INFO/AC / INFO/AN) of sites to be printed. Specifying the
+type of allele is optional and can be set to
+non&minus;reference (<i>nref</i>, the default), 1st
+alternate (<i>alt1</i>) or minor (<i>minor</i>) alleles.</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;u,
+&minus;&minus;uncalled</b></p>
+
+<p style="margin-left:23%;">print sites without a called
+genotype</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;U,
+&minus;&minus;exclude&minus;uncalled</b></p>
+
+<p style="margin-left:23%;">exclude sites without a called
+genotype</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;v,
+&minus;&minus;types</b>
+<i>snps</i>|<i>indels</i>|<i>mnps</i>|<i>other</i></p>
+
+<p style="margin-left:23%;">comma&minus;separated list of
+variant types to select</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;V,
+&minus;&minus;exclude&minus;types</b>
+<i>snps</i>|<i>indels</i>|<i>mnps</i>|<i>other</i></p>
+
+<p style="margin-left:23%;">comma&minus;separated list of
+variant types to exclude</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;x,
+&minus;&minus;private</b></p>
+
+<p style="margin-left:23%;">print sites where only the
+subset samples carry an non&minus;reference allele</p>
+
+<p style="margin-left:17%; margin-top: 1em"><b>&minus;X,
+&minus;&minus;exclude&minus;private</b></p>
+
+<p style="margin-left:23%;">exclude sites where only the
+subset samples carry an non&minus;reference allele</p>
+
+<a name="EXPRESSIONS"></a>
+<h2>EXPRESSIONS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">These filtering
+expressions are accepted by <b>annotate</b>, <b>filter</b>,
+<b>query</b> and <b>view</b> commands.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Valid
+expressions may contain:</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+numerical constants, string constants, file names</p>
+
+<p style="margin-left:23%; margin-top: 1em">1, 1.0,
+1e&minus;4 <br>
+&quot;String&quot; <br>
+@file_name</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+arithmetic operators</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">+,*,&minus;,/</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+comparison operators</p>
+
+<p style="margin-left:23%; margin-top: 1em">== (same as =),
+&gt;, &gt;=, &lt;=, &lt;, !=</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; regex
+operators &quot;~&quot; and its negation &quot;!~&quot;</p>
+
+<p style="margin-left:23%; margin-top: 1em">INFO/HAYSTACK ~
+&quot;needle&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+parentheses</p>
+
+<p style="margin-left:23%; margin-top: 1em">(, )</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; logical
+operators</p>
+
+<p style="margin-left:23%; margin-top: 1em">&amp;&amp;
+(same as &amp;), ||, |</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; INFO
+tags, FORMAT tags, column names</p>
+
+<p style="margin-left:23%; margin-top: 1em">INFO/DP or DP
+<br>
+FORMAT/DV, FMT/DV, or DV <br>
+%FILTER, %QUAL, %ID</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; 1 (or 0)
+to test the presence (or absence) of a flag</p>
+
+<p style="margin-left:23%; margin-top: 1em">FlagA=1
+&amp;&amp; FlagB=0</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; %TYPE
+for variant type in REF,ALT columns
+(indel,snp,mnp,ref,other)</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">%TYPE=&quot;indel&quot;
+| %TYPE=&quot;snp&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; array
+subscripts, &quot;*&quot; for any field</p>
+
+
+<p style="margin-left:23%; margin-top: 1em">(DP4[0]+DP4[1])/(DP4[2]+DP4[3])
+&gt; 0.3 <br>
+DP4[*] == 0 <br>
+CSQ[*] ~ &quot;missense_variant.*deleterious&quot;</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull;
+functions on FORMAT fields</p>
+
+<p style="margin-left:23%; margin-top: 1em">MAX, MIN,
+AVG</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Notes:</b></p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; String
+comparisons and regular expressions are
+case&minus;insensitive</p>
+
+<p style="margin-left:17%; margin-top: 1em">&bull; If the
+subscript &quot;*&quot; is used in regular expression
+search, the whole field is treated as one string. For
+example, the regex STR[*]~&quot;B,C&quot; will be true for
+the string vector INFO/STR=AB,CD.</p>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>Examples:</b></p>
+
+
+<p style="margin-left:17%; margin-top: 1em">%MIN(DV)&gt;5</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">%MIN(DV/DP)&gt;0.3</p>
+
+<p style="margin-left:17%; margin-top: 1em">%MIN(DP)&gt;10
+&amp; %MIN(DV)&gt;3</p>
+
+<p style="margin-left:17%; margin-top: 1em">%QUAL&gt;10 |
+FMT/GQ&gt;10 .. selects only GQ&gt;10 samples</p>
+
+<p style="margin-left:17%; margin-top: 1em">%QUAL&gt;10 ||
+FMT/GQ&gt;10 .. selects all samples at QUAL&gt;10 sites</p>
+
+
+<p style="margin-left:17%; margin-top: 1em">%TYPE=&quot;snp&quot;
+&amp;&amp; %QUAL&gt;=10 &amp;&amp; (DP4[2]+DP4[3] &gt;
+2)</p>
+
+<p style="margin-left:17%; margin-top: 1em">%MIN(DP)&gt;35
+&amp;&amp; %AVG(GQ)&gt;50</p>
+
+<p style="margin-left:17%; margin-top: 1em">%ID=@file ..
+selects lines with ID present in the file</p>
+
+<p style="margin-left:17%; margin-top: 1em">%ID!=@~/file ..
+skip lines with ID present in the ~/file</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>Shell
+expansion:</b></p>
+
+<p style="margin-left:11%; margin-top: 1em">Note that
+expressions must often be quoted because some characters
+have special meaning in the shell. An example of expression
+enclosed in single quotes which cause that the whole
+expression is passed to the program as intended:</p>
+
+<p style="margin-left:17%; margin-top: 1em">bcftools view
+&minus;i '%ID!=&quot;.&quot; &amp; MAF[0]&lt;0.01'</p>
+
+<p style="margin-left:11%; margin-top: 1em">Please refer to
+the documentation of your shell for details.</p>
+
+<a name="SCRIPTS AND OPTIONS"></a>
+<h2>SCRIPTS AND OPTIONS</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>plot&minus;vcfstats
+[</b><i>OPTIONS</i>] <i>file.vchk</i> [...] <br>
+Script for processing output of <b>bcftools stats</b>. It
+can merge results from multiple outputs (useful when running
+the stats for each chromosome separately), plots graphs and
+creates a PDF presentation.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;m,
+&minus;&minus;merge</b></p>
+
+<p style="margin-left:17%;">Merge vcfstats files to STDOUT,
+skip plotting.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;p,
+&minus;&minus;prefix</b> <i>PATH</i></p>
+
+<p style="margin-left:17%;">The output files prefix, add a
+slash to create new directory.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;P,
+&minus;&minus;no&minus;PDF</b></p>
+
+<p style="margin-left:17%;">Skip the PDF creation step.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;r,
+&minus;&minus;rasterize</b></p>
+
+<p style="margin-left:17%;">Rasterize PDF images for faster
+rendering.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;s,
+&minus;&minus;sample&minus;names</b></p>
+
+<p style="margin-left:17%;">Use sample names for xticks
+rather than numeric IDs.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;t,
+&minus;&minus;title</b> <i>STRING</i></p>
+
+<p style="margin-left:17%;">Identify files by these titles
+in plots. The option can be given multiple times, for each
+ID in the <b>bcftools stats</b> output. If not present, the
+script will use abbreviated source file names for the
+titles.</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>&minus;T,
+&minus;&minus;main&minus;title</b> <i>STRING</i></p>
+
+<p style="margin-left:17%;">Main title for the PDF.</p>
+
+<a name="PERFORMANCE"></a>
+<h2>PERFORMANCE</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">HTSlib was
+designed with BCF format in mind. When parsing VCF files,
+all records are internally converted into BCF
+representation. Simple operations, like removing a single
+column from a VCF file, can be therefore done much faster
+with standard UNIX commands, such as <b>awk</b> or
+<b>cut</b>. Therefore it is recommended to use BCF as
+input/output format whenever possible to avoid large
+overhead of the VCF &acirc; BCF &acirc; VCF conversion.</p>
+
+<a name="BUGS"></a>
+<h2>BUGS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Please report
+any bugs you encounter on the github website:
+http://github.com/samtools/bcftools</p>
+
+<a name="AUTHORS"></a>
+<h2>AUTHORS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Heng Li from
+the Sanger Institute wrote the original C version of htslib,
+samtools and bcftools. Bob Handsaker from the Broad
+Institute implemented the BGZF library. Petr Danecek, Shane
+McCarthy and John Marshall are maintaining and further
+developing bcftools. Many other people contributed to the
+program and to the file format specifications, both directly
+and indirectly by providing patches, testing and reporting
+bugs. We thank them all.</p>
+
+<a name="RESOURCES"></a>
+<h2>RESOURCES</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">BCFtools GitHub
+website: http://github.com/samtools/bcftools</p>
+
+<p style="margin-left:11%; margin-top: 1em">Samtools GitHub
+website: http://github.com/samtools/samtools</p>
+
+<p style="margin-left:11%; margin-top: 1em">HTSlib GitHub
+website: http://github.com/samtools/htslib</p>
+
+<p style="margin-left:11%; margin-top: 1em">File format
+specifications:
+http://samtools.github.io/hts&minus;specs</p>
+
+<p style="margin-left:11%; margin-top: 1em">BCFtools
+documentation: http://samtools.github.io/bcftools</p>
+
+<p style="margin-left:11%; margin-top: 1em">BCFtools wiki
+page: https://github.com/samtools/bcftools/wiki</p>
+
+<a name="COPYING"></a>
+<h2>COPYING</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">The MIT
+License. Copyright (c) Genome Research Ltd.</p>
+<hr>

@@ -1,0 +1,275 @@
+---
+layout: default
+title: tabix man page 
+---
+<h1 align=center>tabix</h1>
+
+<a href="#NAME">NAME</a><br>
+<a href="#SYNOPSIS">SYNOPSIS</a><br>
+<a href="#DESCRIPTION">DESCRIPTION</a><br>
+<a href="#OPTIONS OF TABIX">OPTIONS OF TABIX</a><br>
+<a href="#EXAMPLE">EXAMPLE</a><br>
+<a href="#NOTES">NOTES</a><br>
+<a href="#AUTHOR">AUTHOR</a><br>
+<a href="#SEE ALSO">SEE ALSO</a><br>
+
+<hr>
+
+
+<a name="NAME"></a>
+<h2>NAME</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">bgzip - Block
+compression/decompression utility</p>
+
+<p style="margin-left:11%; margin-top: 1em">tabix - Generic
+indexer for TAB-delimited genome position files</p>
+
+<a name="SYNOPSIS"></a>
+<h2>SYNOPSIS</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>bgzip</b>
+[<b>&minus;cdhB</b>] [<b>&minus;b</b> <i>virtualOffset</i>]
+[<b>&minus;s</b> <i>size</i>] [<i>file</i>]</p>
+
+<p style="margin-left:11%; margin-top: 1em"><b>tabix</b>
+[<b>&minus;0lf</b>] [<b>&minus;p</b> gff|bed|sam|vcf]
+[<b>&minus;s</b> <i>seqCol</i>] [<b>&minus;b</b>
+<i>begCol</i>] [<b>&minus;e</b> <i>endCol</i>]
+[<b>&minus;S</b> <i>lineSkip</i>] [<b>&minus;c</b>
+<i>metaChar</i>] <i>in.tab.bgz</i> [<i>region1</i>
+[<i>region2</i> [<i>...</i>]]]</p>
+
+<a name="DESCRIPTION"></a>
+<h2>DESCRIPTION</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Tabix indexes a
+TAB-delimited genome position file <i>in.tab.bgz</i> and
+creates an index file <i>in.tab.bgz.tbi</i> when
+<i>region</i> is absent from the command-line. The input
+data file must be position sorted and compressed by
+<b>bgzip</b> which has a <b>gzip</b>(1) like interface.
+After indexing, tabix is able to quickly retrieve data lines
+overlapping <i>regions</i> specified in the format
+&quot;chr:beginPos-endPos&quot;. Fast data retrieval also
+works over network if URI is given as a file name and in
+this case the index file will be downloaded if it is not
+present locally.</p>
+
+<a name="OPTIONS OF TABIX"></a>
+<h2>OPTIONS OF TABIX</h2>
+
+
+<table width="100%" border=0 rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-p</b>
+<i>STR</i></p> </td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Input format for
+indexing. Valid values are: gff, bed, sam, vcf and psltab.
+This option should not be applied together with any of
+<b>&minus;s</b>, <b>&minus;b</b>, <b>&minus;e</b>,
+<b>&minus;c</b> and <b>&minus;0</b>; it is not used for data
+retrieval because this setting is stored in the index file.
+[gff]</p> </td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-s</b>
+<i>INT</i></p> </td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Column of sequence
+name. Option <b>&minus;s</b>, <b>&minus;b</b>,
+<b>&minus;e</b>, <b>&minus;S</b>, <b>&minus;c</b> and
+<b>&minus;0</b> are all stored in the index file and thus
+not used in data retrieval. [1]</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-b</b>
+<i>INT</i></p> </td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Column of start
+chromosomal position. [4]</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-e</b>
+<i>INT</i></p> </td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Column of end
+chromosomal position. The end column can be the same as the
+start column. [5]</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-S</b>
+<i>INT</i></p> </td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Skip first INT
+lines in the data file. [0]</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-c</b>
+<i>CHAR</i></p> </td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Skip lines started
+with character CHAR. [#]</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-0</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Specify that the
+position in the data file is 0-based (e.g. UCSC files)
+rather than 1-based.</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-h</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Print the
+header/meta lines.</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-B</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">The second argument
+is a BED file. When this option is in use, the input file
+may not be sorted or indexed. The entire input will be read
+sequentially. Nonetheless, with this option, the format of
+the input must be specificed correctly on the command
+line.</p> </td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-f</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">Force to overwrite
+the index file if it is present.</p></td>
+<tr valign="top" align="left">
+<td width="11%"></td>
+<td width="11%">
+
+
+<p style="margin-top: 1em" valign="top"><b>-l</b></p></td>
+<td width="4%"></td>
+<td width="74%">
+
+
+<p style="margin-top: 1em" valign="top">List the sequence
+names stored in the index file.</p></td>
+</table>
+
+<a name="EXAMPLE"></a>
+<h2>EXAMPLE</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">(grep
+^&quot;#&quot; in.gff; grep -v ^&quot;#&quot; in.gff | sort
+-k1,1 -k4,4n) | bgzip &gt; sorted.gff.gz;</p>
+
+<p style="margin-left:11%; margin-top: 1em">tabix -p gff
+sorted.gff.gz;</p>
+
+<p style="margin-left:11%; margin-top: 1em">tabix
+sorted.gff.gz chr1:10,000,000-20,000,000;</p>
+
+<a name="NOTES"></a>
+<h2>NOTES</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">It is
+straightforward to achieve overlap queries using the
+standard B-tree index (with or without binning) implemented
+in all SQL databases, or the R-tree index in PostgreSQL and
+Oracle. But there are still many reasons to use tabix.
+Firstly, tabix directly works with a lot of widely used
+TAB-delimited formats such as GFF/GTF and BED. We do not
+need to design database schema or specialized binary
+formats. Data do not need to be duplicated in different
+formats, either. Secondly, tabix works on compressed data
+files while most SQL databases do not. The GenCode
+annotation GTF can be compressed down to 4%. Thirdly, tabix
+is fast. The same indexing algorithm is known to work
+efficiently for an alignment with a few billion short reads.
+SQL databases probably cannot easily handle data at this
+scale. Last but not the least, tabix supports remote data
+retrieval. One can put the data file and the index at an FTP
+or HTTP server, and other users or even web services will be
+able to get a slice without downloading the entire file.</p>
+
+<a name="AUTHOR"></a>
+<h2>AUTHOR</h2>
+
+
+<p style="margin-left:11%; margin-top: 1em">Tabix was
+written by Heng Li. The BGZF library was originally
+implemented by Bob Handsaker and modified by Heng Li for
+remote file access and in-memory caching.</p>
+
+<a name="SEE ALSO"></a>
+<h2>SEE ALSO</h2>
+
+
+
+<p style="margin-left:11%; margin-top: 1em"><b>samtools</b>(1)</p>
+<hr>

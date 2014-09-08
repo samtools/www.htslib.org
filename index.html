@@ -2,48 +2,58 @@
 layout: default
 ---
 
-Samtools is a suite of programs for interacting with high-throughput sequencing data. It consists of three separate repositories:<br />
-<br />
-Samtools - reading/writing/editing/indexing/viewing SAM/BAM/CRAM format<br />
-BCFtools - reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants<br />
-HTSlib - a C library for reading/writing high-throughput sequencing data<br />
-
-<div class="row">
-    <span class="main_box">
-		<span class="main_menu"><a href="{{ site.baseurl }}/download"><img src="{{ site.baseurl }}/images/download.svg" alt="Download" />Download</a>
-		</span>
-	</span>
-	<span class="main_box">
-		<span class="main_menu"><a href="{{ site.baseurl }}/workflow"><img src="{{ site.baseurl }}/images/workflow.svg" alt="Workflows" />Workflows</a>
-			<span class="main_submenu">
-				<ul>
-                                <li><a href="/workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
-				</ul>
-			</span>
-		</span>
-	</span>
+<div class="well homepage-intro">
+	<h1>Welcome to the new SAMTools website</h1>
+	<p>SAMTools is a suite of programs for interacting with high-throughput sequencing data. It consists of three separate repositories:</p>
+	
+	<dl class="dl-horizontal">
+		<dt>SAMTools</dt>
+		<dd>Reading/writing/editing/indexing/viewing SAM/BAM/CRAM format</dd>
+		
+		<dt>BCFtools</dt>
+		<dd>Reading/writing BCF2/VCF/gVCF files and calling/filtering/summarising SNP and short indel sequence variants</dd>
+		
+		<dt>HTSlib</dt>
+		<dd>A C library for reading/writing high-throughput sequencing data</dd>
+	</dl>
+	
+	<p>SAMtools and BCFtools both use HTSlib internally, but these source packages contain their own copies of htslib so they can be built independently.</p>
+	
 </div>
 
-<div class="row">
-    <span class="main_box"><span class="main_menu"><a href="{{ site.baseurl }}/doc"><img src=
-		"{{ site.baseurl }}/images/doc.svg" alt="Documentation" />Documentation</a>
-	<span class="main_submenu">
-		<ul>
-			<li><a href="{{ site.baseurl }}/doc#manuals">Manuals</a></li>
-			<li><a href="{{ site.baseurl }}/doc#specs">Specifications</a></li>
-			<li><a href="{{ site.baseurl }}/doc#pubs">Publications</a></li>
-        	</ul>
-	</span>
-	</span>
-	</span>
-
-	<span class="main_box">
-		<span class="main_menu"><a href="{{ site.baseurl }}/support"><img src="{{ site.baseurl }}/images/support.svg" alt="Support" />Support</a>
-			<span class="main_submenu">
-				<ul>
-					<li><a href="{{ site.baseurl }}/support#lists">Mailing Lists</a></li>
-				</ul>
-			</span>
-		</span>
-	</span>
+<div class="row home-boxes">
+    <div class="col-lg-3 col-sm-6">
+		<div class="well">
+			<h3><a href="{{ site.baseurl }}/download"><i class="glyphicon glyphicon-save"></i> Download</a></h3>
+			<p>Source code releases can be downloaded from Sourceforge:</p>
+			<a class="btn btn-primary btn-lg" href="http://sourceforge.net/projects/samtools/files/samtools/1.0/"><i class="glyphicon glyphicon-save"></i> Get source releases</a>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6">
+		<div class="well">
+			<h3><a href="{{ site.baseurl }}/workflow"><i class="glyphicon glyphicon-transfer"></i> Workflows</a></h3>
+			<p>We have described some standard workflows using SAMTools:</p>
+			<ul>
+				<li><a href="{{ site.baseurl }}/workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6">
+		<div class="well">
+			<h3><a href="{{ site.baseurl }}/doc"><i class="glyphicon glyphicon-list-alt"></i> Documentation</a></h3>
+			<ul>
+				<li><a href="{{ site.baseurl }}/doc#manuals">Manuals</a></li>
+				<li><a href="{{ site.baseurl }}/doc#specs">Specifications</a></li>
+				<li><a href="{{ site.baseurl }}/doc#pubs">Publications</a></li>
+	        </ul>
+		</div>
+	</div>
+	<div class="col-lg-3 col-sm-6">
+		<div class="well">
+			<h3><a href="{{ site.baseurl }}/support"><i class="glyphicon glyphicon-question-sign"></i> Support</a></h3>
+			<ul>
+				<li><a href="{{ site.baseurl }}/support#lists">Mailing Lists</a></li>
+			</ul>
+		</div>
+	</div>
 </div>

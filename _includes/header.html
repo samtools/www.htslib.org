@@ -1,47 +1,60 @@
-<!--Menu-->
+
 <div class="container">
-	<ul class="nav nav-pills">
-		<li class="active"><a href="/">Home</a></li>
-		<li class="dropdown">
-			<a id="dl_label" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/download">
-				Download <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu" role="menu" aria-labelledby="dl_label">
-				<li><a href="{{ site.baseurl }}/download">Downloads</a></li>
-				<li><a href="{{ site.baseurl }}/develop">Development</a></li>
-			</ul>
-		</li>
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/workflow">
-				Workflows <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="/workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
-			</ul>
-		</li>
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/doc">
-				Documentation <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="{{ site.baseurl }}/doc#manuals">Man Pages</a></li>
-				<li><a href="{{ site.baseurl }}/doc#specs">Specifications</a></li>
-				<li><a href="{{ site.baseurl }}/doc#pubs">Publications</a></li>
-			</ul>
-		</li>
-		<li class="dropdown">
-			<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/support">
-				Support <span class="caret"></span>
-			</a>
-			<ul class="dropdown-menu" role="menu">
-				<li><a href="{{ site.baseurl }}/support#lists">Mailing Lists</a></li>
-			</ul>
-		</li>
-	</ul>
+<nav class="navbar navbar-default" role="navigation">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="{{ site.baseurl }}">SAMTools</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav navbar-right">
+				<li{% if page.url == '/' %} class="active"{% endif %}><a href="{{ site.baseurl }}">Home</a></li>
+				<li class="dropdown{% if page.url == '/download/' ||  page.url == '/develop' %} active{% endif %}">
+					<a id="dl_label" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/download">
+						Download <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="dl_label">
+						<li><a href="{{ site.baseurl }}/download">Downloads</a></li>
+						<li><a href="{{ site.baseurl }}/develop">Development</a></li>
+					</ul>
+				</li>
+				<li class="dropdown{% if page.url == '/workflow/' %} active{% endif %}">
+					<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/workflow">
+						Workflows <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ site.baseurl }}/workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
+					</ul>
+				</li>
+				<li class="dropdown{% if page.url == '/doc/' %} active{% endif %}">
+					<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/doc">
+						Documentation <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ site.baseurl }}/doc#man-pages">Man Pages</a></li>
+						<li><a href="{{ site.baseurl }}/doc#specifications">Specifications</a></li>
+						<li><a href="{{ site.baseurl }}/doc#publications">Publications</a></li>
+					</ul>
+				</li>
+				<li class="dropdown{% if page.url == '/support/' %} active{% endif %}">
+					<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/support">
+						Support <span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="{{ site.baseurl }}/support#mailing-lists">Mailing Lists</a></li>
+					</ul>
+				</li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
 </div>
-<!--End of Menu-->
-<div class="header_banner">
-	<div class="container">
-		<h1>SAMtools</h1>
-	</div>
-</div>
+

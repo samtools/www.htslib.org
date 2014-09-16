@@ -5,8 +5,8 @@ title: Samtools - Workflows
 
 # Workflows
 
-* WES Mapping to Variant Calls - Version 1.0(#mapping_to_variant)
-* Using CRAM within Samtools(#mapping_to_cram)
+* [WES Mapping to Variant Calls - Version 1.0](#mapping_to_variant)
+* [Using CRAM within Samtools](#mapping_to_cram)
 
 ## <a name="mapping_to_variant"></a>WGS/WES Mapping to Variant Calls - Version 1.0
 The standard workflow for working with DNA sequence data consists of three major steps:

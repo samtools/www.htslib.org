@@ -3,8 +3,10 @@ layout: default
 title: SAMtools/BCFtools/HTSlib - Downloads
 highlighting: yes
 ---
-Current releases
-----------------
+
+# Download Samtools
+
+## Current releases
 
 **SAMtools** and **BCFtools** are distributed as individual packages.
 The code uses HTSlib internally, but these source packages contain their own
@@ -45,9 +47,20 @@ setenv PATH /where/to/install/bin:$PATH    # for csh users
 {% endhighlight %}
 
 
-Historical SAMtools/BCFtools 0.1.x releases
--------------------------------------------
+## Historical SAMtools/BCFtools 0.1.x releases
 
 Prior to the introduction of HTSlib, SAMtools and BCFtools were distributed
 in a single samtools-0.1.x package.
 These old versions remain available from the [Sourceforge samtools project](http://sourceforge.net/projects/samtools/files/samtools/).
+
+## Development
+
+The SAMtools source code is hosted on <a target="_blank" href="https://github.com/samtools">Github</a>. You can check out the latest development source code with:<br />
+
+	git clone git://github.com/samtools/samtools.git
+	git clone git://github.com/samtools/bcftools.git
+	git clone git://github.com/samtools/htslib.git
+
+Please note the source code in this repository is under development and make contain experimental or untested code. We recommend you do not use it in production pipelines unless specifically advised.
+
+

@@ -5,6 +5,15 @@ title: Samtools - Workflows
 
 # Workflows
 
+To help you get started with Samtools, we have described some standard 
+workflows which use Samtools:
+
+* [WGS/WES Mapping to Variant Calls - Version 1.0](#mapping_to_variant)
+	* [Mapping](#mapping)
+	* [Improvement](#improvement)
+	* [Variant Calling](#variant-calling)
+	* [References](#references)
+
 ## <a name="mapping_to_variant"></a>WGS/WES Mapping to Variant Calls - Version 1.0
 The standard workflow for working with DNA sequence data consists of three major steps:
 

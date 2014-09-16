@@ -24,17 +24,19 @@ layout: default
 <div class="row home-boxes">
 	<div class="col-lg-3 col-sm-6">
 		<div class="well">
-			<h3><a href="{{ site.baseurl }}/download"><i class="glyphicon glyphicon-save"></i> Download</a></h3>
+			<h3 class="homepage-icon"><a href="{{{ site.baseurl }}download" title="Download"><i class="glyphicon glyphicon-save"></i></a></h3>
+			<h3><a href="{{{ site.baseurl }}download" title="Download">Download</a></h3>
 			<p>Source code releases can be downloaded from Sourceforge:</p>
-			<a class="btn btn-primary btn-lg" href="http://sourceforge.net/projects/Samtools/files/Samtools/1.0/"><i class="glyphicon glyphicon-save"></i> Get source releases</a>
+			<p><a class="btn btn-primary btn-lg" href="http://sourceforge.net/projects/Samtools/files/Samtools/1.0/"><i class="glyphicon glyphicon-save"></i> Download Samtools</a></p>
 		</div>
 	</div>
 	<div class="col-lg-3 col-sm-6">
 		<div class="well">
-			<h3><a href="{{ site.baseurl }}/workflow"><i class="glyphicon glyphicon-transfer"></i> Workflows</a></h3>
+			<h3 class="homepage-icon"><a href="{{{ site.baseurl }}workflow" title="Workflows"><i class="glyphicon glyphicon-transfer"></i></a></h3>
+			<h3><a href="{{{ site.baseurl }}workflow" title="Workflows">Workflows</a></h3>
 			<p>We have described some standard workflows using Samtools:</p>
 			<ul>
-				<li><a href="{{ site.baseurl }}/workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
+				<li><a href="{{{ site.baseurl }}workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
 			</ul>
 		</div>
 	</div>
@@ -43,20 +45,21 @@ layout: default
 	
 	<div class="col-lg-3 col-sm-6">
 		<div class="well">
-			<h3><a href="{{ site.baseurl }}/doc"><i class="glyphicon glyphicon-list-alt"></i> Documentation</a></h3>
+			<h3 class="homepage-icon"><a href="{{{ site.baseurl }}doc" title="Documentation"><i class="glyphicon glyphicon-list-alt"></i></a></h3>
+			<h3><a href="{{{ site.baseurl }}doc" title="Documentation">Documentation</a></h3>
 			<ul>
-				<li><a href="{{ site.baseurl }}/doc#manuals">Manuals</a></li>
-				<li><a href="{{ site.baseurl }}/doc#specs">Specifications</a></li>
-				<li><a href="{{ site.baseurl }}/doc#pubs">Publications</a></li>
+				<li><a href="{{{ site.baseurl }}doc#man-pages">Manuals</a></li>
+				<li><a href="{{{ site.baseurl }}doc#specifications">Specifications</a></li>
+				<li><a href="{{{ site.baseurl }}doc#publications">Publications</a></li>
 			</ul>
 		</div>
 	</div>
 	<div class="col-lg-3 col-sm-6">
 		<div class="well">
-			<h3><a href="{{ site.baseurl }}/support"><i class="glyphicon glyphicon-question-sign"></i> Support</a></h3>
-			<ul>
-				<li><a href="{{ site.baseurl }}/support#lists">Mailing Lists</a></li>
-			</ul>
+			<h3 class="homepage-icon"><a href="{{{ site.baseurl }}support" title="Support"><i class="glyphicon glyphicon-question-sign"></i></a></h3>
+			<h3><a href="{{{ site.baseurl }}support" title="Support">Support</a></h3>
+			<p>We have a number of <a href="{{{ site.baseurl }}support#mailing-lists">mailing lists</a>
+				where you can ask for help.</p>
 		</div>
 	</div>
 </div>

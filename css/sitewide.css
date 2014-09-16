@@ -12,12 +12,44 @@ body {
     margin-top:0;
 }
 .home-boxes .well {
-    min-height:180px;
+    min-height:310px;
 }
 .home-boxes .well h3 a,
 .home-boxes .well ul a {
     color:#333;
 }
+
+.home-boxes h3, .home-boxes p {
+    text-align:center;  
+}
+.homepage-icon a i {
+    font-size:60px;
+    color:#FFF;
+	width: 100px;
+	height: 100px;
+	line-height: 100px;
+	background-color: #333;
+	border-radius: 100%;
+	text-align: center;
+	vertical-align: middle;
+    -webkit-transition: all .2s ease;
+	-moz-transition: all .2s ease;
+	-o-transition: all .2s ease;
+	transition: all .2s ease;
+}
+.homepage-icon a {
+    line-height:120px;
+}
+.homepage-icon a:hover i {
+	width: 105px;
+	height: 105px;
+	line-height: 105px;
+}
+.homepage-icon a i.glyphicon-save { background-color: #95C11E; }
+.homepage-icon a i.glyphicon-transfer { background-color: #0093BD; }
+.homepage-icon a i.glyphicon-list-alt { background-color: #EFC700; }
+.homepage-icon a i.glyphicon-question-sign { background-color: #999999; }
+
 
 
 .copyright {

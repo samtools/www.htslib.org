@@ -156,7 +156,7 @@ The "-l 0" indicates to use no compression in the BAM file, as it is transitory 
 
 Note that since the BAM file did not have M5 tags for the reference sequences, they are computed by Samtools and added to the CRAM. In a production environment, this step can be avoided by ensuring that the M5 tags are already in the SAM/BAM header.
 
-Note steps 3, 4 and 5 can be combined in a pipeline:
+The last 3 steps can be combined into a pipeline to reduce disk I/O:
 
 	bwa mem yeast.fasta y1.fastq y2.fastq | \
 	samtools sort -O bam -l 0 -T /tmp - | \

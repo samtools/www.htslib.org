@@ -9,10 +9,10 @@ command line. This reference material is included below for easy reference.
 
 ## Man Pages
 
-* [Samtools]({{ site.baseurl }}/man/samtools)
-* [BCFtools]({{ site.baseurl }}/man/bcftools)
-* [tabix &amp; bgzip]({{ site.baseurl }}/man/tabix)
-* [faidx]({{ site.baseurl }}/man/faidx)
+* [Samtools]({{ site.baseurl }}man/samtools)
+* [BCFtools]({{ site.baseurl }}man/bcftools)
+* [tabix &amp; bgzip]({{ site.baseurl }}man/tabix)
+* [faidx]({{ site.baseurl }}man/faidx)
 
 ## Specifications
 

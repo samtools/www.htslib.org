@@ -1,38 +1,25 @@
-.header_banner {
-    background-color: #DDD;
+body {
+    padding-top:15px;
 }
-.small_icon {
-    width: 12pt;
-    height: 12pt;
+
+.navbar-brand {
+    font-size:24px;
+    font-weight:bold;
+    color:#333;
 }
-.row {
-	min-height: 114px;
-	margin-top:10pt;
-	margin-bottom:10pt;
+
+.homepage-intro h1, .home-boxes .well h3 {
+    margin-top:0;
 }
-.main_box {
-	float:left;
-	background-color: #EEE;
-	height:100%;
-	width:48%;
-	min-height: 114px;
-	margin-left:1%;
-	margin-right:1%;
+.home-boxes .well {
+    min-height:180px;
 }
-.main_menu {
-    opacity: .3;
-	font-size:20pt;
+.home-boxes .well h3 a,
+.home-boxes .well ul a {
+    color:#333;
 }
-.main_menu>a>img {
-    width: 20pt;
-    height: 20pt;
-}
-.main_submenu {
-	font-size:12pt;
-}
-.main_menu:hover {
-    opacity: 1;
-}
+
+
 .copyright {
 	font-size: 80%;
 	color: gray;

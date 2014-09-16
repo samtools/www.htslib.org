@@ -18,38 +18,38 @@
 				<ul class="nav navbar-nav navbar-right">
 					<li{% if page.url == '/' %} class="active"{% endif %}><a href="{{ site.baseurl }}">Home</a></li>
 					<li class="dropdown{% if page.url == '/download/' ||  page.url == '/develop' %} active{% endif %}">
-						<a id="dl_label" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/download">
+						<a id="dl_label" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}download">
 							Download <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dl_label">
-							<li><a href="{{ site.baseurl }}/download">Downloads</a></li>
-							<li><a href="{{ site.baseurl }}/develop">Development</a></li>
+							<li><a href="{{ site.baseurl }}download">Downloads</a></li>
+							<li><a href="{{ site.baseurl }}develop">Development</a></li>
 						</ul>
 					</li>
 					<li class="dropdown{% if page.url == '/workflow/' %} active{% endif %}">
-						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/workflow">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}workflow">
 							Workflows <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ site.baseurl }}/workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
+							<li><a href="{{ site.baseurl }}workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
 						</ul>
 					</li>
 					<li class="dropdown{% if page.url == '/doc/' %} active{% endif %}">
-						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/doc">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}doc">
 							Documentation <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ site.baseurl }}/doc#man-pages">Man Pages</a></li>
-							<li><a href="{{ site.baseurl }}/doc#specifications">Specifications</a></li>
-							<li><a href="{{ site.baseurl }}/doc#publications">Publications</a></li>
+							<li><a href="{{ site.baseurl }}doc#man-pages">Man Pages</a></li>
+							<li><a href="{{ site.baseurl }}doc#specifications">Specifications</a></li>
+							<li><a href="{{ site.baseurl }}doc#publications">Publications</a></li>
 						</ul>
 					</li>
 					<li class="dropdown{% if page.url == '/support/' %} active{% endif %}">
-						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/support">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}support">
 							Support <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ site.baseurl }}/support#mailing-lists">Mailing Lists</a></li>
+							<li><a href="{{ site.baseurl }}support#mailing-lists">Mailing Lists</a></li>
 						</ul>
 					</li>
 				</ul>

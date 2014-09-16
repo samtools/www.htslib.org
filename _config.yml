@@ -2,7 +2,7 @@
 title: Samtools
 email: your-email@domain.com
 description: "Samtools"
-baseurl: ""
+baseurl: "/"
 url: "http://www.htslib.org"
 twitter_username: htslib
 exclude: [CNAME]

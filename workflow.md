@@ -112,43 +112,42 @@ CRAM is primarily a reference-based compressed format, meaning that only differe
 
 For a workflow this has a few fundamental effects:
 
-* Alignments should be kept in chromosome/position sort order. 
+1. Alignments should be kept in chromosome/position sort order. 
+2. The reference must be available at all times. Losing it may be equivalent to losing all your read sequences.
 
 Technically CRAM can work with other orders but it can become inefficient due to a large amount of random access across the reference genome. The current implementation of CRAM in htslib 1.0 is also inefficient in size for unsorted data, although this will be rectified in upcoming releases.
-
-* The reference must be available at all times. Losing it may be equivalent to losing all your read sequences.
 
 In CRAM format the reference sequence is linked to by the md5sum (M5 auxiliary tag) in the CRAM header (@SQ tags). This is mandatory and part of the CRAM specification. In SAM/BAM format, these M5 tags are optional. Therefore converting from SAM/BAM to CRAM requires some additional overhead to link the CRAM to the correct reference sequence.
 
 ### A Worked Example
-1. Obtain some public data
+####Obtain some public data
 We will use the first 100,000 read-pairs from a yeast data set.
 
 	curl ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR507/SRR507778/SRR507778_1.fastq.gz|gzip -d | head -100000 > y1.fastq
 	curl ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR507/SRR507778/SRR507778_2.fastq.gz|gzip -d | head -100000 > y2.fastq
 	curl ftp://ftp.ensembl.org/pub/current_fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna_sm.toplevel.fa.gz > yeast.fasta
-	
-2. Prepare the BWA indices
+
+####Prepare the BWA indices
 We need to ensure there exists a .fai fasta index and also indices for whichever aligner we are using (Bwa-mem in this example).
 
 	samtools faidx yeast.fasta
 	bwa index yeast.fasta
 	
-3. Produce the alignments
+####Produce the alignments
 The aligner is likely to output SAM in the same order or similar order to the input fastq files. It won't be outputting in chromosome position order, so the output is typically not well suited to CRAM.
 
 	bwa mem -R '@RG\tID:foo\tSM:bar\tLB:library1' yeast.fasta y1.fastq y2.fastq > yeast.sam
 
 The -R option adds a read-group line and applies that read-group to all aligned sequence records. It is not necessary, but a recommended practice.
 
-4. Sort into chromosome/positon order
+####Sort into chromosome/positon order
 Ideally at this point we would be outputting CRAM directly, but at present samtools 1.0 does not have a way to indicate the reference on the command line. We can output to BAM instead and convert (below), or modify the SAM @SQ header to include MD5 sums in the M5: field.
 
 	samtools sort -O bam -T /tmp -l 0 -o yeast.bam yeast.sam
 
 The "-l 0" indicates to use no compression in the BAM file, as it is transitory and will be replaced by CRAM soon. We may wish to use -l 1 if disk space is short and we wish to reduce temporary file size. 
 
-5. Convert to CRAM format
+####Convert to CRAM format
 	samtools view -T yeast.fasta -C -o yeast.cram yeast.bam
 
 Note that since the BAM file did not have M5 tags for the reference sequences, they are computed by Samtools and added to the CRAM. In a production environment, this step can be avoided by ensuring that the M5 tags are already in the SAM/BAM header.
@@ -159,7 +158,7 @@ Note steps 3, 4 and 5 can be combined in a pipeline:
 	samtools sort -O bam -l 0 -T /tmp - | \
 	samtools view -T yeast.fasta -C -o yeast.cram -
 
-6. Viewing in alignment and pileup format.
+####Viewing in alignment and pileup format.
 See the variant calling workflow for more advanced examples.
 
 	samtools view yeast.cram

@@ -5,7 +5,7 @@ description: "Samtools"
 baseurl: "http://www.htslib.org"
 url: "http://www.htslib.org"
 twitter_username: htslib
-exclude: [CNAME, Dockerfile]
+exclude: [CNAME, Dockerfile, Makefile]
 
 # Build settings
 markdown: kramdown

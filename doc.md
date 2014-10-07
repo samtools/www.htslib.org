@@ -2,21 +2,35 @@
 layout: default
 title: Samtools - Documentation
 ---
+## Manual pages
 
-# Documentation
-Documentation for SAMTools is available by using `man [tool name]` on the
-command line. This reference material is included below for easy reference.
+Documentation for BCFtools, SAMtools, and HTSlib's utilities is available
+by using <code>man <em>command</em></code> on the command line.
+The manual pages for several releases are also included below --- be sure
+to consult the documentation for the release you are using.
 
-## Man Pages
+* [bcftools 1.1](bcftools-1.1.html) (older versions:
+      [1.0](bcftools-1.0.html),
+      [0.1.19](samtools-0.1.19.html "included in samtools-0.1.19"))
+* [bgzip 1.1](tabix-1.1.html)
+* [samtools 1.1](samtools-1.1.html) (older versions:
+      [1.0](samtools-1.0.html),
+      [0.1.19](samtools-0.1.19.html))
+* [tabix 1.1](tabix-1.1.html) (older version:
+      [1.0](tabix-1.0.html))
 
-* [Samtools]({{ site.baseurl }}/man/samtools)
-* [BCFtools]({{ site.baseurl }}/man/bcftools)
-* [tabix &amp; bgzip]({{ site.baseurl }}/man/tabix)
-* [faidx]({{ site.baseurl }}/man/faidx)
-
-## Specifications
+## File formats
 
 SAMtools conforms to the specifications produced by the GA4GH File Formats working group. Details of the current specifications are available on the  [hts-specs page](http://samtools.github.io/hts-specs).
+
+HTSlib also includes brief manual pages outlining aspects of several of
+the more important file formats.
+These are available via <code>man <em>format</em></code> on the command line
+or here on the web site:
+
+* [faidx](faidx.html) describes _.fai_ FASTA index files
+* [sam](sam.html) lists the mandatory SAM fields and meanings of flag values
+* [vcf](vcf.html) lists the mandatory VCF fields and common INFO tags
 
 ## Publications
 
@@ -26,4 +40,3 @@ SAMtools conforms to the specifications produced by the GA4GH File Formats worki
 * Li H. Improving SNP discovery by base alignment quality. Bioinformatics. 2011 Apr 15;27(8):1157-8. doi: 10.1093/bioinformatics/btr076. Epub 2011 Feb 13. _[PMID: [21320865](http://www.ncbi.nlm.nih.gov/pubmed/21320865)]_
 * Durbin R. Segregation based metric for variant call QC _[[link](http://samtools.github.io/bcftools/rd-SegBias.pdf)]_
 * Li H, Mathematical Notes on SAMtools Algorithms _[[link](http://www.broadinstitute.org/gatk/media/docs/Samtools.pdf)]_
-

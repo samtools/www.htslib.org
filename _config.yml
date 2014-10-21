@@ -2,10 +2,10 @@
 title: Samtools
 email: your-email@domain.com
 description: "Samtools"
-baseurl: "/"
+baseurl: "http://www.htslib.org"
 url: "http://www.htslib.org"
 twitter_username: htslib
-exclude: [CNAME]
+exclude: [CNAME, Dockerfile, Makefile]
 
 # Build settings
 markdown: kramdown

@@ -19,11 +19,12 @@ also want to build and install HTSlib to get these utilities, or see the
 additional instructions in `INSTALL` to install them from a samtools or
 bcftools source package.
 
-The current release of each package is **1.0**.
+The current release of each package is **1.1**.
 
-<a class="btn btn-primary" href="http://sourceforge.net/projects/samtools/files/samtools/1.0/"><i class="glyphicon glyphicon-save"></i> Download source releases here</a>
+<a class="btn btn-primary" href="http://sourceforge.net/projects/samtools/files/samtools/1.1/"><i class="glyphicon glyphicon-save"></i> Download source releases here</a>
 
-See release notes for [bcftools]({{ site.baseurl }}bcftools_release_notes).
+See release notes for [bcftools 1.0]({{ site.baseurl }}/bcftools_release_notes).
+
 <!-- TODO Make releases available as GitHub releases in the three repos -->
 
 Building each desired package from source is very simple:

@@ -1,0 +1,118 @@
+---
+permalink: /doc/faidx.html
+layout: manpage
+title: faidx(5) manual page
+package: htslib
+date: August 2013
+section_text: Bioinformatics formats
+---
+<h1>NAME</h1>
+faidx &ndash; an index enabling random access to FASTA files
+<h1>SYNOPSIS</h1>
+<em>file.fa</em>.fai,
+<em>file.fasta</em>.fai
+<h1>DESCRIPTION</h1>
+Using an <b>fai index</b> file in conjunction with a FASTA file containing
+reference sequences enables efficient access to arbitrary regions within
+those reference sequences.
+The index file typically has the same filename as the corresponding FASTA
+file, with <b>.fai</b> appended.
+<p>
+An <b>fai index</b> file is a text file consisting of lines each with
+five TAB-delimited columns:
+<table>
+<tr><td>NAME</td><td>Name of this reference sequence</td></tr>
+<tr><td>LENGTH</td><td>Total length of this reference sequence, in bases</td></tr>
+<tr><td>OFFSET</td><td>Offset within the FASTA file of this sequence's first base</td></tr>
+<tr><td>LINEBASES</td><td>The number of bases on each line</td></tr>
+<tr><td>LINEWIDTH</td><td>The number of bytes in each line, including the newline</td></tr>
+</table>
+<p>
+The <b>NAME</b> and <b>LENGTH</b> columns contain the same
+data as would appear in the <b>SN</b> and <b>LN</b> fields of a
+SAM <b>@SQ</b> header for the same reference sequence.
+<p>
+The <b>OFFSET</b> column contains the offset within the FASTA file, in bytes
+starting from zero, of the first base of this reference sequence, i.e., of
+the character following the newline at the end of the "<b>&gt;</b>" header line.
+Typically the lines of a <b>fai index</b> file appear in the order in which the
+reference sequences appear in the FASTA file, so <b>.fai</b> files are typically
+sorted according to this column.
+<p>
+The <b>LINEBASES</b> column contains the number of bases in each of the sequence
+lines that form the body of this reference sequence, apart from the final line
+which may be shorter.
+The <b>LINEWIDTH</b> column contains the number of <em>bytes</em> in each of
+the sequence lines (except perhaps the final line), thus differing from
+<b>LINEBASES</b> in that it also counts the bytes forming the line terminator.
+<h2>FASTA Files</h2>
+In order to be indexed with <b>samtools faidx</b>, a FASTA file must be a text
+file of the form
+<p>
+&gt;<em>name</em>
+[<em>description</em>...]
+<br>
+ATGCATGCATGCATGCATGCATGCATGCAT
+<br>
+GCATGCATGCATGCATGCATGCATGCATGC
+<br>
+ATGCAT
+<br>
+&gt;<em>name</em>
+[<em>description</em>...]
+<br>
+ATGCATGCATGCAT
+<br>
+GCATGCATGCATGC
+<br>
+[...]
+<p>
+In particular, each reference sequence must be "well-formatted", i.e., all
+of its sequence lines must be the same length, apart from the final sequence
+line which may be shorter.
+(While this sequence line length must be the same within each sequence,
+it may vary between different reference sequences in the same FASTA file.)
+<p>
+This also means that although the FASTA file may have Unix- or Windows-style
+or other line termination, the newline characters present must be consistent,
+at least within each reference sequence.
+<p>
+The <b>samtools</b> implementation uses the first word of the "<b>&gt;</b>" header
+line text (i.e., up to the first whitespace character) as the <b>NAME</b> column.
+At present, there may be no whitespace between the
+"&gt;" character and the <em>name</em>.
+<h1>EXAMPLE</h1>
+For example, given this FASTA file
+<p>
+&gt;one
+<br>
+ATGCATGCATGCATGCATGCATGCATGCAT
+<br>
+GCATGCATGCATGCATGCATGCATGCATGC
+<br>
+ATGCAT
+<br>
+&gt;two another chromosome
+<br>
+ATGCATGCATGCAT
+<br>
+GCATGCATGCATGC
+<br>
+<p>
+formatted with Unix-style (LF) line termination, the corresponding fai index
+would be
+<table>
+<tr><td>one</td><td>66</td><td>5</td><td>30</td><td>31</td></tr>
+<tr><td>two</td><td>28</td><td>98</td><td>14</td><td>15</td></tr>
+</table>
+<p>
+If the FASTA file were formatted with Windows-style (CR-LF) line termination,
+the fai index would be
+<table>
+<tr><td>one</td><td>66</td><td>6</td><td>30</td><td>32</td></tr>
+<tr><td>two</td><td>28</td><td>103</td><td>14</td><td>16</td></tr>
+</table>
+<h1>SEE ALSO</h1>
+<em>samtools</em>(1)
+<dl><dt>http://en.wikipedia.org/wiki/FASTA_format</dt><dd><p>
+Further description of the FASTA format

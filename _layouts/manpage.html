@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% include head.html %}	<link rel="stylesheet" type="text/css" href="{{ "/css/manpage.css" | prepend: site.baseurl }}">
+</head>
+<body>
+{% include header.html %}
+<div class="container manpage">
+{% if page.package %}<div class="release">Manual page from {{page.package}}{% if page.date %}<br>released on {{page.date}}{% endif %}</div>
+{% endif %}{{ content }}</div>
+
+{% include footer.html %}</body>
+</html>

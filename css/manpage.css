@@ -1,0 +1,9 @@
+.release { float: right; text-align: right; color: gray; font-size: 90% }
+
+.manpage dt { float: left; clear: left; min-width: 6em; margin-right: 1em;
+              font-weight: normal }
+.manpage dd { padding-left: 7em }
+
+.manpage table { border-collapse: collapse }
+.manpage th { padding-right: 2em }
+.manpage td { padding-right: 2em }

@@ -12,17 +12,33 @@ copies of htslib so they can be built independently.
 
 **HTSlib** is also distributed as a separate package which can be installed
 if you are writing your own programs against the HTSlib API.
-HTSlib also provides the **bgzip** and **tabix** utilities, so you may
-also want to build and install HTSlib to get these utilities, or see the
-additional instructions in `INSTALL` to install them from a samtools or
-bcftools source package.
+HTSlib also provides the **bgzip**, **htsfile**, and **tabix** utilities,
+so you may also want to build and install HTSlib to get these utilities,
+or see the additional instructions in `INSTALL` to install them from a
+samtools or bcftools source package.
 
-The current release of each package is **1.1**.
+Download current source releases:
+&nbsp;
+<a class="btn btn-success" href="https://github.com/samtools/samtools/releases/download/1.2/samtools-1.2.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> samtools-1.2</a>
+&emsp;
+<a class="btn btn-success" href="https://github.com/samtools/bcftools/releases/download/1.2/bcftools-1.2.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> bcftools-1.2</a>
+&emsp;
+<a class="btn btn-success" href="https://github.com/samtools/htslib/releases/download/1.2.1/htslib-1.2.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> htslib-1.2.1</a>
 
-<a class="btn btn-primary" href="http://sourceforge.net/projects/samtools/files/samtools/1.1/"><i class="glyphicon glyphicon-save"></i> Download source releases here</a>
+See also release notes for
+[**samtools**](https://github.com/samtools/samtools/releases/latest/),
+[**bcftools**](https://github.com/samtools/bcftools/releases/latest/),
+and [**htslib**](https://github.com/samtools/htslib/releases/latest/).
 
-See release notes for [bcftools 1.0]({{ site.baseurl }}/bcftools_release_notes).
-<!-- TODO Make releases available as GitHub releases in the three repos -->
+Previous releases are available from the
+[samtools GitHub organisation](https://github.com/samtools/)
+(see [samtools](https://github.com/samtools/samtools/releases/),
+[bcftools](https://github.com/samtools/bcftools/releases/),
+or [htslib](https://github.com/samtools/htslib/releases/) releases)
+or from the
+[samtools Sourceforge project](http://sourceforge.net/projects/samtools/files/samtools/).
+
+### Building and installing
 
 Building each desired package from source is very simple:
 

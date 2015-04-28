@@ -37,6 +37,11 @@ or here on the web site:
 * [sam](sam.html) lists the mandatory SAM fields and meanings of flag values
 * [vcf](vcf.html) lists the mandatory VCF fields and common INFO tags
 
+## Benchmarks
+
+* [Zlib implementations](zlib_benchmarks.html) comparing samtools read and
+  write speeds.
+
 ## Publications
 
 * Li H., Handsaker B., Wysoker A., Fennell T., Ruan J., Homer N., Marth G., Abecasis G., Durbin R. and 1000 Genome Project Data Processing Subgroup (2009) The Sequence alignment/map (SAM) format and SAMtools. Bioinformatics, 25, 2078-9. _[PMID: [19505943](http://www.ncbi.nlm.nih.gov/pubmed/19505943)]_

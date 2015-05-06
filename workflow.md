@@ -19,7 +19,7 @@ The standard workflow for working with DNA sequence data consists of three major
 ### Mapping
 For reads from 70bp up to a few megabases we recommend using [BWA MEM](http://bio-bwa.sourceforge.net/) to map the data to
 a given reference genome. The reference you use will differ depending on the species your data came from and the resources you want to use with it. For example
-for a new research project consisting of Human data you would probably use the Genome Reference Consortium's [build 38 analysis set](ftp://ftp.ncbi.nlm.nih.gov/genbank/genomes/Eukaryotes/vertebrates_mammals/Homo_sapiens/GRCh38//seqs_for_alignment_pipelines"). Note that with BWA 0.7.10, mapping to alternative haplotypes has been deemed unready for production use, so you will probably wish to use
+for a new research project consisting of Human data you would probably use the Genome Reference Consortium's [build 38 analysis set](ftp://ftp.ncbi.nlm.nih.gov/genbank/genomes/Eukaryotes/vertebrates_mammals/Homo_sapiens/GRCh38//seqs_for_alignment_pipelines). Note that with BWA 0.7.10, mapping to alternative haplotypes has been deemed unready for production use, so you will probably wish to use
 the analysis set that does not contain them.
 
 

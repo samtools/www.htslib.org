@@ -42,6 +42,9 @@ or here on the web site:
 * [Zlib implementations](../benchmarks/zlib.html) comparing samtools read and
   write speeds.
 
+* [CRAM comparisons](../benchmarks/CRAM.html) between version 2.1,
+  version 3.0 and BAM formats.
+
 ## Publications
 
 * Li H., Handsaker B., Wysoker A., Fennell T., Ruan J., Homer N., Marth G., Abecasis G., Durbin R. and 1000 Genome Project Data Processing Subgroup (2009) The Sequence alignment/map (SAM) format and SAMtools. Bioinformatics, 25, 2078-9. _[PMID: [19505943](http://www.ncbi.nlm.nih.gov/pubmed/19505943)]_

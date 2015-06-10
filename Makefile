@@ -4,11 +4,12 @@ BCFTOOLS = ../bcftools
 
 COMMIT ?= $(VERSION)
 
-all:	doc/samtools-$(VERSION).html \
-	doc/bcftools-$(VERSION).html \
-	doc/htsfile-$(VERSION).html \
-	doc/tabix-$(VERSION).html \
+all:	doc/samtools.html doc/bcftools.html \
+	doc/htsfile.html doc/tabix.html \
 	doc/faidx.html doc/sam.html doc/vcf.html
+
+doc/%.html: doc/%-$(VERSION).html
+	sed '/^permalink:/s/-$(VERSION)//' $< > $@
 
 GRIND = man2fhtml --mode jekyll --location /$@ --output $@
 

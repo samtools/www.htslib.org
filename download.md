@@ -30,6 +30,8 @@ See also release notes for
 [**bcftools**](https://github.com/samtools/bcftools/releases/latest/),
 and [**htslib**](https://github.com/samtools/htslib/releases/latest/).
 
+New releases are announced on the [samtools mailing lists] and by [@htslib]
+on Twitter.
 Previous releases are available from the
 [samtools GitHub organisation](https://github.com/samtools/)
 (see [samtools](https://github.com/samtools/samtools/releases/),
@@ -37,6 +39,9 @@ Previous releases are available from the
 or [htslib](https://github.com/samtools/htslib/releases/) releases)
 or from the
 [samtools Sourceforge project](http://sourceforge.net/projects/samtools/files/samtools/).
+
+[@htslib]: https://twitter.com/htslib
+[samtools mailing lists]: ../support#mailing-lists
 
 ### Building and installing
 

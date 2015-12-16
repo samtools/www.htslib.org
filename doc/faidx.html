@@ -3,7 +3,7 @@ permalink: /doc/faidx.html
 layout: manpage
 title: faidx(5) manual page
 package: htslib
-date: August 2013
+date: August 2015
 section_text: Bioinformatics formats
 ---
 <h1>NAME</h1>
@@ -78,9 +78,8 @@ or other line termination, the newline characters present must be consistent,
 at least within each reference sequence.
 <p>
 The <b>samtools</b> implementation uses the first word of the "<b>&gt;</b>" header
-line text (i.e., up to the first whitespace character) as the <b>NAME</b> column.
-At present, there may be no whitespace between the
-"&gt;" character and the <em>name</em>.
+line text (i.e., up to the first whitespace character, having skipped any
+initial whitespace after the "&gt;") as the <b>NAME</b> column.
 <h1>EXAMPLE</h1>
 For example, given this FASTA file
 <p>

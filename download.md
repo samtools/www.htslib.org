@@ -23,7 +23,7 @@ Download current source releases:
 &emsp;
 <a class="btn btn-success" href="https://github.com/samtools/bcftools/releases/download/1.3.1/bcftools-1.3.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> bcftools-1.3.1</a>
 &emsp;
-<a class="btn btn-success" href="https://github.com/samtools/htslib/releases/download/1.3.1/htslib-1.3.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> htslib-1.3.1</a>
+<a class="btn btn-success" href="https://github.com/samtools/htslib/releases/download/1.3.2/htslib-1.3.2.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> htslib-1.3.2</a>
 
 See also release notes for
 [**samtools**](https://github.com/samtools/samtools/releases/latest/),

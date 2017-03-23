@@ -127,9 +127,9 @@ In CRAM format the reference sequence is linked to by the md5sum (M5 auxiliary t
 #### Obtain some public data
 We will use the first 100,000 read-pairs from a yeast data set.
 
-	curl ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR507/SRR507778/SRR507778_1.fastq.gz|gzip -d | head -100000 > y1.fastq
-	curl ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR507/SRR507778/SRR507778_2.fastq.gz|gzip -d | head -100000 > y2.fastq
-	curl ftp://ftp.ensembl.org/pub/current_fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna_sm.toplevel.fa.gz > yeast.fasta
+	curl ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR507/SRR507778/SRR507778_1.fastq.gz | gzip -d | head -100000 > y1.fastq
+	curl ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR507/SRR507778/SRR507778_2.fastq.gz | gzip -d | head -100000 > y2.fastq
+	curl ftp://ftp.ensembl.org/pub/current_fasta/saccharomyces_cerevisiae/dna/Saccharomyces_cerevisiae.R64-1-1.dna_sm.toplevel.fa.gz | gzip -d > yeast.fasta
 
 #### Prepare the BWA indices
 We need to ensure there exists a .fai fasta index and also indices for whichever aligner we are using (Bwa-mem in this example).

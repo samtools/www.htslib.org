@@ -19,11 +19,11 @@ samtools or bcftools source package.
 
 Download current source releases:
 &nbsp;
-<a class="btn btn-success" href="https://github.com/samtools/samtools/releases/download/1.4.1/samtools-1.4.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> samtools-1.4.1</a>
+<a class="btn btn-success" href="https://github.com/samtools/samtools/releases/download/1.5/samtools-1.5.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> samtools-1.5</a>
 &emsp;
-<a class="btn btn-success" href="https://github.com/samtools/bcftools/releases/download/1.4.1/bcftools-1.4.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> bcftools-1.4.1</a>
+<a class="btn btn-success" href="https://github.com/samtools/bcftools/releases/download/1.5/bcftools-1.5.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> bcftools-1.5</a>
 &emsp;
-<a class="btn btn-success" href="https://github.com/samtools/htslib/releases/download/1.4.1/htslib-1.4.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> htslib-1.4.1</a>
+<a class="btn btn-success" href="https://github.com/samtools/htslib/releases/download/1.5/htslib-1.5.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> htslib-1.5</a>
 
 See also release notes for
 [**samtools**](https://github.com/samtools/samtools/releases/latest/),
@@ -49,8 +49,9 @@ Building each desired package from source is very simple:
 
 {% highlight sh %}
 cd samtools-1.x    # and similarly for bcftools and htslib
+./configure --prefix=/where/to/install
 make
-make prefix=/where/to/install install
+make install
 {% endhighlight %}
 
 See `INSTALL` in each of the source directories for further details.

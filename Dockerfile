@@ -3,13 +3,13 @@
 #
 # https://github.com/samtools/www.htslib.org
 
-FROM ubuntu:14.04
+FROM ubuntu:16.04
 MAINTAINER "Joshua C. Randall" <jcrandall@alum.mit.edu>
 
 # Install Prerequisites
 RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -q -y supervisor apache2 build-essential ruby-dev nodejs
-RUN gem install jekyll
+RUN gem install jekyll jekyll-sitemap
 
 # Add site source
 ADD . /docker/www.htslib.org

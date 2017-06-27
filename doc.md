@@ -9,30 +9,35 @@ by using <code>man <em>command</em></code> on the command line.
 The manual pages for several releases are also included below --- be sure
 to consult the documentation for the release you are using.
 
-* [bcftools 1.4](bcftools.html) (older versions:
+* [bcftools 1.4.1](bcftools.html) (older versions:
+      [1.4](bcftools-1.4.html),
       [1.3.1](bcftools-1.3.1.html),
       [1.3](bcftools-1.3.html),
       [1.2](bcftools-1.2.html),
       [1.1](bcftools-1.1.html),
       [1.0](bcftools-1.0.html),
       [0.1.19](samtools-0.1.19.html "included in samtools-0.1.19"))
-* [bgzip 1.4](tabix.html) (older versions:
+* [bgzip 1.4.1](tabix.html) (older versions:
+      [1.4](tabix-1.4.html),
       [1.3.1](tabix-1.3.1.html),
       [1.3](tabix-1.3.html),
       [1.2.1](tabix-1.2.1.html),
       [1.1](tabix-1.1.html))
-* [htsfile 1.4](htsfile.html) (older versions:
+* [htsfile 1.4.1](htsfile.html) (older versions:
+      [1.4](htsfile-1.4.html),
       [1.3.1](htsfile-1.3.1.html),
       [1.3](htsfile-1.3.html),
       [1.2.1](htsfile-1.2.1.html))
-* [samtools 1.4](samtools.html) (older versions:
+* [samtools 1.4.1](samtools.html) (older versions:
+      [1.4](samtools-1.4.html),
       [1.3.1](samtools-1.3.1.html),
       [1.3](samtools-1.3.html),
       [1.2](samtools-1.2.html),
       [1.1](samtools-1.1.html),
       [1.0](samtools-1.0.html),
       [0.1.19](samtools-0.1.19.html))
-* [tabix 1.4](tabix.html) (older versions:
+* [tabix 1.4.1](tabix.html) (older versions:
+      [1.4](tabix-1.4.html),
       [1.3.1](tabix-1.3.1.html),
       [1.3](tabix-1.3.html),
       [1.2.1](tabix-1.2.1.html),

@@ -83,11 +83,11 @@ and reduce our list of sites to those found to be variant by passing this file i
 
 You can do this using a pipe as shown here:
 
-	samtools mpileup -ugf <ref.fa> <sample1.bam> <sample2.bam> <sample3.bam> | bcftools call -vmO z -o <study.vcf.gz>
+	bcftools mpileup -Ou -f <ref.fa> <sample1.bam> <sample2.bam> <sample3.bam> | bcftools call -vmO z -o <study.vcf.gz>
 
 Alternatively if you need to see why a specific site was not called by examining the BCF, or wish to spread the load slightly you can break it down into two steps as follows:
 
-	samtools mpileup -go <study.bcf> -f <ref.fa> <sample1.bam> <sample2.bam> <sample3.bam>
+	bcftools mpileup -Ob -o <study.bcf> -f <ref.fa> <sample1.bam> <sample2.bam> <sample3.bam>
 	bcftools call -vmO z -o <study.vcf.gz> <study.bcf>
 
 To prepare our VCF for querying we next index it using tabix:

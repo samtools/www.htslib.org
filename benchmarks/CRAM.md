@@ -42,7 +42,7 @@ smaller dataset to more completely explore the parameter space.
 MiSeq_Ecoli_DH10B_110721_PF.bam is the smallest example data taken
 from the Deez paper, so we also include Deez here for comparison.
 
-###Position sorted
+### Position sorted
 
 {:.table}
 Format       |       Size | Encoding(s) | Decoding(s) | Notes
@@ -81,7 +81,7 @@ levels, although it will be faster to decode.  That makes me wonder
 about how we should deal with temporary files. (Ideally with neither
 BAM nor CRAM compression, but LZ4 or Snappy.)
 
-###Name sorted
+### Name sorted
 
 {:.table}
 Format  | Size       | Encoding(s)
@@ -91,7 +91,7 @@ CRAMv2  | 1046736335 | 206
 CRAMv3  |  848319136 |  99
 
 
-###Embedding & Reference-less encoding
+### Embedding & Reference-less encoding
 
 Embedded reference - no external file dependencies:
 

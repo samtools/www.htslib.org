@@ -9,8 +9,7 @@ CRAM benchmarking
 
 Benchmarks are using the faster CRAM codecs; primarily deflate and
 rANS.  For comparison we also include "Io_lib"'s Scramble tool for
-bzip2 and lzma CRAM (not yet supported in htslib) and the Deez tool on
-one data set.
+bzip2 and lzma CRAM and the Deez tool on one data set.
 
 Coordinate sorted human data
 ----------------------------
@@ -129,6 +128,7 @@ This is unmapped data, converted from FASTQ to SAM via biobambam.
 Format       | Size        | Encoding(s)  | Decoding(s) | Notes
 ------------ | ---------:  | ----------:  | ----------: | --------------------------------
 SAM          | 1443985040  |  15	  |     -       | I/O bound
+FASTQ.gz     |  491867991  | 126	  |    12.7	|
 BAM          |  428540917  |  64	  |     5.5     |
 CRAM v2      |  335644015  |  36	  |     9.8     |
 CRAM v3      |  308745955  |  24	  |     9.3     |
@@ -137,5 +137,6 @@ CRAM v3+lzma |  282989638  | 105 	  |     -       | Via Scramble -Z
 CRAM v3 MAX  |  281666960  | 166 	  |     -       | Via Scramble -9 -jZ (bzip2, lzma)
 
 Scramble was used to test bzip2, lzma and both combined along with
-compression level 9 for maximum shrinkage.
+compression level 9 for maximum shrinkage, although since v1.4 Htslib
+also supports these methods.
 

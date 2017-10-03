@@ -24,3 +24,7 @@ body {
 	font-size: 80%;
 	color: gray;
 }
+
+.home-boxes .well .btn-lg {
+	white-space:normal;
+}

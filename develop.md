@@ -3,7 +3,7 @@ layout: default
 title: Samtools - Developer Information
 ---
 
-#Development
+# Development
 
 The SAMtools source code is hosted on <a target="_blank" href="https://github.com/samtools">Github</a>. You can check out the latest development source code with:<br />
 

@@ -10,49 +10,49 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ site.baseurl }}/">Samtools</a>
+				<a class="navbar-brand" href="{{ "/" | relative_url }}">Samtools</a>
 			</div>
 
 			<!-- Collect the nav links, forms, and other content for toggling -->
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
-					<li{% if page.url == '/' %} class="active"{% endif %}><a href="{{ site.baseurl }}/">Home</a></li>
+					<li{% if page.url == '/' %} class="active"{% endif %}><a href="{{ "/" | relative_url }}">Home</a></li>
 					<li class="dropdown{% if page.url == '/download/' ||  page.url == '/develop' %} active{% endif %}">
-						<a id="dl_label" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/download">
+						<a id="dl_label" role="button" class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ "/download" | relative_url }}">
 							Download <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu" aria-labelledby="dl_label">
-							<li><a href="{{ site.baseurl }}/download">Downloads</a></li>
-							<li><a href="{{ site.baseurl }}/develop">Development</a></li>
+							<li><a href="{{ "/download" | relative_url }}">Downloads</a></li>
+							<li><a href="{{ "/develop" | relative_url }}">Development</a></li>
 						</ul>
 					</li>
 					<li class="dropdown{% if page.url == '/workflow/' %} active{% endif %}">
-						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/workflow">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ "/workflow" | relative_url }}">
 							Workflows <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ site.baseurl }}/workflow#mapping_to_variant">WGS/WES Mapping to Variant Calls</a></li>
-							<li><a href="{{ site.baseurl }}/workflow#mapping_to_cram">Using CRAM within Samtools</a></li>
+							<li><a href="{{ "/workflow#mapping_to_variant" | relative_url }}">WGS/WES Mapping to Variant Calls</a></li>
+							<li><a href="{{ "/workflow#mapping_to_cram" | relative_url }}">Using CRAM within Samtools</a></li>
 						</ul>
 					</li>
 					<li class="dropdown{% if page.url == '/doc/' %} active{% endif %}">
-						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/doc">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ "/doc" | relative_url }}">
 							Documentation <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ site.baseurl }}/doc#manual-pages">Man Pages</a></li>
-							<li><a href="{{ site.baseurl }}/doc#file-formats">Specifications</a></li>
-							<li><a href="{{ site.baseurl }}/benchmarks/zlib.html">Zlib Benchmarks</a></li>
-							<li><a href="{{ site.baseurl }}/benchmarks/CRAM.html">CRAM Benchmarks</a></li>
-							<li><a href="{{ site.baseurl }}/doc#publications">Publications</a></li>
+							<li><a href="{{ "/doc#manual-pages" | relative_url }}">Man Pages</a></li>
+							<li><a href="{{ "/doc#file-formats" | relative_url }}">Specifications</a></li>
+							<li><a href="{{ "/benchmarks/zlib.html" | relative_url }}">Zlib Benchmarks</a></li>
+							<li><a href="{{ "/benchmarks/CRAM.html" | relative_url }}">CRAM Benchmarks</a></li>
+							<li><a href="{{ "/doc#publications" | relative_url }}">Publications</a></li>
 						</ul>
 					</li>
 					<li class="dropdown{% if page.url == '/support/' %} active{% endif %}">
-						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ site.baseurl }}/support">
+						<a class="dropdown-toggle" data-toggle="dropdown" data-target="#" href="{{ "/support" | relative_url }}">
 							Support <span class="caret"></span>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="{{ site.baseurl }}/support#mailing-lists">Mailing Lists</a></li>
+							<li><a href="{{ "/support#mailing-lists" | relative_url }}">Mailing Lists</a></li>
 						</ul>
 					</li>
 				</ul>

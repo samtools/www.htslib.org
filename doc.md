@@ -67,6 +67,10 @@ or here on the web site:
 * [sam](sam.html) lists the mandatory SAM fields and meanings of flag values
 * [vcf](vcf.html) lists the mandatory VCF fields and common INFO tags
 
+## Algorithms
+
+* [Duplicate](../algorithms/duplicate.html) marking.
+
 ## Benchmarks
 
 * [Zlib implementations](../benchmarks/zlib.html) comparing samtools read and

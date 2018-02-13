@@ -9,7 +9,8 @@ by using <code>man <em>command</em></code> on the command line.
 The manual pages for several releases are also included below --- be sure
 to consult the documentation for the release you are using.
 
-* [bcftools 1.6](bcftools.html) (older versions:
+* [bcftools 1.7](bcftools.html) (older versions:
+      [1.6](bcftools-1.6.html),
       [1.5](bcftools-1.5.html),
       [1.4.1](bcftools-1.4.1.html),
       [1.4](bcftools-1.4.html),

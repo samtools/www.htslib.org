@@ -21,7 +21,7 @@ my $doc_md = 'doc.md';
 my %manpages;
 opendir(my $dir, $doc_dir) || die "Couldn't open $doc_dir : $!\n";
 while ($_ = readdir($dir)) {
-    if (/^(bcftools|htsfile|samtools|tabix)-(\d+)\.(\d+)(?:.(\d+))?\.html/) {
+    if (/^(bcftools|htsfile|samtools|tabix|bgzip)-(\d+)\.(\d+)(?:.(\d+))?\.html/) {
 	my $v = sprintf("%03d%03d%03d", $2, $3, $4 ? $4 : 0);
 	$manpages{$1}->{$v} = $_;
 	if ($1 eq 'samtools' && $v eq '000001019') {
@@ -31,6 +31,13 @@ while ($_ = readdir($dir)) {
     }
 }
 closedir($dir) || die "Error reading $doc_dir : $!\n";
+
+# bgzip and tabix shared a page before release 1.8
+foreach my $v (keys %{$manpages{tabix}}) {
+    if ($v le '001008000' && !exists($manpages{bgzip}->{$v})) {
+	$manpages{bgzip}->{$v} = $manpages{tabix}->{$v};
+    }
+}
 
 # Rewrite doc.md file with new man page links
 open(my $doc_in, '<', $doc_md) || die "Couldn't open $doc_md : $!\n";
@@ -53,8 +60,7 @@ while (<$doc_in>) {
     $skip = 1;
 
     foreach my $tool (qw(bcftools bgzip htsfile samtools tabix)) {
-	# bgzip and tabix share a page
-	my $page = $tool eq 'bgzip' ? 'tabix' : $tool;
+	my $page = $tool;
 
 	# Get versions, newest to oldest
 	my @versions = sort { $b cmp $a } keys %{$manpages{$page}};

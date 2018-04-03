@@ -28,7 +28,7 @@ all:	doc.md doc/samtools.html doc/bcftools.html \
 	doc/faidx.html doc/sam.html doc/vcf.html
 
 doc.md: doc/samtools.html doc/bcftools.html doc/htsfile.html \
-	doc/tabix.html doc/faidx.html doc/sam.html doc/vcf.html
+	doc/bgzip.html doc/tabix.html doc/faidx.html doc/sam.html doc/vcf.html
 	./update_doc_md.pl
 
 doc/samtools.html: doc/samtools-$(SAMTOOLS_VERSION).html
@@ -41,6 +41,9 @@ doc/htsfile.html: doc/htsfile-$(HTSLIB_VERSION).html
 	sed '/^permalink:/s/-$(HTSLIB_VERSION)//' $< > $@
 
 doc/tabix.html: doc/tabix-$(HTSLIB_VERSION).html
+	sed '/^permalink:/s/-$(HTSLIB_VERSION)//' $< > $@
+
+doc/bgzip.html: doc/bgzip-$(HTSLIB_VERSION).html
 	sed '/^permalink:/s/-$(HTSLIB_VERSION)//' $< > $@
 
 GRIND = man2fhtml --mode jekyll --location /$@ --output $@
@@ -60,6 +63,9 @@ doc/htsfile-$(HTSLIB_VERSION).html:
 
 doc/tabix-$(HTSLIB_VERSION).html:
 	git --git-dir=$(HTSLIB)/.git show $(HTSLIB_COMMIT):tabix.1 | $(GRIND)
+
+doc/bgzip-$(HTSLIB_VERSION).html:
+	git --git-dir=$(HTSLIB)/.git show $(HTSLIB_COMMIT):bgzip.1 | $(GRIND)
 
 doc/faidx.html: $(HTSLIB)/faidx.5
 	$(GRIND) $<

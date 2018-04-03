@@ -1,0 +1,134 @@
+---
+permalink: /doc/bgzip.html
+layout: manpage
+title: bgzip(1) manual page
+package: htslib-1.8
+date: 3 April 2018
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+<p>
+bgzip &ndash; Block compression/decompression utility
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+<b>bgzip</b>
+[<b>-cdfhir</b>]
+[<b>-b</b>
+<em>virtualOffset</em>]
+[<b>-I</b>
+<em>index_name</em>]
+[<b>-l</b>
+<em>compression_level</em>]
+[<b>-s</b>
+<em>size</em>]
+[<b>-@</b>
+<em>threads</em>]
+[<em>file</em>]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Bgzip compresses files in a similar manner to, and compatible with, gzip(1).
+The file is compressed into a series of small (less than 64K) 'BGZF' blocks.
+This allows indexes to be built against the compressed file and used to
+retrieve portions of the data without having to decompress the entire file. 
+<p>
+If no files are specified on the command line, bgzip will compress (or
+decompress if the -d option is used) standard input to standard output.
+If a file is specified, it will be compressed (or decompressed with -d).
+If the -c option is used, the result will be written to standard output,
+otherwise when compressing bgzip will write to a new file with a .gz
+suffix and remove the original.  When decompressing the input file must
+have a .gz suffix, which will be removed to make the output name.  Again
+after decompression completes the input file will be removed.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-b, --offset </b><em>INT</em></dt><dd><p>
+Decompress to standard output from virtual file position (0-based uncompressed
+offset).
+Implies -c and -d.
+</dd><dt><b>-c, --stdout</b></dt><dd><p>
+Write to standard output, keep original files unchanged.
+</dd><dt><b>-d, --decompress</b></dt><dd><p>
+Decompress.
+</dd><dt><b>-f, --force</b></dt><dd><p>
+Overwrite files without asking.
+</dd><dt><b>-h, --help</b></dt><dd><p>
+Displays a help message.
+</dd><dt><b>-i, --index</b></dt><dd><p>
+Create a BGZF index while compressing.
+Unless the -I option is used, this will have the name of the compressed
+file with .gzi appended to it.
+</dd><dt><b>-I, --index-name </b><em>FILE</em></dt><dd><p>
+Index file name.
+</dd><dt><b>-l, --compress-level </b><em>INT</em></dt><dd><p>
+Compression level to use when compressing.
+From 0 to 9, or -1 for the default level set by the compression library. [-1]
+</dd><dt><b>-r, --reindex</b></dt><dd><p>
+Rebuild the index on an existing compressed file.
+</dd><dt><b>-g, --rebgzip</b></dt><dd><p>
+Try to use an existing index to create a compressed file with matching
+block offsets.
+Note that this assumes that the same compression library and level are in use
+as when making the original file.
+Don't use it unless you know what you're doing.
+</dd><dt><b>-s, --size </b><em>INT</em></dt><dd><p>
+Decompress INT bytes (uncompressed size) to standard output.
+Implies -c.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of threads to use [1].
+</dd></dl><p>
+<p>
+<h1 id="BGZF_FORMAT"><a href="#BGZF_FORMAT">BGZF FORMAT</a></h1>
+The BGZF format written by bgzip is described in the SAM format specification
+available from <a href="http://samtools.github.io/hts-specs/SAMv1.pdf">http://samtools.github.io/hts-specs/SAMv1.pdf</a>.
+<p>
+It makes use of a gzip feature which allows compressed files to be
+concatenated.
+The input data is divided into blocks which are no larger than 64 kilobytes
+both before and after compression (including compression headers).
+Each block is compressed into a gzip file.
+The gzip header includes an extra sub-field with identifier 'BC' and the length
+of the compressed block, including all headers.
+<p>
+<h1 id="GZI_FORMAT"><a href="#GZI_FORMAT">GZI FORMAT</a></h1>
+The index format is a binary file listing pairs of compressed and
+uncompressed offsets in a BGZF file.
+Each compressed offset points to the start of a BGZF block.
+The uncompressed offset is the corresponding location in the uncompressed
+data stream.
+<p>
+All values are stored as little-endian 64-bit unsigned integers.
+<p>
+The file contents are:
+<pre>
+uint64_t number_entries
+</pre>
+followed by number_entries pairs of:
+<pre>
+uint64_t compressed_offset
+uint64_t uncompressed_offset
+</pre>
+<p>
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+<pre>
+# Compress stdin to stdout
+bgzip &lt; /usr/share/dict/words &gt; /tmp/words.gz
+<p>
+# Make a .gzi index
+bgzip -r /tmp/words.gz
+<p>
+# Extract part of the data using the index
+bgzip -b 367635 -s 4 /tmp/words.gz 
+<p>
+# Uncompress the whole file, removing the compressed copy
+bgzip -d /tmp/words.gz
+</pre>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+The BGZF library was originally implemented by Bob Handsaker and modified
+by Heng Li for remote file access and in-memory caching.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<p>
+<b>gzip</b>(1),<b>tabix</b>(1)

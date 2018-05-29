@@ -67,10 +67,10 @@ to consult the documentation for the release you are using.
 
 ## HowTos
 
-[BCFtools](http://samtools.github.io/bcftools/howtos)
+[BCFtools](http://samtools.github.io/bcftools/)
 
 - Installation
-    - [Latest development version](http://samtools.github.io/bcftools/)
+    - [Latest development version](http://samtools.github.io/bcftools/howtos/install.html)
 - Calling
     - [CNV calling](http://samtools.github.io/bcftools/howtos/cnv-calling.html)
     - [Consequence calling](http://samtools.github.io/bcftools/howtos/csq-calling.html)

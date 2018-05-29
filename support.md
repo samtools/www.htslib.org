@@ -3,6 +3,15 @@ layout: default
 title: Samtools - Support
 ---
 
+### Found a problem? 
+
+... open an issue on github:
+
+* [HTSlib](https://github.com/samtools/htslib/issues)
+* [BCFtools](https://github.com/samtools/bcftools/issues)
+* [Samtools](https://github.com/samtools/samtools/issues)
+
+
 # Mailing Lists
 
 ### SAMtools Announce

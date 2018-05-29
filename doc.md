@@ -65,6 +65,28 @@ to consult the documentation for the release you are using.
       [1.1](tabix-1.1.html),
       [1.0](tabix-1.0.html))
 
+## HowTos
+
+[BCFtools](http://samtools.github.io/bcftools/howtos)
+
+- Installation
+    - [Latest development version](http://samtools.github.io/bcftools/)
+- Calling
+    - [CNV calling](http://samtools.github.io/bcftools/howtos/cnv-calling.html)
+    - [Consequence calling](http://samtools.github.io/bcftools/howtos/csq-calling.html)
+    - [Consensus calling](http://samtools.github.io/bcftools/howtos/consensus-sequence.html)
+    - [ROH calling](http://samtools.github.io/bcftools/howtos/roh-calling.html)
+    - [Variant calling and filtering](http://samtools.github.io/bcftools/howtos/variant-calling.html)
+
+- Tips and Tricks
+    - [Converting formats](http://samtools.github.io/bcftools/howtos/convert.html)
+    - [Extracting information](http://samtools.github.io/bcftools/howtos/query.html)
+    - [Filtering expressions](http://samtools.github.io/bcftools/howtos/filtering.html)
+    - [Plugins](http://samtools.github.io/bcftools/howtos/plugins.html)
+
+
+
+
 ## File formats
 
 SAMtools conforms to the specifications produced by the GA4GH File Formats working group. Details of the current specifications are available on the  [hts-specs page](http://samtools.github.io/hts-specs).

@@ -67,7 +67,7 @@ to consult the documentation for the release you are using.
 
 ## HowTos
 
-[BCFtools](http://samtools.github.io/bcftools/)
+### [BCFtools](http://samtools.github.io/bcftools/)
 
 - Installation
     - [Latest development version](http://samtools.github.io/bcftools/howtos/install.html)

@@ -9,7 +9,8 @@ by using <code>man <em>command</em></code> on the command line.
 The manual pages for several releases are also included below --- be sure
 to consult the documentation for the release you are using.
 
-* [bcftools 1.8](bcftools.html) (older versions:
+* [bcftools 1.9](bcftools.html) (older versions:
+      [1.8](bcftools-1.8.html),
       [1.7](bcftools-1.7.html),
       [1.6](bcftools-1.6.html),
       [1.5](bcftools-1.5.html),
@@ -21,7 +22,8 @@ to consult the documentation for the release you are using.
       [1.1](bcftools-1.1.html),
       [1.0](bcftools-1.0.html),
       [0.1.19](samtools-0.1.19.html "included in samtools-0.1.19"))
-* [bgzip 1.8](bgzip.html) (older versions:
+* [bgzip 1.9](bgzip.html) (older versions:
+      [1.8](bgzip-1.8.html),
       [1.7](tabix-1.7.html),
       [1.6](tabix-1.6.html),
       [1.5](tabix-1.5.html),
@@ -32,7 +34,8 @@ to consult the documentation for the release you are using.
       [1.2.1](tabix-1.2.1.html),
       [1.1](tabix-1.1.html),
       [1.0](tabix-1.0.html))
-* [htsfile 1.8](htsfile.html) (older versions:
+* [htsfile 1.9](htsfile.html) (older versions:
+      [1.8](htsfile-1.8.html),
       [1.7](htsfile-1.7.html),
       [1.6](htsfile-1.6.html),
       [1.5](htsfile-1.5.html),
@@ -41,7 +44,8 @@ to consult the documentation for the release you are using.
       [1.3.1](htsfile-1.3.1.html),
       [1.3](htsfile-1.3.html),
       [1.2.1](htsfile-1.2.1.html))
-* [samtools 1.8](samtools.html) (older versions:
+* [samtools 1.9](samtools.html) (older versions:
+      [1.8](samtools-1.8.html),
       [1.7](samtools-1.7.html),
       [1.6](samtools-1.6.html),
       [1.5](samtools-1.5.html),
@@ -53,7 +57,8 @@ to consult the documentation for the release you are using.
       [1.1](samtools-1.1.html),
       [1.0](samtools-1.0.html),
       [0.1.19](samtools-0.1.19.html))
-* [tabix 1.8](tabix.html) (older versions:
+* [tabix 1.9](tabix.html) (older versions:
+      [1.8](tabix-1.8.html),
       [1.7](tabix-1.7.html),
       [1.6](tabix-1.6.html),
       [1.5](tabix-1.5.html),

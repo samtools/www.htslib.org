@@ -629,7 +629,7 @@ Include only listed read group or sample name
 []
 </dd><dt><b>-l, --read-length </b><em>INT</em></dt><dd><p>
 Include in the statistics only reads with the given read length
-[]
+[-1]
 </dd><dt><b>-m, --most-inserts </b><em>FLOAT</em></dt><dd><p>
 Report only the main part of inserts
 [0.99]
@@ -667,6 +667,10 @@ Do stats in these regions only. Tab-delimited file chr,from,to, 1-based, inclusi
 []
 </dd><dt><b>-x, --sparse</b></dt><dd><p>
 Suppress outputting IS rows where there are no insertions.
+</dd><dt><b>-p, --remove-overlaps </b></dt><dd><p>
+Remove overlaps of paired-end reads from coverage and base count computations.
+</dd><dt><b>-g, --cov-threshold </b><em>INT</em></dt><dd><p>
+Only bases with coverage above this value will be included in the target percentage computation [0]
 </dd></dl>
 <p>
 </dd><dt><b>bedcov</b></dt><dd><p>

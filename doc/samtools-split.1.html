@@ -1,0 +1,59 @@
+---
+permalink: /doc/samtools-split.1.html
+layout: manpage
+title: samtools-split(1) manual page
+package: samtools-1.9
+date: 14 August 2018
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools split &ndash; splits a file by read group.
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-split.1.html">split</a>
+[<em>options</em>]
+<em>merged.sam</em>|<em>merged.bam</em>|<em>merged.cram</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Splits a file by read group, producing one or more output files
+matching a common prefix (by default based on the input filename)
+each containing one read-group.
+<p>
+The <b>-u</b> option may be used to specify the output filename for any
+records without an RG tag.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-u </b><em>FILE1</em></dt><dd><p>
+Put reads with no RG tag or an unrecognised RG tag into <em>FILE1</em>
+</dd><dt><b>-h </b><em>FILE2</em></dt><dd><p>
+Use the header from <em>FILE2</em> when writing the file given in the <em>-u</em>
+option.
+This header completely replaces the one from the input file.
+It must be compatible with the input file header, which means it must
+have the same number of references listed in the @SQ lines and the
+references must be in the same order and have the same lengths.
+</dd><dt><b>-f </b><em>STRING</em></dt><dd><p>
+Output filename format string (see below)
+["%*_%#.%."]
+</dd><dt><b>-v</b></dt><dd><p>
+Verbose output
+</dd></dl><p>
+Format string expansions:
+<table align="center">
+<tr><td>%%</td><td>%</td></tr>
+<tr><td>%*</td><td>basename</td></tr>
+<tr><td>%#</td><td>@RG index</td></tr>
+<tr><td>%!</td><td>@RG ID</td></tr>
+<tr><td>%.</td><td>output format filename extension</td></tr>
+</table>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Martin Pollard from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.1.html"><em>samtools</em></a> (1),
+<a href="samtools-addreplacerg.1.html"><em>samtools-addreplacerg</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

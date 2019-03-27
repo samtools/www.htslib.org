@@ -1,0 +1,73 @@
+---
+permalink: /doc/samtools-markdup.1.html
+layout: manpage
+title: samtools-markdup(1) manual page
+package: samtools-1.9
+date: 14 August 2018
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools markdup &ndash; mark duplicate alignments in a coordinate sorted file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-markdup.1.html">markdup</a>
+[<b>-l</b>
+<em>length</em>]
+[<b>-r</b>]
+[<b>-s</b>]
+[<b>-T</b>]
+[<b>-S</b>]
+<em>in.algsort.bam out.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Mark duplicate alignments from a coordinate sorted file that
+has been run through <b>samtools fixmate</b> with the <b>-m</b> option.  This program
+relies on the MC and ms tags that fixmate provides.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-l </b><em>INT</em></dt><dd><p>
+Expected maximum read length of <em>INT</em> bases.
+[300]
+</dd><dt><b>-r</b></dt><dd><p>
+Remove duplicate reads.
+</dd><dt><b>-s</b></dt><dd><p>
+Print some basic stats.
+</dd><dt><b>-T </b><em>PREFIX</em></dt><dd><p>
+Write temporary files to
+<em>PREFIX</em><b>.</b><em>samtools</em><b>.</b><em>nnnn</em><b>.</b><em>mmmm</em><b>.</b><em>tmp</em>
+</dd><dt><b>-S</b></dt><dd><p>
+Mark supplementary reads of duplicates as duplicates.
+<p>
+</dd></dl>
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+This first command sort can be omitted if the file is already name ordered:
+<pre>
+samtools sort -n -o namesort.bam example.bam
+</pre>
+<p>
+Add ms and MC tags for markdup to use later:
+<pre>
+samtools fixmate -m namesort.bam fixmate.bam
+</pre>
+<p>
+Markdup needs position order:
+<pre>
+samtools sort -o positionsort.bam fixmate.bam
+</pre>
+<p>
+Finally mark duplicates:
+<pre>
+samtools markdup positionsort.bam markdup.bam
+</pre>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Andrew Whitwham from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.1.html"><em>samtools</em></a> (1),
+<a href="samtools-sort.1.html"><em>samtools-sort</em></a> (1),
+<a href="samtools-fixmate.1.html"><em>samtools-fixmate</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

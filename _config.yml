@@ -4,7 +4,8 @@ email: your-email@domain.com
 description: "Samtools"
 url: "http://www.htslib.org"
 twitter_username: htslib
-exclude: [CNAME, Dockerfile, Makefile, update_doc_md.pl]
+exclude: [CNAME, Dockerfile, Makefile, update_doc_md.pl, man2fhtml]
+include: [doc/bcftools.1.htm]
 
 # Build settings
 markdown: kramdown

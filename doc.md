@@ -48,9 +48,9 @@ the more important file formats.
 These are available via <code>man <em>format</em></code> on the command line
 or here on the web site:
 
-* [faidx](faidx.html) describes _.fai_ FASTA index files
-* [sam](sam.html) lists the mandatory SAM fields and meanings of flag values
-* [vcf](vcf.html) lists the mandatory VCF fields and common INFO tags
+* [faidx](faidx.5.html) describes _.fai_ FASTA index files
+* [sam](sam.5.html) lists the mandatory SAM fields and meanings of flag values
+* [vcf](vcf.5.html) lists the mandatory VCF fields and common INFO tags
 * [htslib-s3-plugin](htslib-s3-plugin.7.html) describes the S3 plugin
 
 ## Algorithms

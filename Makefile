@@ -24,9 +24,15 @@ bcftools-doc:
 
 htslib-doc:
 	@ for i in $(HTSLIB)/*.[1-9]; do \
-	    base=`echo $$i | sed 's:.*/::'`; \
-	    echo Processing $$i;\
-	    $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
+	    case $$i in \
+	    *".so."*) \
+	        ;; \
+	    *) \
+	        base=`echo $$i | sed 's:.*/::'`; \
+	        echo Processing $$i;\
+	        $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
+	        ;; \
+	    esac \
 	done
 
 update_doc.md:

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-reheader.1.html
 layout: manpage
 title: samtools-reheader(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -34,7 +34,7 @@ to use with the sequence data itself.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-P, --no-PG</b></dt><dd><p>
-Do not generate an @PG header line.
+Do not add a @PG line to the header of the output file.
 </dd><dt><b>-i, --in-place</b></dt><dd><p>
 Perform the header edit in-place, if possible.  This only works on CRAM
 files and only if there is sufficient room to store the new header.
@@ -60,6 +60,7 @@ shell expansions (for example of $ variables).
 must return an exit status of zero.
 <p>
 </dd></dl>
+<p>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
 <p>
 <ul><li>Remove comment lines
@@ -70,12 +71,12 @@ samtools reheader -c 'grep -v ^@CO' in.bam
 <li>Add &ldquo;Chr&rdquo; prefix to chromosome names.  Note extra backslashes before
 dollar signs to prevent unwanted shell variable expansion.
 <pre>
-samtools reheader -c 'perl -pe "s/^(@SQ.*)(&backslash;tSN:)(&backslash;d+|X|Y|MT)(&backslash;s|&backslash;$)/&backslash;$1Chr&backslash;$2&backslash;$3/"' in.bam
+samtools reheader -c 'perl -pe "s/^(@SQ.*)(\tSN:)(\d+|X|Y|MT)(\s|\$)/\$1Chr\$2\$3/"' in.bam
 </pre>
 </li>
 <li>Remove &ldquo;Chr&rdquo; prefix
 <pre>
-samtools reheader -c 'perl -pe "s/^(@SQ.*)(&backslash;tSN:)Chr/&backslash;$1&backslash;$2/"' in.bam
+samtools reheader -c 'perl -pe "s/^(@SQ.*)(\tSN:)Chr/\$1\$2/"' in.bam
 </pre>
 <p>
 </ul>

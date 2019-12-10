@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.1.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -30,38 +30,17 @@ samtools <a href="samtools-mpileup.1.html">mpileup</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Generate pileup for one or multiple BAM files. Alignment records
-are grouped by sample (SM) identifiers in @RG header lines. If sample
-identifiers are absent, each input file is regarded as one sample.
+Generate text pileup output for one or multiple BAM files.
+Each input file produces a separate group of pileup columns in the output.
 <p>
-Samtools mpileup can still produce VCF and BCF output, but this feature is
+Samtools mpileup can still produce VCF and BCF output (with
+<b>-g</b> or<b> -u</b>),
+but this feature is
 deprecated and will be removed in a future release.  Please use
 <b>bcftools mpileup</b>
 for this instead.  (Documentation on the deprecated options has been removed
 from this manual page, but older versions are available online
 at &lt;<a href="http://www.htslib.org/doc/">http://www.htslib.org/doc/</a>&gt;.)
-<p>
-In the pileup format (without
-<b>-u</b> or<b> -g</b>),
-each
-line represents a genomic position, consisting of chromosome name,
-1-based coordinate, reference base, the number of reads covering the site,
-read bases, base qualities and alignment
-mapping qualities. Information on match, mismatch, indel, strand,
-mapping quality and start and end of a read are all encoded at the read
-base column. At this column, a dot stands for a match to the reference
-base on the forward strand, a comma for a match on the reverse strand,
-a '&gt;' or '&lt;' for a reference skip, `ACGTN' for a mismatch on the forward
-strand and `acgtn' for a mismatch on the reverse strand. A pattern
-`\\+[0-9]+[ACGTNacgtn]+' indicates there is an insertion between this
-reference position and the next reference position. The length of the
-insertion is given by the integer in the pattern, followed by the
-inserted sequence. Similarly, a pattern `-[0-9]+[ACGTNacgtn]+'
-represents a deletion from the reference. The deleted bases will be
-presented as `*' in the following lines. Also at the read base column, a
-symbol `^' marks the start of a read. The ASCII of the character
-following `^' minus 33 gives the mapping quality. A symbol `$' marks the
-end of a read segment.
 <p>
 Note that there are two orthogonal ways to specify locations in the
 input file; via <b>-r</b> <em>region</em> and <b>-l</b> <em>file</em>.  The
@@ -73,11 +52,89 @@ could be specified using <b>-r 20 -l chr20.bed</b>, meaning that the
 index is used to find chromosome 20 and then it is filtered for the
 regions listed in the bed file.
 <p>
+<h2 id="Pileup_Format"><a href="#Pileup_Format">Pileup Format</a></h2>
+Pileup format consists of TAB-separated lines, with each line representing
+the pileup of reads at a single genomic position.
+<p>
+Several columns contain numeric quality values encoded as individual ASCII
+characters.
+Each character can range from &ldquo;!&rdquo; to &ldquo;~&rdquo; and is decoded by
+taking its ASCII value and subtracting 33; e.g., &ldquo;A&rdquo; encodes the
+numeric value 32.
+<p>
+The first three columns give the position and reference:
+<p>
+Chromosome name.
+<p>
+1-based position on the chromosome.
+<p>
+Reference base at this position (this will be &ldquo;N&rdquo; on all lines
+if <b>-f</b>/<b>--fasta-ref</b> has not been used).
+<p>
+The remaining columns show the pileup data, and are repeated for each
+input BAM file specified:
+<p>
+Number of reads covering this position.
+<p>
+Read bases.
+This encodes information on matches, mismatches, indels, strand,
+mapping quality, and starts and ends of reads.
+<p>
+For each read covering the position, this column contains:
+<ul><li>If this is the first position covered by the read, a &ldquo;^&rdquo; character
+followed by the alignment's mapping quality encoded as an ASCII character.
+</li>
+<li>A single character indicating the read base and the strand to which the read
+has been mapped:
+<table>
+<tr><th>Forward</th><th>Reverse</th><th>Meaning</th></tr>
+<tr><th>\&.\fR dot</th><th>,\fR comma</th><th>Base matches the reference base</th></tr>
+<tr><td>ACGTN</td><td>acgtn</td><td>Base is a mismatch to the reference base</td></tr>
+<tr><td>></td><td><</td><td>Reference skip (due to CIGAR \(lqN\(rq)</td></tr>
+<tr><td>*</td><td>*\fR/\fB#</td><td>Deletion of the reference base (CIGAR \(lqD\(rq)</td></tr>
+</table>
+<p>
+Deleted bases are shown as &ldquo;*&rdquo; on both strands
+unless <b>--reverse-del</b> is used, in which case they are shown as &ldquo;#&rdquo;
+on the reverse strand.
+</li>
+<li>If there is an insertion after this read base, text matching
+&ldquo;\\+[0-9]+[ACGTNacgtn*#]+&rdquo;: a &ldquo;+&rdquo; character followed by an integer
+giving the length of the insertion and then the inserted sequence.
+Pads are shown as &ldquo;*&rdquo; unless <b>--reverse-del</b> is used,
+in which case pads on the reverse strand will be shown as &ldquo;#&rdquo;.
+</li>
+<li>If there is a deletion after this read base, text matching
+&ldquo;-[0-9]+[ACGTNacgtn]+&rdquo;: a &ldquo;-&rdquo; character followed by the deleted
+reference bases represented similarly.  (Subsequent pileup lines will
+contain &ldquo;*&rdquo; for this read indicating the deleted bases.)
+</li>
+<li>If this is the last position covered by the read, a &ldquo;$&rdquo; character.
+<p>
+Base qualities, encoded as ASCII characters.
+<p>
+Alignment mapping qualities, encoded as ASCII characters.
+(Column only present when <b>-s</b>/<b>--output-MQ</b> is used.)
+<p>
+Comma-separated 1-based positions within the alignments, e.g., 5 indicates
+that it is the fifth base of the corresponding read that is mapped to this
+genomic position.
+(Column only present when <b>-O</b>/<b>--output-BP</b> is used.)
+<p>
+Comma-separated read names.
+(Column only present when <b>--output-QNAME</b> is used.)
+<p>
+Additional columns containing other specified read fields or tags,
+as selected via the <b>--output-extra</b>, <b>--output-sep</b>,
+and <b>--output-empty</b> options.
+<p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-6, --illumina1.3+</b></dt><dd><p>
 Assume the quality is in the Illumina 1.3+ encoding.
 </dd><dt><b>-A, --count-orphans</b></dt><dd><p>
-Do not skip anomalous read pairs in variant calling.
+Do not skip anomalous read pairs in variant calling.  Anomolous read
+pairs are those marked in the FLAG field as paired in sequencing but
+without the properly-paired flag set.
 </dd><dt><b>-b, --bam-list</b><em> FILE</em></dt><dd><p>
 List of input BAM files, one file per line [null]
 </dd><dt><b>-B, --no-BAQ</b></dt><dd><p>
@@ -164,7 +221,7 @@ rather than the default of standard output.
 (The same short option is used for both the deprecated
 <b>--open-prob</b>
 option and
-<b>--output .</b>
+<b>--output</b>.
 If
 <b>-o</b>'s
 argument contains any non-digit characters other than a leading + or - sign,
@@ -179,8 +236,52 @@ or
 Output base positions on reads.
 </dd><dt><b>-s, --output-MQ</b></dt><dd><p>
 Output mapping quality.
+Equivalent to <b>--output-extra MAPQ</b>.
 </dd><dt><b>--output-QNAME</b></dt><dd><p>
 Output an extra column containing comma-separated read names.
+Equivalent to <b>--output-extra QNAME</b>.
+</dd><dt><b>--output-extra</b><em> STR</em></dt><dd><p>
+Output extra columns containing comma-separated values of read fields or read
+tags. The names of the selected fields have to be provided as they are
+described in the SAM Specification (pag. 6) and will be output by the
+mpileup command in the same order as in the document (i.e.
+<b>QNAME</b>, <b>FLAG</b>, <b>RNAME</b>,...)
+The names are case sensitive. Currently, only the following fields are
+supported:
+<p>
+<b>QNAME, FLAG, RNAME, POS, MAPQ, RNEXT, PNEXT</b>
+<p>
+Anything that is not on this list is treated as a potential tag, although only
+two character tags are accepted. In the mpileup output, tag columns are
+displayed in the order they were provided by the user in the command line.
+Field and tag names have to be provided in a comma-separated string to the
+mpileup command.
+E.g.
+<p>
+<b>samtools mpileup --output-extra FLAG,QNAME,RG,NM in.bam</b>
+<p>
+will display four extra columns in the mpileup output, the first being a list of
+comma-separated read names, followed by a list of flag values, a list of RG tag
+values and a list of NM tag values. Field values are always displayed before
+tag values.
+</dd><dt><b>--output-sep</b><em> CHAR</em></dt><dd><p>
+Specify a different separtor character for tag value lists, when those values
+might contain one or more commas (<b>,</b>), which is the default list separator.
+This option only affects columns for two-letter tags like NM; standard
+fields like FLAG or QNAME will always be separated by commas.
+</dd><dt><b>--output-empty</b><em> CHAR</em></dt><dd><p>
+Specify a different 'no value' character for tag list entries corresponding to
+reads that don't have a tag requested with the <b>--output-extra</b> option. The
+default is <b>*</b>.
+<p>
+This option only applies to rows that have at least one read in the pileup,
+and only to columns for two-letter tags.
+Columns for empty rows will always be printed as <b>*</b>.
+</dd><dt><b>--reverse-del</b></dt><dd><p>
+Mark the deletions on the reverse strand with the character
+<b>#</b>,
+instead of the usual
+<b>*</b>.
 </dd><dt><b>-a</b></dt><dd><p>
 Output all positions, including those with zero depth.
 </dd><dt><b>-a -a, -aa</b></dt><dd><p>

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-sort.1.html
 layout: manpage
 title: samtools-sort(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -114,6 +114,8 @@ or if output is to standard output, in the current directory as
 </dd><dt><b>-@ </b><em>INT</em></dt><dd><p>
 Set number of sorting and compression threads.
 By default, operation is single-threaded.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
 </dd></dl><p>
 <b>Ordering Rules</b>
 <p>

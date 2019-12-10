@@ -2,8 +2,8 @@
 permalink: /doc/samtools.1.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -589,6 +589,7 @@ has been run through <b>samtools fixmate</b> with the <b>-m</b> option.  This pr
 relies on the MC and ms tags that fixmate provides.
 <p>
 </dd></dl>
+<p>
 <h1 id="SAMTOOLS_OPTIONS"><a href="#SAMTOOLS_OPTIONS">SAMTOOLS OPTIONS</a></h1>
 These are options that are passed after the <b>samtools</b> command,
 before any sub-command is specified.
@@ -610,13 +611,14 @@ Display the full samtools version number in a machine-readable format.
 <p>
 Several long-options are shared between multiple samtools sub-commands:
 <b>--input-fmt</b>, <b>--input-fmt-option</b>, <b>--output-fmt</b>,
-<b>--output-fmt-option</b>, and <b>--reference</b>.
+<b>--output-fmt-option</b>, <b>--reference</b>, <b>--write-index</b>,
+and <b>--verbosity</b>.
 The input format is typically auto-detected so specifying the format
 is usually unnecessary and the option is included for completeness.
 Note that not all subcommands have all options.  Consult the subcommand
 help for more details.
 <p>
-Format strings recognised are "sam", "bam" and "cram".  They may be
+Format strings recognised are "sam", "sam.gz", "bam" and "cram".  They may be
 followed by a comma separated list of options as <em>key</em> or
 <em>key</em>=<em>value</em>. See below for examples.
 <p>
@@ -627,7 +629,8 @@ unspecified for a boolean option, the value is assumed to be 1.  The
 valid options are as follows.
 <dl><dt><b>level=</b><em>INT</em></dt><dd><p>
 Output only. Specifies the compression level from 1 to 9, or 0 for
-uncompressed.
+uncompressed.  If the output format is SAM, this also enables BGZF
+compression, otherwise SAM defaults to uncompressed.
 </dd><dt><b>nthreads=</b><em>INT</em></dt><dd><p>
 Specifies the number of threads to use during encoding and/or
 decoding.  For BAM this will be encoding only.  In CRAM the threads
@@ -719,6 +722,23 @@ samtools view --input-fmt-option decode_md=0
     --output-fmt cram,version=3.0 --output-fmt-option embed_ref
     --output-fmt-option seqs_per_slice=2000 -o foo.cram foo.bam
 </pre>
+<p>
+The <b>--write-index</b> option enables automatic index creation while
+writing out BAM, CRAM or bgzf SAM files.  Note to get compressed SAM
+as the output format you need to manually request a compression level,
+otherwise all SAM files are uncompressed.  SAM and BAM will use CSI
+indices while CRAM will use CRAI indices.
+<p>
+For example: to convert a BAM to a compressed SAM with CSI indexing:
+<pre>
+samtools view -h -O sam,level=6 --write-index in.bam -o out.sam.gz
+</pre>
+<p>
+The <b>--verbosity \fIINT</b> option sets the verbosity level for samtools
+and HTSlib.  The default is 3 (HTS_LOG_WARNING); 2 reduces warning messages
+and 0 or 1 also reduces some error messages, while values greater than 3
+produce increasing numbers of additional warnings and logging messages.
+<p>
 <p>
 <h1 id="REFERENCE_SEQUENCES"><a href="#REFERENCE_SEQUENCES">REFERENCE SEQUENCES</a></h1>
 <p>
@@ -824,7 +844,7 @@ samtools view -C -T ref.fa aln.bam &gt; aln.cram
 </ul>
 <h1 id="LIMITATIONS"><a href="#LIMITATIONS">LIMITATIONS</a></h1>
 <p>
-<ul><li>Unaligned words used in bam_import.c, bam_endian.h, bam.c and bam_aux.c.
+<ul><li>Unaligned words used in bam_endian.h, bam.c and bam_aux.c.
 <p>
 </ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>

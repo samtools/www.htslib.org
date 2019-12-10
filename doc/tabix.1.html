@@ -2,8 +2,8 @@
 permalink: /doc/tabix.1.html
 layout: manpage
 title: tabix(1) manual page
-package: htslib-1.9
-date: 18 July 2018
+package: htslib-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -85,6 +85,7 @@ are all stored in the index file and thus not used in data retrieval. [1]
 Skip first INT lines in the data file. [0]
 <p>
 </dd></dl>
+<p>
 <h1 id="QUERYING_AND_OTHER_OPTIONS"><a href="#QUERYING_AND_OTHER_OPTIONS">QUERYING AND OTHER OPTIONS</a></h1>
 <dl><dt><b>-h, --print-header </b></dt><dd><p>
 Print also the header/meta lines.
@@ -103,6 +104,8 @@ file may not be sorted.
 Similar to 
 <b>-R</b>
 but the entire input will be read sequentially and regions not listed in FILE will be skipped.
+</dd><dt><b>-D </b></dt><dd><p>
+Do not download the index file before opening it. Valid for remote files only.
 </dd></dl><p>
 <h1 id="EXAMPLE"><a href="#EXAMPLE">EXAMPLE</a></h1>
 (grep ^"#" in.gff; grep -v ^"#" in.gff | sort -k1,1 -k4,4n) | bgzip &gt; sorted.gff.gz;

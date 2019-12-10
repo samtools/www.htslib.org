@@ -2,8 +2,8 @@
 permalink: /doc/samtools-flagstat.1.html
 layout: manpage
 title: samtools-flagstat(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -19,9 +19,10 @@ Does a full pass through the input file to calculate and print statistics
 to stdout.
 <p>
 Provides counts for each of 13 categories based primarily on bit flags in
-the FLAG field. Each category in the output is broken down into QC pass and
-QC fail, which is presented as "#PASS + #FAIL" followed by a description of
-the category.
+the FLAG field.
+Each category in the output is broken down into QC pass and QC fail.
+In the default output format, these are presented as "#PASS + #FAIL" followed
+by a description of the category.
 <p>
 The first row of output gives the total number of reads that are QC pass and
 fail (according to flag bit 0x200). For example:
@@ -64,6 +65,62 @@ name (RNAME), mate reference name (MRNM), and mapping quality (MAPQ) fields:
 </dd><dt>with mate mapped to a different chr (mapQ&gt;=5)</dt><dd><p>
 0x1 bit set and neither 0x4 nor 0x8 bits set
 and MRNM not equal to RNAME and MAPQ &gt;= 5
+</dd></dl>
+<p>
+<h1 id="ALTERNATIVE_OUTPUT_FORMATS"><a href="#ALTERNATIVE_OUTPUT_FORMATS">ALTERNATIVE OUTPUT FORMATS</a></h1>
+<p>
+The
+<b>-O</b>
+option can be used to select two alternative formats for the output.
+<p>
+Using
+<b>-O tsv</b>
+selects a tab-separated values format that can easily be imported into
+spreadsheet software.
+In this format the first column contains the values for QC-passed reads,
+the second column has the values for QC-failed reads and the third
+contains the category names.
+<p>
+Using
+<b>-O json</b>
+generates an ECMA-404 JSON data interchange format object
+&lt;<a href="https://www.json.org/">https://www.json.org/</a>&gt;.
+The top-level object contains two named objects
+<b>QC-passed reads</b> and <b>QC-failed reads</b>.
+These contain the various categories listed above as names and
+the corresponding count as value.
+<p>
+For the default format, the
+<b>mapped</b>, <b>properly paired</b>, and <b>singletons</b>
+show the count as a percentage of the total number of QC-passed or QC-failed
+reads after the category name.
+For example:
+<pre>
+32 + 0 mapped (94.12% : N/A)
+</pre>
+<p>
+In the
+<b>tsv</b> and <b>json</b>
+formats, these percentages are listed in separate categories
+<b>mapped %</b>, <b>properly paired %</b>, and <b>singletons %</b>.
+If the percentage cannot be calculated (because the total is zero)
+then in the
+<b>default</b> and <b>tsv</b>
+formats it will be reported as `N/A'.
+In the
+<b>json</b>
+format, it will be reported as a JSON `null' value.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-@ </b><em>INT</em></dt><dd><p>
+Set number of additional threads to use when reading the file.
+</dd><dt><b>-O </b><em>FORMAT</em></dt><dd><p>
+Set the output format.
+<em>FORMAT</em>
+can be set to `default', `json' or `tsv' to select the default, JSON
+or tab-separated values output format.
+If this option is not used, the default format will be selected.
+<p>
 </dd></dl>
 <p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>

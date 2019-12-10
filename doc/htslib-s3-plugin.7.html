@@ -1,0 +1,89 @@
+---
+permalink: /doc/htslib-s3-plugin.7.html
+layout: manpage
+title: htslib-s3-plugin(7) manual page
+package: htslib-1.10
+date: 6 December 2019
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+s3 plugin &ndash; htslib AWS S3 plugin
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+The S3 plugin allows htslib file functions to communicate with servers that use
+the AWS S3 protocol.  Files are identified by their bucket and object key in a
+URL format e.g.
+<p>
+<b>s3://mybucket/path/to/file</b>
+<p>
+With <em>path/to/file</em> being the object key.
+<p>
+Necessary security information can be provided in as part of the URL, in
+environment variables or from configuration files.
+<p>
+The full URL format is:
+<p>
+<b>s3[+SCHEME]://[ID[:SECRET[:TOKEN]]@]BUCKET/PATH</b>
+<p>
+The elements are:
+<dl><dt><em>SCHEME</em></dt><dd><p>
+The protocol used.  Defaults to <em>https</em>.
+</dd><dt><em>ID</em></dt><dd><p>
+The user AWS access key.
+</dd><dt><em>SECRET</em></dt><dd><p>
+The secret key for use with the access key.
+</dd><dt><em>TOKEN</em></dt><dd><p>
+Token used for temporary security credentials.
+</dd><dt><em>BUCKET</em></dt><dd><p>
+AWS S3 bucket.
+</dd><dt><em>PATH</em></dt><dd><p>
+Path to the object under the bucket.
+</dd></dl><p>
+<p>
+The environment variables below will be used if the user ID is not set.
+<dl><dt><b>AWS_ACCESS_KEY_ID</b></dt><dd><p>
+The user AWS access key.
+</dd><dt><b>AWS_SECRET_ACCESS_KEY</b></dt><dd><p>
+The secret key for use with the access key.
+</dd><dt><b>AWS_DEFAULT_REGION</b></dt><dd><p>
+The region to use. Defaults to
+<em>us-east-1</em>.
+</dd><dt><b>AWS_SESSION_TOKEN</b></dt><dd><p>
+Token used for temporary security credentials.
+</dd><dt><b>AWS_DEFAULT_PROFILE</b></dt><dd><p>
+The profile to use in <em>credentials</em>, <em>config</em> or <em>s3cfg</em> files.
+Defaults to
+<em>default</em>.
+</dd><dt><b>AWS_PROFILE</b></dt><dd><p>
+Same as above.
+</dd><dt><b>AWS_SHARED_CREDENTIALS_FILE</b></dt><dd><p>
+Location of the credentials file.  Defaults to
+<em>~/.aws/credentials</em>.
+</dd><dt><b>HTS_S3_S3CFG</b></dt><dd><p>
+Location of the s3cfg file.  Defaults to
+<em>~/.s3cfg</em>.
+</dd><dt><b>HTS_S3_HOST</b></dt><dd><p>
+Sets the host.  Defaults to
+<em>s3.amazonaws.com</em>.
+</dd><dt><b>HTS_S3_V2</b></dt><dd><p>
+If set use signature v2 rather the default v4.  This will limit the plugin to
+reading only.
+</dd><dt><b>HTS_S3_PART_SIZE</b></dt><dd><p>
+Sets the upload part size in Mb, the minimum being 5Mb.
+By default the part size starts at 5Mb and expands at regular intervals to
+accommodate bigger files (up to 2.5 Tbytes with the current rate).
+Using this setting disables the automatic part size expansion.
+</dd></dl><p>
+In the absence of an ID from the previous two methods the credential/config
+files will be used.  The default file locations are either
+<em>~/.aws/credentials</em> or <em>~/.s3cfg</em> (in that order).
+<h1 id="NOTES"><a href="#NOTES">NOTES</a></h1>
+In most cases this plugin transforms the given URL into a virtual host-style
+format e.g. <em><a href="https://bucket.host/path/to/file">https://bucket.host/path/to/file</a></em>.  A path-style format is used
+where the URL is not DNS compliant or the bucket name contains a dot e.g.
+<em><a href="https://host/bu">https://host/bu</a>.cket/path/to/file</em>.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<b>htsfile</b>(1)
+<b>samtools</b>(1)
+<p>
+htslib website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

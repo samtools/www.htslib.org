@@ -2,8 +2,8 @@
 permalink: /doc/samtools-view.1.html
 layout: manpage
 title: samtools-view(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -56,6 +56,8 @@ The
 <b>-M</b>,
 <b>-r</b>,
 <b>-R</b>,
+<b>-d</b>,
+<b>-D</b>,
 <b>-s</b>,
 <b>-q</b>,
 <b>-l</b>,
@@ -113,6 +115,7 @@ Output all alignments.
 <p>
 <p>
 </dd></dl>
+<p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-b</b></dt><dd><p>
 Output in the BAM format.
@@ -198,6 +201,18 @@ Note that records with no
 <b>RG</b>
 tag will also be output when using this option.
 This behaviour may change in a future release.
+</dd><dt><b>-d </b><em>STR:STR</em></dt><dd><p>
+Only output alignments with tag
+<em>STR</em>
+and associated value
+<em>STR</em>
+[null].
+</dd><dt><b>-D </b><em>STR:FILE</em></dt><dd><p>
+Only output alignments with tag
+<em>STR</em>
+and associated values listed in
+<em>FILE</em>
+[null].
 </dd><dt><b>-q </b><em>INT</em></dt><dd><p>
 Skip alignments with MAPQ smaller than
 <em>INT</em>
@@ -264,8 +279,11 @@ of input.
 Include customized index file as a part of arugments. See
 <b>EXAMPLES</b>
 section for sample of useage.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
 <p>
 </dd></dl>
+<p>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
 <ul><li>Import SAM to BAM when
 <b>@SQ</b>
@@ -318,6 +336,26 @@ samtools view --input-fmt cram,decode_md=0 -o aln.new.bam aln.cram
 <li>Include customized index file as a part of arugments.
 <pre>
 samtools view [options] -X /data_folder/data.bam /index_folder/data.bai chrM:1-10
+</pre>
+<p>
+</li>
+<li>Output alignments in read group <b>grp2</b> (records with no <b>RG</b> tag will also be in the output).
+<pre>
+samtools view -r grp2 -o /data_folder/data.rg2.bam /data_folder/data.bam
+</pre>
+<p>
+</li>
+<li>Only keep reads with tag <b>BC</b> and were the barcode
+matches the barcodes listed in the barcode file.
+<pre>
+samtools view -D BC:barcodes.txt -o /data_folder/data.barcodes.bam /data_folder/data.bam
+</pre>
+<p>
+</li>
+<li>Only keep reads with tag <b>RG</b> and read group <b>grp2</b>.
+This does almost the same than <b>-r grp2</b> but will not keep records without the <b>RG</b> tag.
+<pre>
+samtools view -d RG:grp2 -o /data_folder/data.rg2_only.bam /data_folder/data.bam
 </pre>
 <p>
 </ul>

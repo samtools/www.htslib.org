@@ -2,8 +2,8 @@
 permalink: /doc/bgzip.1.html
 layout: manpage
 title: bgzip(1) manual page
-package: htslib-1.9
-date: 18 July 2018
+package: htslib-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -51,7 +51,9 @@ Write to standard output, keep original files unchanged.
 </dd><dt><b>-d, --decompress</b></dt><dd><p>
 Decompress.
 </dd><dt><b>-f, --force</b></dt><dd><p>
-Overwrite files without asking.
+Overwrite files without asking, or decompress files that don't have a known
+compression filename extension (e.g., <em>.gz</em>) without asking.
+Use <b>--force</b> twice to do both without asking.
 </dd><dt><b>-h, --help</b></dt><dd><p>
 Displays a help message.
 </dd><dt><b>-i, --index</b></dt><dd><p>

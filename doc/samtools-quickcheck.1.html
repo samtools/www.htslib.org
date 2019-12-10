@@ -2,8 +2,8 @@
 permalink: /doc/samtools-quickcheck.1.html
 layout: manpage
 title: samtools-quickcheck(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -20,7 +20,7 @@ samtools <a href="samtools-quickcheck.1.html">quickcheck</a>
 Quickly check that input files appear to be intact. Checks that beginning of the
 file contains a valid header (all formats) containing at least one target
 sequence and then seeks to the end of the file and checks that an end-of-file
-(EOF) is present and intact (BAM only).
+(EOF) is present and intact (BAM and CRAM only).
 <p>
 Data in the middle of the file is not read since that would be much more time
 consuming, so please note that this command will not detect internal corruption,
@@ -43,6 +43,7 @@ If both -q and -v options are used then the appropriate level of -v takes preced
 Expect unmapped input data, so do not require targets in the header.
 <p>
 </dd></dl>
+<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Josh Randall from the Sanger Institute.

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-index.1.html
 layout: manpage
 title: samtools-index(1) manual page
-package: samtools-1.9
-date: 14 August 2018
+package: samtools-1.10
+date: 6 December 2019
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -19,9 +19,9 @@ samtools <a href="samtools-index.1.html">index</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Index a coordinate-sorted BAM or CRAM file for fast random access.
-(Note that this does not work with SAM files even if they are bgzip
-compressed &mdash; to index such files, use tabix(1) instead.)
+Index a coordinate-sorted BGZIP-compressed SAM, BAM or CRAM file for fast
+random access.
+(Note that this does not work with uncompressed SAM files.)
 <p>
 This index is needed when
 <em>region</em>
@@ -41,6 +41,12 @@ either
 <em>aln.bam</em><b>.bai</b>
 or
 <em>aln.bam</em><b>.csi</b>
+will be created; and for a compressed SAM file
+<em>aln.sam.gz</em>,
+either
+<em>aln.sam.gz</em><b>.bai</b>
+or
+<em>aln.sam.gz</em><b>.csi</b>
 will be created, depending on the index format selected.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
@@ -55,6 +61,7 @@ as the fixed value used by the BAI format.
 Create a CSI index, with a minimum interval size of 2^INT.
 <p>
 </dd></dl>
+<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

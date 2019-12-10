@@ -69,7 +69,7 @@ my %special = (
   '12' => '&frac12;', '14' => '&frac14;', '34' => '&frac34;',
   bu => '&bull;', de => '&deg;', dg => '&dagger;', dd => '&Dagger;',
   ua => '&uarr;', da => '&darr;', '->' => '&rarr;', '<-' => '&larr;',
-  rs => '&backslash;');
+  rs => '\\'); # rs only used in <pre> so not &backslash;
 
 my %strings = (
   R => '&reg;', Tm => '&trade;', lq => '&ldquo;', rq => '&rdquo;');
@@ -165,7 +165,7 @@ sub section {
   my $out = conv_fontescape(conv_special(join(' ', @_)));
   my $prefix = "";
   if ($paramode[0] eq 'dl') {
-      $prefix = "</dd></dl>\n";
+      $prefix = "</dd></dl>\n<p>\n";
       $paramode[0] = 'p';
   }
   if ($paramode[0] eq 'ul') {

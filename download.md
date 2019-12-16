@@ -21,9 +21,9 @@ Download current source releases:
 &nbsp;
 <a class="btn btn-success" href="https://github.com/samtools/samtools/releases/download/1.10/samtools-1.10.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> samtools-1.10</a>
 &emsp;
-<a class="btn btn-success" href="https://github.com/samtools/bcftools/releases/download/1.10/bcftools-1.10.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> bcftools-1.10</a>
+<a class="btn btn-success" href="https://github.com/samtools/bcftools/releases/download/1.10.1/bcftools-1.10.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> bcftools-1.10.1</a>
 &emsp;
-<a class="btn btn-success" href="https://github.com/samtools/htslib/releases/download/1.10/htslib-1.10.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> htslib-1.10</a>
+<a class="btn btn-success" href="https://github.com/samtools/htslib/releases/download/1.10.1/htslib-1.10.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> htslib-1.10.1</a>
 
 See also release notes for
 [**samtools**](https://github.com/samtools/samtools/releases/latest/),

@@ -1,0 +1,160 @@
+---
+permalink: /doc/samtools-markdup.html
+layout: manpage
+title: samtools-markdup(1) manual page
+package: samtools-1.10
+date: 6 December 2019
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools markdup &ndash; mark duplicate alignments in a coordinate sorted file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-markdup.html">markdup</a>
+[<b>-l</b>
+<em>length</em>]
+[<b>-r</b>]
+[<b>-s</b>]
+[<b>-T</b>]
+[<b>-S</b>]
+[<b>-f</b>
+<em>file</em>]
+[<b>-d</b>
+<em>distance</em>]
+[<b>-c</b>]
+[<b>-t</b>]
+[<b>-m</b>]
+[<b>--mode</b>]
+[<b>--include-fails</b>]
+[<b>--no-PG</b>]
+<em>in.algsort.bam out.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Mark duplicate alignments from a coordinate sorted file that
+has been run through <b>samtools fixmate</b> with the <b>-m</b> option.  This program
+relies on the MC and ms tags that fixmate provides.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-l </b><em>INT</em></dt><dd><p>
+Expected maximum read length of <em>INT</em> bases.
+[300]
+</dd><dt><b>-r</b></dt><dd><p>
+Remove duplicate reads.
+</dd><dt><b>-s</b></dt><dd><p>
+Print some basic stats. See STATISTICS.
+</dd><dt><b>-T </b><em>PREFIX</em></dt><dd><p>
+Write temporary files to
+<em>PREFIX</em><b>.</b><em>samtools</em><b>.</b><em>nnnn</em><b>.</b><em>mmmm</em><b>.</b><em>tmp</em>
+</dd><dt><b>-S</b></dt><dd><p>
+Mark supplementary reads of duplicates as duplicates.
+</dd><dt><b>-f </b><em>file</em></dt><dd><p>
+Write stats to named file.
+</dd><dt><b>-d </b><em>distance</em></dt><dd><p>
+The optical duplicate distance.  Suggested settings of 100 for HiSeq style
+platforms or about 2500 for NovaSeq ones.  Default is 0 to not look for
+optical duplicates.  When set, duplicate reads are tagged with <b>dt:Z:SQ</b> for
+optical duplicates and <b>dt:Z:LB</b> otherwise.  Calculation of distance depends
+on coordinate data embedded in the read names produced by the Illumina
+sequencing machines.  Optical duplicate detection will not work on non standard
+names.
+</dd><dt><b>-c</b></dt><dd><p>
+Clear previous duplicate settings and tags.
+</dd><dt><b>-t</b></dt><dd><p>
+Mark duplicates with the name of the original in a <b>do</b> tag.
+</dd><dt><b>-m, --mode </b><em>TYPE</em></dt><dd><p>
+Duplicate decision method for paired reads.  Values are <b>t</b> or <b>s</b>.
+Mode <b>t</b> measures positions based on template start/end (default).
+Mode <b>s</b> measures positions based on sequence start.
+While the two methods identify mostly the same reads as duplicates, mode 
+<b>s</b> tends to return more results.  Unpaired reads are treated identically
+by both modes.
+</dd><dt><b>--include-fails</b></dt><dd><p>
+Include quality checked failed reads.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a PG line to the output file.
+</dd></dl>
+<p>
+<h1 id="STATISTICS"><a href="#STATISTICS">STATISTICS</a></h1>
+Entries are:
+<br>
+<b>COMMAND</b>: the command line.
+<br>
+<b>READ</b>: number of reads read in.
+<br>
+<b>WRITTEN</b>: reads written out.
+<br>
+<b>EXCLUDED</b>: reads ignored.  See below.
+<br>
+<b>EXAMINED</b>: reads examined for duplication.
+<br>
+<b>PAIRED</b>: reads that are part of a pair.
+<br>
+<b>SINGLE</b>: reads that are not part of a pair.
+<br>
+<b>DUPLICATE PAIR</b>: reads in a duplicate pair.
+<br>
+<b>DUPLICATE SINGLE</b>: single read duplicates.
+<br>
+<b>DUPLICATE PAIR OPTICAL</b>: optical duplicate paired reads.
+<br>
+<b>DUPLICATE SINGLE OPTICAL</b>: optical duplicate single reads.
+<br>
+<b>DUPLICATE NON PRIMARY</b>: supplementary/secondary duplicate reads.
+<br>
+<b>DUPLICATE NON PRIMARY OPTICAL</b>: supplementary/secondary optical
+duplicate reads.
+<br>
+<b>DUPLICATE PRIMARY TOTAL</b>: number of primary duplicate reads.
+<br>
+<b>DUPLICATE TOTAL</b>: total number of duplicate reads.
+<br>
+<b>ESTIMATED LIBRARY SIZE</b>: estimate of the number of unique fragments in the
+sequencing library.
+<p>
+<p>
+Estimated library size makes various assumptions e.g. the library consists of
+unique fragments that are randomly selected (with replacement) with equal
+probability.
+This is unlikely to be true in practice.
+However it can provide a useful guide into how many unique read pairs are likely 
+to be available.
+In particular it can be used to determine how much more data might be obtained
+by further sequencing of the library.
+<p>
+Excluded reads are those marked as secondary, supplementary or unmapped.
+By default QC failed reads are also excluded but can be included as an option.
+Excluded reads are not used for calculating duplicates.
+They can optionally be marked as duplicates if they have a primary that is also
+a duplicate.    
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+This first command sort can be omitted if the file is already name ordered:
+<pre>
+samtools sort -n -o namesort.bam example.bam
+</pre>
+<p>
+Add ms and MC tags for markdup to use later:
+<pre>
+samtools fixmate -m namesort.bam fixmate.bam
+</pre>
+<p>
+Markdup needs position order:
+<pre>
+samtools sort -o positionsort.bam fixmate.bam
+</pre>
+<p>
+Finally mark duplicates:
+<pre>
+samtools markdup positionsort.bam markdup.bam
+</pre>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Andrew Whitwham from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-sort.html"><em>samtools-sort</em></a> (1),
+<a href="samtools-fixmate.html"><em>samtools-fixmate</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

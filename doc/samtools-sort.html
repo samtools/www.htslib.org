@@ -1,0 +1,191 @@
+---
+permalink: /doc/samtools-sort.html
+layout: manpage
+title: samtools-sort(1) manual page
+package: samtools-1.10
+date: 6 December 2019
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools sort &ndash; sorts SAM/BAM/CRAM files
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+samtools <a href="samtools-sort.html">sort</a>
+[<b>-l</b>
+<em>level</em>]
+[<b>-m</b>
+<em>maxMem</em>]
+[<b>-o</b>
+<em>out.bam</em>]
+[<b>-O</b>
+<em>format</em>]
+[<b>-n</b>]
+[<b>-t</b>
+<em>tag</em>]
+[<b>-T</b>
+<em>tmpprefix</em>]
+[<b>-@</b>
+<em>threads</em>] [<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Sort alignments by leftmost coordinates, or by read name when
+<b>-n</b>
+is used.
+An appropriate
+<b>@HD-SO</b>
+sort order header tag will be added or an existing one updated if necessary.
+<p>
+The sorted output is written to standard output by default, or to the
+specified file
+(<em>out.bam</em>)
+when
+<b>-o</b>
+is used.
+This command will also create temporary files
+<em>tmpprefix</em><b>.</b><em>%d</em><b>.bam</b>
+as needed when the entire alignment data cannot fit into memory
+(as controlled via the
+<b>-m</b>
+option).
+<p>
+Consider using
+<b>samtools collate</b>
+instead if you need name collated data without a full lexicographical sort.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<p>
+<dl><dt><b>-l </b><em>INT</em></dt><dd><p>
+Set the desired compression level for the final output file, ranging from 0
+(uncompressed) or 1 (fastest but minimal compression) to 9 (best compression
+but slowest to write), similarly to
+<b>gzip</b>(1)'s
+compression level setting.
+<p>
+If
+<b>-l</b>
+is not used, the default compression level will apply.
+</dd><dt><b>-m </b><em>INT</em></dt><dd><p>
+Approximately the maximum required memory per thread, specified either in bytes
+or with a
+<b>K</b>, <b>M</b>, or <b>G</b>
+suffix.
+[768 MiB]
+<p>
+To prevent sort from creating a huge number of temporary files, it enforces a
+minimum value of 1M for this setting.
+</dd><dt><b>-n</b></dt><dd><p>
+Sort by read names (i.e., the
+<b>QNAME</b>
+field) rather than by chromosomal coordinates.
+</dd><dt><b>-t </b><em>TAG</em></dt><dd><p>
+Sort first by the value in the alignment tag TAG, then by position or name (if
+also using <b>-n</b>).
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Write the final sorted output to
+<em>FILE</em>,
+rather than to standard output.
+</dd><dt><b>-O </b><em>FORMAT</em></dt><dd><p>
+Write the final output as
+<b>sam</b>, <b>bam</b>, or <b>cram</b>.
+<p>
+By default, samtools tries to select a format based on the
+<b>-o</b>
+filename extension; if output is to standard output or no format can be
+deduced,
+<b>bam</b>
+is selected.
+</dd><dt><b>-T </b><em>PREFIX</em></dt><dd><p>
+Write temporary files to
+<em>PREFIX</em><b>.</b><em>nnnn</em><b>.bam,</b>
+or if the specified
+<em>PREFIX</em>
+is an existing directory, to
+<em>PREFIX</em><b>/samtools.</b><em>mmm</em><b>.</b><em>mmm</em><b>.tmp.</b><em>nnnn</em><b>.bam,</b>
+where
+<em>mmm</em>
+is unique to this invocation of the
+<b>sort</b>
+command.
+<p>
+By default, any temporary files are written alongside the output file, as
+<em>out.bam</em><b>.tmp.</b><em>nnnn</em><b>.bam,</b>
+or if output is to standard output, in the current directory as
+<b>samtools.</b><em>mmm</em><b>.</b><em>mmm</em><b>.tmp.</b><em>nnnn</em><b>.bam.</b>
+</dd><dt><b>-@ </b><em>INT</em></dt><dd><p>
+Set number of sorting and compression threads.
+By default, operation is single-threaded.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+</dd></dl><p>
+<b>Ordering Rules</b>
+<p>
+The following rules are used for ordering records.
+<p>
+If option <b>-t</b> is in use, records are first sorted by the value of
+the given alignment tag, and then by position or name (if using <b>-n</b>).
+For example, &ldquo;-t RG&rdquo; will make read group the primary sort key.  The
+rules for ordering by tag are:
+<p>
+<ul><li>Records that do not have the tag are sorted before ones that do.
+</li>
+<li>If the types of the tags are different, they will be sorted so
+that single character tags (type A) come before array tags (type B), then
+string tags (types H and Z), then numeric tags (types f and i).
+</li>
+<li>Numeric tags (types f and i) are compared by value.  Note that comparisons
+of floating-point values are subject to issues of rounding and precision.
+</li>
+<li>String tags (types H and Z) are compared based on the binary
+contents of the tag using the C
+<b>strcmp</b>(3)
+function.
+</li>
+<li>Character tags (type A) are compared by binary character value.
+</li>
+<li>No attempt is made to compare tags of other types &mdash; notably type B
+array values will not be compared.
+</ul><p>
+When the <b>-n</b> option is present, records are sorted by name.  Names are
+compared so as to give a &ldquo;natural&rdquo; ordering &mdash; i.e. sections
+consisting of digits are compared numerically while all other sections are
+compared based on their binary representation.  This means &ldquo;a1&rdquo; will
+come before &ldquo;b1&rdquo; and &ldquo;a9&rdquo; will come before &ldquo;a10&rdquo;.
+Records with the same name will be ordered according to the values of
+the READ1 and READ2 flags (see
+<b>flags</b>).
+<p>
+When the <b>-n</b> option is
+<b>not</b>
+present, reads are sorted by reference (according to the order of the @SQ
+header records), then by position in the reference, and then by the REVERSE
+flag.
+<p>
+<b>Note</b>
+<p>
+<p>
+Historically
+<b>samtools sort</b>
+also accepted a less flexible way of specifying the final and
+temporary output filenames:
+<p>
+samtools sort
+[<b>-f</b>] [<b>-o</b>]
+<em>in.bam out.prefix</em>
+<p>
+This has now been removed.
+The previous <em>out.prefix</em> argument (and <b>-f</b> option, if any)
+should be changed to an appropriate combination of <b>-T</b> <em>PREFIX</em>
+and <b>-o</b> <em>FILE</em>.  The previous <b>-o</b> option should be removed,
+as output defaults to standard output.
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute with numerous subsequent
+modifications.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-collate.html"><em>samtools-collate</em></a> (1),
+<a href="samtools-merge.html"><em>samtools-merge</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

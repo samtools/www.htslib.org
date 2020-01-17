@@ -9,11 +9,11 @@ by using <code>man <em>command</em></code> on the command line.
 The manual pages for several releases are also included below --- be sure
 to consult the documentation for the release you are using.
 
-* [bcftools](bcftools.1.html)
-* [bgzip](bgzip.1.html)
-* [htsfile](htsfile.1.html)
-* [samtools](samtools.1.html)
-* [tabix](tabix.1.html)
+* [bcftools](bcftools.html)
+* [bgzip](bgzip.html)
+* [htsfile](htsfile.html)
+* [samtools](samtools.html)
+* [tabix](tabix.html)
 
 Older manual pages are available for releases: [0.1.19](0.1.19), [1.0](1.0), [1.1](1.1), [1.2](1.2), [1.3](1.3), [1.3.1](1.3.1), [1.4](1.4), [1.4.1](1.4.1), [1.5](1.5), [1.6](1.6), [1.7](1.7), [1.8](1.8), [1.9](1.9)
 
@@ -48,10 +48,10 @@ the more important file formats.
 These are available via <code>man <em>format</em></code> on the command line
 or here on the web site:
 
-* [faidx](faidx.5.html) describes _.fai_ FASTA index files
-* [sam](sam.5.html) lists the mandatory SAM fields and meanings of flag values
-* [vcf](vcf.5.html) lists the mandatory VCF fields and common INFO tags
-* [htslib-s3-plugin](htslib-s3-plugin.7.html) describes the S3 plugin
+* [faidx](faidx.html) describes _.fai_ FASTA index files
+* [sam](sam.html) lists the mandatory SAM fields and meanings of flag values
+* [vcf](vcf.html) lists the mandatory VCF fields and common INFO tags
+* [htslib-s3-plugin](htslib-s3-plugin.html) describes the S3 plugin
 
 ## Algorithms
 

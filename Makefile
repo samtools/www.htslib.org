@@ -10,7 +10,7 @@ all:	samtools-doc htslib-doc bcftools-doc update_doc.md
 # if we removed doc/*.html first. (So don't do that.)
 samtools-doc:
 	@ for i in $(SAMTOOLS)/doc/*.1; do \
-	    base=`echo $$i | sed 's:.*/::'`; \
+	    base=`echo $$i | sed 's:.*/::;s:\.[1-9]$$::'`; \
 	    echo Processing $$i;\
 	    $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
 	done
@@ -20,7 +20,6 @@ BCFTOOLS_DOC_DATE = $(shell git --git-dir=$(BCFTOOLS)/.git log -n 1 0.1.0.. --da
 
 bcftools-doc:
 	a2x -adate='$(BCFTOOLS_DOC_DATE)' -aversion=$(BCFTOOLS_VERSION) --doctype manpage --format xhtml -D doc $(BCFTOOLS)/doc/bcftools.txt
-	mv doc/bcftools.html doc/bcftools.1.html
 
 htslib-doc:
 	@ for i in $(HTSLIB)/*.[1-9]; do \
@@ -28,7 +27,7 @@ htslib-doc:
 	    *".so."*) \
 	        ;; \
 	    *) \
-	        base=`echo $$i | sed 's:.*/::'`; \
+	        base=`echo $$i | sed 's:.*/::;s:\.[1-9]$$::'`; \
 	        echo Processing $$i;\
 	        $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
 	        ;; \

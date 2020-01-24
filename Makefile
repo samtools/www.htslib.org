@@ -3,16 +3,16 @@ SAMTOOLS = ../samtools
 BCFTOOLS = ../bcftools
 
 MAN2FHTML = man2fhtml
+ADD_MANPAGE_LINKS = ./add_manpage_links.pl
 
 all:	samtools-doc htslib-doc bcftools-doc update_doc.md
 
-# Note this may need running twice to get SYNOPSIS links correct
-# if we removed doc/*.html first. (So don't do that.)
 samtools-doc:
 	@ for i in $(SAMTOOLS)/doc/*.1; do \
 	    base=`echo $$i | sed 's:.*/::;s:\.[1-9]$$::'`; \
 	    echo Processing $$i;\
 	    $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
+	    $(ADD_MANPAGE_LINKS) doc/$$base.html;\
 	done
 
 BCFTOOLS_VERSION ?= $(shell git --git-dir=$(BCFTOOLS)/.git describe --match '[0-9].[0-9]*' | sed 's/-.*//')
@@ -30,6 +30,7 @@ htslib-doc:
 	        base=`echo $$i | sed 's:.*/::;s:\.[1-9]$$::'`; \
 	        echo Processing $$i;\
 	        $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
+	        $(ADD_MANPAGE_LINKS) doc/$$base.html;\
 	        ;; \
 	    esac \
 	done

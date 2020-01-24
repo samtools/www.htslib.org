@@ -7,7 +7,10 @@ my ($name) = @ARGV;
 open(my $in, '<', $name) || die "Couldn't open $name : $!\n";
 open(my $out, '>', "$name~") || die "Couldn't open $name~ for writing : $!\n";
 while (<$in>) {
-    if (/^<h1 id="SYNOPSIS">/) {
+    if ($. == 1 && /^---$/) {
+        print $out $_;
+        add_frontmatter_redirects($in, $out);
+    } elsif (/^<h1 id="SYNOPSIS">/) {
         print $out $_;
         add_samtools_link_synopsis($in, $out);
     } elsif (/^<h1 id="SEE_ALSO">/) {
@@ -20,6 +23,33 @@ while (<$in>) {
 close($out) || die "Error closing $name~ : $!\n";
 close($in) || die "Error closing $name : $!\n";
 rename("$name~", $name) || die "Couldn't mv $name~ $name : $!\n";
+
+sub add_frontmatter_redirects {
+    my ($in, $out) = @_;
+
+    my %redirects = (
+        '/doc/bgzip.html'            => '/doc/bgzip.1.html',
+        '/doc/faidx.html'            => '/doc/faidx.5.html',
+        '/doc/htsfile.html'          => '/doc/htsfile.1.html',
+        '/doc/htslib-s3-plugin.html' => '/doc/htslib-s3-plugin.7.html',
+        '/doc/sam.html'              => '/doc/sam.5.html',
+        '/doc/samtools.html'         => '/doc/samtools.1.html',
+        '/doc/tabix.html'            => '/doc/tabix.1.html',
+        '/doc/vcf.html'              => '/doc/vcf.5.html');
+
+    my $redirect;
+    while (<$in>) {
+        if (/^permalink:\s+(\S+)/ && exists($redirects{$1})) {
+            $redirect = $redirects{$1};
+        } elsif (/^permalink:\s+\/doc\/(samtools-[a-z]+)\.html/) {
+            $redirect = "/doc/${1}.1.html";
+        } elsif (/^---$/ && $redirect) {
+            print $out "redirect_from: $redirect\n";
+        }
+        print $out $_;
+        last if (/^---$/);
+    }
+}
 
 sub add_samtools_link_synopsis {
     my ($in, $out) = @_;

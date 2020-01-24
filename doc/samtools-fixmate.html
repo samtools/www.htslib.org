@@ -20,7 +20,7 @@ samtools <a href="samtools-fixmate.html">fixmate</a>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
 Fill in mate coordinates, ISIZE and mate related flags from a
-name-sorted alignment.
+name-sorted or name-collated alignment.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-r</b></dt><dd><p>
@@ -44,6 +44,8 @@ deduced,
 is selected.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
 <p>
 </dd></dl>
 <p>
@@ -54,6 +56,8 @@ Written by Heng Li from the Sanger Institute.
 <h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
 <a href="samtools.html"><em>samtools</em></a> (1),
 <a href="samtools-markdup.html"><em>samtools-markdup</em></a> (1),
+<a href="samtools-sort.html"><em>samtools-sort</em></a> (1),
+<a href="samtools-collate.html"><em>samtools-collate</em></a> (1)
 <a href="samtools-sort.html"><em>samtools-sort</em></a> (1)
 <p>
 Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

@@ -47,6 +47,8 @@ samtools <a href="samtools-fixmate.html">fixmate</a> in.namesorted.sam out.bam
 <p>
 samtools <a href="samtools-mpileup.html">mpileup</a> -C50 -f ref.fasta -r chr3:1,000-2,000 in1.bam in2.bam
 <p>
+samtools <a href="samtools-coverage.html">coverage</a> aln.sorted.bam
+<p>
 samtools <a href="samtools-flags.html">flags</a> PAIRED,UNMAP,MUNMAP
 <p>
 samtools <a href="samtools-fastq.html">fastq</a> input.bam &gt; output.fastq
@@ -392,6 +394,13 @@ Alignment records are grouped by sample (SM) identifiers in @RG header lines.
 If sample identifiers are absent, each input file is regarded as one sample.
 <p>
 See the samtools-mpileup man page for a description of the pileup format and options.
+<p>
+</dd><dt><b>coverage</b></dt><dd><p>
+samtools coverage
+[<em>options</em>]
+[<em>in1.sam</em>|<em>in1.bam</em>|<em>in1.cram</em> [<em>in2.sam</em>|<em>in2.bam</em>|<em>in2.cram</em>] [...]]
+<p>
+Produces a histogram or table of coverage per chromosome.
 <p>
 </dd><dt><b>flags</b></dt><dd><p>
 samtools flags

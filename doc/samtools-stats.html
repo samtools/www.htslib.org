@@ -300,12 +300,12 @@ reference site.  For example an average depth of 50 would ideally
 result in a normal distribution centred on 50, but the presence of
 repeats or copy-number variation may reveal multiple peaks at
 approximate multiples of 50.  The first column is an inclusive
-coverage range in the form of <b>[\fImin\fB-\fImax\fB]</b>.  The next
+coverage range in the form of <b>[</b><em>min</em><b>-</b><em>max</em><b>]</b>.  The next
 columns are a repeat of the <em>max</em>imum portion of the depth range
 (now as a single integer) and the frequency that depth range was
 observed.  The minimum, maximum and range step size are controlled by
 the <b>-c</b> option.  Depths above and below the minimum and maximum
-are reported with ranges <b>[&lt;\fImin\fB]</b> and <b>[\fImax\fB&lt;]</b>.
+are reported with ranges <b>[&lt;</b><em>min</em><b>]</b> and <b>[</b><em>max</em><b>&lt;]</b>.
 <p>
 GCD reports the GC content of the reference data aligned against per
 alignment record, with one row per observed GC percentage reported as
@@ -388,9 +388,10 @@ Only bases with coverage above this value will be included in the target percent
 If this option is set, it will allows user to specify customized index file location(s) if the data
 folder does not contain any index file.
 Example usage: samtools stats [options] -X /data_folder/data.bam /index_folder/data.bai chrM:1-10
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
 <p>
 </dd></dl>
-<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Petr Danacek with major modifications by Nicholas Clarke,

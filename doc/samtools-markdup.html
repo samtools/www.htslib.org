@@ -74,8 +74,10 @@ by both modes.
 Include quality checked failed reads.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a PG line to the output file.
-</dd></dl>
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
 <p>
+</dd></dl>
 <h1 id="STATISTICS"><a href="#STATISTICS">STATISTICS</a></h1>
 Entries are:
 <br>
@@ -129,14 +131,14 @@ Excluded reads are not used for calculating duplicates.
 They can optionally be marked as duplicates if they have a primary that is also
 a duplicate.    
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
-This first command sort can be omitted if the file is already name ordered:
+This first collate command can be omitted if the file is already name ordered or collated:
 <pre>
-samtools sort -n -o namesort.bam example.bam
+samtools collate -o namecollate.bam example.bam
 </pre>
 <p>
 Add ms and MC tags for markdup to use later:
 <pre>
-samtools fixmate -m namesort.bam fixmate.bam
+samtools fixmate -m namecollate.bam fixmate.bam
 </pre>
 <p>
 Markdup needs position order:
@@ -149,6 +151,10 @@ Finally mark duplicates:
 samtools markdup positionsort.bam markdup.bam
 </pre>
 <p>
+Typically the fixmate step would be applied immediately after sequence
+alignment and the markdup step after sorting by chromosome and
+position.  Thus no <em>additional</em> sort steps are normally needed.
+<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Andrew Whitwham from the Sanger Institute.
@@ -156,6 +162,7 @@ Written by Andrew Whitwham from the Sanger Institute.
 <h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
 <a href="samtools.html"><em>samtools</em></a> (1),
 <a href="samtools-sort.html"><em>samtools-sort</em></a> (1),
+<a href="samtools-collate.html"><em>samtools-collate</em></a> (1),
 <a href="samtools-fixmate.html"><em>samtools-fixmate</em></a> (1)
 <p>
 Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

@@ -39,7 +39,7 @@ Older manual pages are available for releases: [0.1.19](0.1.19), [1.0](1.0), [1.
 
 
 
-## File formats and plugins
+## File formats
 
 SAMtools conforms to the specifications produced by the GA4GH File Formats working group. Details of the current specifications are available on the  [hts-specs page](http://samtools.github.io/hts-specs).
 

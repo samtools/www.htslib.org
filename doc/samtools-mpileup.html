@@ -64,20 +64,18 @@ taking its ASCII value and subtracting 33; e.g., &ldquo;A&rdquo; encodes the
 numeric value 32.
 <p>
 The first three columns give the position and reference:
-<p>
-Chromosome name.
-<p>
-1-based position on the chromosome.
-<p>
-Reference base at this position (this will be &ldquo;N&rdquo; on all lines
+<ul><li>Chromosome name.
+</li>
+<li>1-based position on the chromosome.
+</li>
+<li>Reference base at this position (this will be &ldquo;N&rdquo; on all lines
 if <b>-f</b>/<b>--fasta-ref</b> has not been used).
-<p>
+</li></ul><p>
 The remaining columns show the pileup data, and are repeated for each
 input BAM file specified:
-<p>
-Number of reads covering this position.
-<p>
-Read bases.
+<ul><li>Number of reads covering this position.
+</li>
+<li>Read bases.
 This encodes information on matches, mismatches, indels, strand,
 mapping quality, and starts and ends of reads.
 <p>
@@ -89,10 +87,10 @@ followed by the alignment's mapping quality encoded as an ASCII character.
 has been mapped:
 <table>
 <tr><th>Forward</th><th>Reverse</th><th>Meaning</th></tr>
-<tr><th>\&.\fR dot</th><th>,\fR comma</th><th>Base matches the reference base</th></tr>
-<tr><td>ACGTN</td><td>acgtn</td><td>Base is a mismatch to the reference base</td></tr>
-<tr><td>></td><td><</td><td>Reference skip (due to CIGAR \(lqN\(rq)</td></tr>
-<tr><td>*</td><td>*\fR/\fB#</td><td>Deletion of the reference base (CIGAR \(lqD\(rq)</td></tr>
+<tr><td><b>.</b> dot</td><td><b>,</b> comma</td><td>Base matches the reference base</td></tr>
+<tr><td><b>ACGTN</b></td><td><b>acgtn</b></td><td>Base is a mismatch to the reference base</td></tr>
+<tr><td><b>&gt;</b></td><td><b>&lt;</b></td><td>Reference skip (due to CIGAR &ldquo;N&rdquo;)</td></tr>
+<tr><td><b>*</b></td><td><b>*</b>/<b>#</b></td><td>Deletion of the reference base (CIGAR &ldquo;D&rdquo;)</td></tr>
 </table>
 <p>
 Deleted bases are shown as &ldquo;*&rdquo; on both strands
@@ -111,24 +109,26 @@ reference bases represented similarly.  (Subsequent pileup lines will
 contain &ldquo;*&rdquo; for this read indicating the deleted bases.)
 </li>
 <li>If this is the last position covered by the read, a &ldquo;$&rdquo; character.
-<p>
-Base qualities, encoded as ASCII characters.
-<p>
-Alignment mapping qualities, encoded as ASCII characters.
+</li></ul>
+</li>
+<li>Base qualities, encoded as ASCII characters.
+</li>
+<li>Alignment mapping qualities, encoded as ASCII characters.
 (Column only present when <b>-s</b>/<b>--output-MQ</b> is used.)
-<p>
-Comma-separated 1-based positions within the alignments, e.g., 5 indicates
+</li>
+<li>Comma-separated 1-based positions within the alignments, e.g., 5 indicates
 that it is the fifth base of the corresponding read that is mapped to this
 genomic position.
 (Column only present when <b>-O</b>/<b>--output-BP</b> is used.)
-<p>
-Comma-separated read names.
+</li>
+<li>Comma-separated read names.
 (Column only present when <b>--output-QNAME</b> is used.)
-<p>
-Additional columns containing other specified read fields or tags,
+</li>
+<li>Additional columns containing other specified read fields or tags,
 as selected via the <b>--output-extra</b>, <b>--output-sep</b>,
 and <b>--output-empty</b> options.
 <p>
+</li></ul>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-6, --illumina1.3+</b></dt><dd><p>
 Assume the quality is in the Illumina 1.3+ encoding.
@@ -367,7 +367,7 @@ The
 <b>calmd</b>
 command is used to reduce false heterozygotes around INDELs.
 <p>
-</ul>
+</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

@@ -85,9 +85,9 @@ entire alignment file unless it is asked to do so.
 <h1 id="COMMANDS"><a href="#COMMANDS">COMMANDS</a></h1>
 <p>
 Each command has its own man page which can be viewed using
-e.g. <b>man samtools-view</b> or with a recent GNU man using \fBman
-samtools view\fR.  Below we have a brief summary of syntax and
-sub-command description.
+e.g. <b>man samtools-view</b> or with a recent GNU man using
+<b>man samtools view</b>.  Below we have a brief summary of syntax
+and sub-command description.
 <p>
 Options common to all sub-commands are documented below in the GLOBAL
 COMMAND OPTIONS section.
@@ -410,18 +410,18 @@ Convert between textual and numeric flag representation.
 <p>
 <b>FLAGS:</b>
 <table>
-<tr><td>0x1</td><td>PAIRED</td><td>paired-end (or multiple-segment) sequencing technology</td></tr>
-<tr><td>0x2</td><td>PROPER_PAIR</td><td>each segment properly aligned according to the aligner</td></tr>
-<tr><td>0x4</td><td>UNMAP</td><td>segment unmapped</td></tr>
-<tr><td>0x8</td><td>MUNMAP</td><td>next segment in the template unmapped</td></tr>
-<tr><td>0x10</td><td>REVERSE</td><td>SEQ is reverse complemented</td></tr>
-<tr><td>0x20</td><td>MREVERSE</td><td>SEQ of the next segment in the template is reverse complemented</td></tr>
-<tr><td>0x40</td><td>READ1</td><td>the first segment in the template</td></tr>
-<tr><td>0x80</td><td>READ2</td><td>the last segment in the template</td></tr>
-<tr><td>0x100</td><td>SECONDARY</td><td>secondary alignment</td></tr>
-<tr><td>0x200</td><td>QCFAIL</td><td>not passing quality controls</td></tr>
-<tr><td>0x400</td><td>DUP</td><td>PCR or optical duplicate</td></tr>
-<tr><td>0x800</td><td>SUPPLEMENTARY</td><td>supplementary alignment</td></tr>
+<tr><td><b>0x1</b></td><td>PAIRED</td><td>paired-end (or multiple-segment) sequencing technology</td></tr>
+<tr><td><b>0x2</b></td><td>PROPER_PAIR</td><td>each segment properly aligned according to the aligner</td></tr>
+<tr><td><b>0x4</b></td><td>UNMAP</td><td>segment unmapped</td></tr>
+<tr><td><b>0x8</b></td><td>MUNMAP</td><td>next segment in the template unmapped</td></tr>
+<tr><td><b>0x10</b></td><td>REVERSE</td><td>SEQ is reverse complemented</td></tr>
+<tr><td><b>0x20</b></td><td>MREVERSE</td><td>SEQ of the next segment in the template is reverse complemented</td></tr>
+<tr><td><b>0x40</b></td><td>READ1</td><td>the first segment in the template</td></tr>
+<tr><td><b>0x80</b></td><td>READ2</td><td>the last segment in the template</td></tr>
+<tr><td><b>0x100</b></td><td>SECONDARY</td><td>secondary alignment</td></tr>
+<tr><td><b>0x200</b></td><td>QCFAIL</td><td>not passing quality controls</td></tr>
+<tr><td><b>0x400</b></td><td>DUP</td><td>PCR or optical duplicate</td></tr>
+<tr><td><b>0x800</b></td><td>SUPPLEMENTARY</td><td>supplementary alignment</td></tr>
 </table>
 <p>
 </dd><dt><b>fastq/a</b></dt><dd><p>
@@ -673,19 +673,19 @@ By default all fields are used.  Limiting the decode to specific
 columns can have significant performance gains.  The bit-field is a
 numerical value constructed from the following table.
 <table>
-<tr><td>0x1</td><td>SAM_QNAME</td></tr>
-<tr><td>0x2</td><td>SAM_FLAG</td></tr>
-<tr><td>0x4</td><td>SAM_RNAME</td></tr>
-<tr><td>0x8</td><td>SAM_POS</td></tr>
-<tr><td>0x10</td><td>SAM_MAPQ</td></tr>
-<tr><td>0x20</td><td>SAM_CIGAR</td></tr>
-<tr><td>0x40</td><td>SAM_RNEXT</td></tr>
-<tr><td>0x80</td><td>SAM_PNEXT</td></tr>
-<tr><td>0x100</td><td>SAM_TLEN</td></tr>
-<tr><td>0x200</td><td>SAM_SEQ</td></tr>
-<tr><td>0x400</td><td>SAM_QUAL</td></tr>
-<tr><td>0x800</td><td>SAM_AUX</td></tr>
-<tr><td>0x1000</td><td>SAM_RGAUX</td></tr>
+<tr><td><b>0x1</b></td><td>SAM_QNAME</td></tr>
+<tr><td><b>0x2</b></td><td>SAM_FLAG</td></tr>
+<tr><td><b>0x4</b></td><td>SAM_RNAME</td></tr>
+<tr><td><b>0x8</b></td><td>SAM_POS</td></tr>
+<tr><td><b>0x10</b></td><td>SAM_MAPQ</td></tr>
+<tr><td><b>0x20</b></td><td>SAM_CIGAR</td></tr>
+<tr><td><b>0x40</b></td><td>SAM_RNEXT</td></tr>
+<tr><td><b>0x80</b></td><td>SAM_PNEXT</td></tr>
+<tr><td><b>0x100</b></td><td>SAM_TLEN</td></tr>
+<tr><td><b>0x200</b></td><td>SAM_SEQ</td></tr>
+<tr><td><b>0x400</b></td><td>SAM_QUAL</td></tr>
+<tr><td><b>0x800</b></td><td>SAM_AUX</td></tr>
+<tr><td><b>0x1000</b></td><td>SAM_RGAUX</td></tr>
 </table>
 </dd><dt><b>name_prefix=</b><em>string</em></dt><dd><p>
 CRAM input only; defaults to output filename.  Any sequences with
@@ -744,7 +744,7 @@ For example: to convert a BAM to a compressed SAM with CSI indexing:
 samtools view -h -O sam,level=6 --write-index in.bam -o out.sam.gz
 </pre>
 <p>
-The <b>--verbosity \fIINT</b> option sets the verbosity level for samtools
+The <b>--verbosity </b><em>INT</em> option sets the verbosity level for samtools
 and HTSlib.  The default is 3 (HTS_LOG_WARNING); 2 reduces warning messages
 and 0 or 1 also reduces some error messages, while values greater than 3
 produce increasing numbers of additional warnings and logging messages.
@@ -851,12 +851,12 @@ command.
 samtools view -C -T ref.fa aln.bam &gt; aln.cram
 </pre>
 <p>
-</ul>
+</li></ul>
 <h1 id="LIMITATIONS"><a href="#LIMITATIONS">LIMITATIONS</a></h1>
 <p>
 <ul><li>Unaligned words used in bam_endian.h, bam.c and bam_aux.c.
 <p>
-</ul>
+</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Heng Li from the Sanger Institute wrote the original C version of

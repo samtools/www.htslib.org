@@ -49,7 +49,7 @@ align against either a pre-built index or directly against a fasta file
 (as used below).  The most naive approach is simply to save this file
 as SAM:
 
-    minimap2 -t 8 -a -x sr C.Elegans.fa SRR065390_1.fastq SRR065390_2.fastq > CE.sam
+    minimap2 -t 8 -a -x sr C.Elegans.fa SRR065390_1.fastq SRR065390_2.fastq -o CE.sam
 
 This outputs in SAM (-a), uses 8 threads (-t 8), with options for
 paired end short read (-x sr).
@@ -59,6 +59,12 @@ read pairs will be collated next to each other.  This is important as
 the next step requires name-collated data.
 Note some aligners may shuffle the data a bit when multi-threading is
 enabled, but in all cases the output will still be name-collated.
+
+Note if you use `nohup` to run a command and redirect stdout using
+e.g. `> CE.sam`, then you may mix stdout and stderr together.  This
+can be prevented by also adding `2>err` to explicitly save stderr to a
+separate file or preferably use an explicit output option, such as the
+`-o CE.sam` above.
 
 #### Fixing of mate-pair issues
 

@@ -11,7 +11,7 @@ title: Samtools - Workflows
 
 ## <a name="fastq_to_bam"></a>FASTQ to BAM / CRAM - Version 1.0
 
-The sequencing instruments produce unaligned data, typically in FASTQ
+Sequencing instruments produce unaligned data, typically in FASTQ
 format.  It is possible to store unaligned data in BAM or CRAM, and
 indeed it may be preferable as it permits meta-data in the header and
 per-record auxiliary tags, however in this workflow we consider the
@@ -150,8 +150,8 @@ Using Unix pipelines is a faster approach.  Furthermore the lack of
 needing temporary files on disk (excepting any internal temporary
 files output by `sort`) means we can use uncompressed BAM for maximum
 speed.  All samtools commands accept `-` as a synonym for stdin and stdout.
-Most commands should have a `-u` option to request uncompressed BAM,
-but all should also accept a more explict `-O bam,level=0`.
+Most commands have a `-u` option to request uncompressed BAM,
+but all should also accept a more explicit `-O bam,level=0`.
 
 An example pipeline would be:
 

@@ -4,14 +4,7 @@ title: Samtools - Workflows: FASTQ to BAM / CRAM
 redirect_from: /workflow#fastq_to_bam
 ---
 
-# Workflows
-
-* [FASTQ to BAM/CRAM processing](workflow-fastq)
-* [WES Mapping to Variant Calls - Version 1.0](workflow-wgs-call)
-* [Filtering of VCF files](workflow-filter)
-* [Using CRAM within Samtools](workflow-cram)
-
-## <a name="fastq_to_bam"></a>FASTQ to BAM / CRAM - Version 1.0
+# <a name="fastq_to_bam"></a>FASTQ to BAM / CRAM - Version 1.0
 
 Sequencing instruments produce unaligned data, typically in FASTQ
 format.  It is possible to store unaligned data in BAM or CRAM, and

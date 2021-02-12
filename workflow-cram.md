@@ -4,14 +4,7 @@ title: Samtools - Workflows: Using CRAM
 redirect_from: /workflow#mapping_to_cram
 ---
 
-# Workflows
-
-* [FASTQ to BAM/CRAM processing](workflow-fastq.md)
-* [WES Mapping to Variant Calls - Version 1.0](workflow-wgs-call.md)
-* [Filtering of VCF files](workflow-filter.md)
-* [Using CRAM within Samtools](workflow-cram.md)
-
-## <a name="mapping_to_cram"></a>Using CRAM within Samtools
+# <a name="mapping_to_cram"></a>Using CRAM within Samtools
 CRAM is primarily a reference-based compressed format, meaning that only differences between the stored sequences and the reference are stored.
 
 For a workflow this has a few fundamental effects:

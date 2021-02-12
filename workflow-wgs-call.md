@@ -4,14 +4,7 @@ title: Samtools - Workflows: Mapping to Variant Calls
 redirect_from: /workflow#mapping_to_variant
 ---
 
-# Workflows
-
-* [FASTQ to BAM/CRAM processing](workflow-fastq)
-* [WES Mapping to Variant Calls - Version 1.0](workflow-wgs-call)
-* [Filtering of VCF files](workflow-filter)
-* [Using CRAM within Samtools](workflow-cram)
-
-## <a name="mapping_to_variant"></a>WGS/WES Mapping to Variant Calls - Version 1.0
+# <a name="mapping_to_variant"></a>WGS/WES Mapping to Variant Calls - Version 1.0
 The standard workflow for working with DNA sequence data consists of three major steps:
 
 * Mapping

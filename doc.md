@@ -67,6 +67,18 @@ or here on the web site:
 
 ## Publications
 
+### Software Packages
+
+A joint publication of SAMtools and BCFtools improvements over the last 12
+years was published in 2021.
+
+* Danecek P, Bonfield JK, Liddle J, Marshall J, Ohan V, Pollard MO, Whitwham A, Keane T, McCarthy SA, Davies RM, Li H, **Twelve years of SAMtools and BCFtools**, *GigaScience* (2021) 10(2) giab008 [[33590861](https://pubmed.ncbi.nlm.nih.gov/33590861)]
+
+The same journal issue also saw the HTSlib paper, describing the C library.
+
+* Bonfield JK, Marshall J, Danecek P, Li H, Ohan V, Whitwham A, Keane T, Davies RM, **HTSlib: C library for reading/writing high-throughput sequencing data**, *GigaScience* (2021) 10(2) giab007 [[33594436](https://pubmed.ncbi.nlm.nih.gov/33594436)]
+
+
 ### File formats
 
 The introduction of the **SAM/BAM format** and the `samtools` command line tool:

@@ -1,0 +1,115 @@
+---
+permalink: /doc/1.11/samtools-coverage.html
+layout: manpage
+title: samtools-coverage(1) manual page
+package: samtools-1.11
+date: 22 September 2020
+section_text: Bioinformatics tools
+redirect_from: /doc/1.11/samtools-coverage.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools coverage &ndash; produces a histogram or table of coverage per chromosome
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-coverage.html">coverage</a>
+[<em>options</em>]
+[<em>in1.sam</em>|<em>in1.bam</em>|<em>in1.cram</em> [<em>in2.sam</em>|<em>in2.bam</em>|<em>in2.cram</em>] [...]]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Computes the depth at each position or region and draws an ASCII-art
+histogram or tabulated text.
+<p>
+The tabulated form uses the following headings.
+<p>
+<table>
+<tr><td><b>rname</b></td><td>Reference name / chromosome</td></tr>
+<tr><td><b>startpos</b></td><td>Start position</td></tr>
+<tr><td><b>endpos</b></td><td>End position (or sequence length)</td></tr>
+<tr><td><b>numreads</b></td><td>Number reads aligned to the region (after filtering)</td></tr>
+<tr><td><b>covbases</b></td><td>Number of covered bases with depth &gt;= 1</td></tr>
+<tr><td><b>coverage</b></td><td>Proportion of covered bases [0..1]</td></tr>
+<tr><td><b>meandepth</b></td><td>Mean depth of coverage</td></tr>
+<tr><td><b>meanbaseq</b></td><td>Mean baseQ in covered region</td></tr>
+<tr><td><b>meanmapq</b></td><td>Mean mapQ of selected reads</td></tr>
+</table>
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<p>
+Input options:
+<p>
+<dl><dt><b>-b, --bam-list</b><em> FILE</em></dt><dd><p>
+List of input BAM files, one file per line [null]
+</dd><dt><b>-l, --min-read-len</b><em> INT</em></dt><dd><p>
+Ignore reads shorter than <em>INT</em> base pairs [0]
+</dd><dt><b>-q, --min-MQ</b><em> INT</em></dt><dd><p>
+Minimum mapping quality for an alignment to be used [0]
+</dd><dt><b>-Q, --min-BQ</b><em> INT</em></dt><dd><p>
+Minimum base quality for a base to be considered [0]
+</dd><dt><b>--rf, --incl-flags</b><em> STR|INT</em></dt><dd><p>
+Required flags: skip reads with mask bits unset [null]
+</dd><dt><b>--ff, --excl-flags</b><em> STR|INT</em></dt><dd><p>
+Filter flags: skip reads with mask bits set
+[UNMAP,SECONDARY,QCFAIL,DUP]
+<p>
+</dd></dl><p>
+Output options:
+<p>
+<dl><dt><b>-m, --histogram</b></dt><dd><p>
+Show histogram instead of tabular output.
+</dd><dt><b>-A, --ascii</b></dt><dd><p>
+Show only ASCII characters in histogram.
+</dd><dt><b>-o, --output</b><em> FILE</em></dt><dd><p>
+Write output to FILE [stdout].
+</dd><dt><b>-H, --no-header</b></dt><dd><p>
+Don't print a header in tabular mode.
+</dd><dt><b>-w, --n-bins</b><em> INT</em></dt><dd><p>
+Number of bins in histogram.  [terminal width - 40]
+</dd><dt><b>-r, --region</b><em> REG</em></dt><dd><p>
+Show specified region. Format: chr:start-end. 
+</dd><dt><b>-h, --help</b></dt><dd><p>
+Shows command help.
+<p>
+</dd></dl>
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+<p>
+Running coverage in tabular mode, on a specific region, with tabs
+shown as spaces for clarity in this man page.
+<p>
+<pre>
+samtools coverage -r chr1:1M-12M input.bam
+<p>
+#rname  startpos  endpos    numreads  covbases  coverage  meandepth  meanbaseq  meanmapq
+chr1    1000000   12000000  528695    1069995   9.72723   3.50281    34.4       55.8
+</pre>
+<p>
+An example of the histogram output is below, with ASCII block
+characters replaced by "#" for rendering in this man page.
+<p>
+<pre>
+samtools coverage -A -w 32 -r chr1:1M-12M input.bam
+<p>
+chr1 (249.25Mbp)
+&gt;  24.19% | #                              | Number of reads: 528695
+&gt;  21.50% |##                              |     (132000 filtered)
+&gt;  18.81% |##                              | Covered bases:   1.07Mbp
+&gt;  16.12% |##                           #  | Percent covered: 9.727%
+&gt;  13.44% |##  #  #       ##            # #| Mean coverage:   3.5x
+&gt;  10.75% |## ##  #       ##          # # #| Mean baseQ:      34.4
+&gt;   8.06% |#####  #       ##        # # # #| Mean mapQ:       55.8
+&gt;   5.37% |##### ##      ###      # ##### #| 
+&gt;   2.69% |##### ###     ###  ### #########| Histo bin width: 343.8Kbp
+&gt;   0.00% |############ ###################| Histo max bin:   26.873%
+        1.00M     4.44M     7.87M       12.00M 
+</pre>
+<p>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Florian P Breitwieser.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-depth.html"><em>samtools-depth</em></a> (1),
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

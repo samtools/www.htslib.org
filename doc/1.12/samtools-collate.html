@@ -1,0 +1,94 @@
+---
+permalink: /doc/1.12/samtools-collate.html
+layout: manpage
+title: samtools-collate(1) manual page
+package: samtools-1.12
+date: 17 March 2021
+section_text: Bioinformatics tools
+redirect_from: /doc/1.12/samtools-collate.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools collate &ndash; shuffles and groups reads together by their names
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-collate.html">collate</a>
+[<em>options</em>]
+<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em> [<em>&lt;prefix&gt;</em>]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Shuffles and groups reads together by their names.
+A faster alternative to a full query name sort,
+<b>collate</b>
+ensures that reads of the same name are grouped together in contiguous groups,
+but doesn't make any guarantees about the order of read names between groups.
+<p>
+The output from this command should be suitable for any operation that
+requires all reads from the same template to be grouped together.
+<p>
+If present, &lt;prefix&gt; is used to name the temporary files that collate
+uses when sorting the data.  If neither the '-O' nor '-o' options are used,
+&lt;prefix&gt; must be present and collate will use it to make an output file name
+by appending a suffix depending on the format written (.bam by default).
+<p>
+If either the -O or -o option is used, &lt;prefix&gt; is optional.  If &lt;prefix&gt;
+is absent, collate will write the temporary files to a system-dependent
+location (/tmp on UNIX).
+<p>
+Using -f for fast mode will output <b>only</b> primary alignments that have
+either the READ1 <b>or</b> READ2 flags set (but not both).
+Any other alignment records will be filtered out.
+The collation will only work correctly if there are no more than two reads
+for any given QNAME after filtering.
+<p>
+Fast mode keeps a buffer of alignments in memory so that it can write out
+most pairs as soon as they are found instead of storing them in temporary
+files.
+This allows collate to avoid some work and so finish more quickly compared
+to the standard mode.
+The number of alignments held can be changed using -r, storing more alignments
+uses more memory but increases the number of pairs that can be written early.
+<p>
+While collate normally randomises the ordering of read pairs, fast mode
+does not.
+Position-dependent biases that would normally be broken up can remain in the
+fast collate output.
+It is therefore not a good idea to use fast mode when preparing data for
+programs that expect randomly ordered paired reads.
+For example using fast collate instead of the standard mode may lead to
+significantly different results from aligners that estimate library insert
+sizes on batches of reads.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-O</b></dt><dd><p>
+Output to stdout.  This option cannot be used with '-o'.
+</dd><dt><b>-o FILE</b></dt><dd><p>
+Write output to FILE.  This option cannot be used with '-O'.
+</dd><dt><b>-u</b></dt><dd><p>
+Write uncompressed BAM output
+</dd><dt><b>-l </b><em>INT</em></dt><dd><p>
+Compression level.
+[1]
+</dd><dt><b>-n </b><em>INT</em></dt><dd><p>
+Number of temporary files to use.
+[64]
+</dd><dt><b>-f</b></dt><dd><p>
+Fast mode (primary alignments only).
+</dd><dt><b>-r </b><em>INT</em></dt><dd><p>
+Number of reads to store in memory (for use with -f).
+[10000]
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute and extended by Andrew Whitwham.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-sort.html"><em>samtools-sort</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

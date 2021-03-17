@@ -1,0 +1,92 @@
+---
+permalink: /doc/1.12/samtools-calmd.html
+layout: manpage
+title: samtools-calmd(1) manual page
+package: samtools-1.12
+date: 17 March 2021
+section_text: Bioinformatics tools
+redirect_from: /doc/1.12/samtools-calmd.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools calmd &ndash; calculates MD and NM tags
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-calmd.html">calmd</a>
+[<b>-Eeubr</b>]
+[<b>-C</b>
+<em>capQcoef</em>] <em>aln.bam</em> <em>ref.fasta</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Generate the MD tag. If the MD tag is already present, this command will
+give a warning if the MD tag generated is different from the existing
+tag. Output SAM by default.
+<p>
+Calmd can also read and write CRAM files although in most cases it is
+pointless as CRAM recalculates MD and NM tags on the fly.  The one
+exception to this case is where both input and output CRAM files
+have been / are being created with the <em>no_ref</em> option.
+<p>
+Note that some aligners do not include sequence or confidence values
+in secondary and supplementary alignment records.
+Where this happens in SAM files, a &ldquo;*&rdquo; character will be
+seen in the <b>SEQ</b> and <b>QUAL</b> columns.
+These records will be skipped, as it is not possible to recalculate
+the MD and NM tags without access to the query sequence.
+<b>samtools calmd</b>
+will emit a warning if any records have been skipped for this reason.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-A</b></dt><dd><p>
+When used jointly with
+<b>-r</b>
+this option overwrites the original base quality.
+</dd><dt><b>-e</b></dt><dd><p>
+Convert a the read base to = if it is identical to the aligned reference
+base. Indel caller does not support the = bases at the moment.
+</dd><dt><b>-u</b></dt><dd><p>
+Output uncompressed BAM
+</dd><dt><b>-b</b></dt><dd><p>
+Output compressed BAM
+</dd><dt><b>-C</b><em> INT</em></dt><dd><p>
+Coefficient to cap mapping quality of poorly mapped reads. See the
+<b>mpileup</b>
+command for details. [0]
+</dd><dt><b>-r</b></dt><dd><p>
+Compute the BQ tag (without -A) or cap base quality by BAQ (with -A).
+</dd><dt><b>-E</b></dt><dd><p>
+Extended BAQ calculation. This option trades specificity for sensitivity, though the
+effect is minor.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+<ul><li>Dump BAQ applied alignment for other SNP callers:
+<pre>
+samtools calmd -bAr aln.bam &gt; aln.baq.bam
+</pre>
+It adds and corrects the
+<b>NM</b>
+and
+<b>MD</b>
+tags at the same time. The
+<b>calmd</b>
+command also comes with the
+<b>-C</b>
+option, the same as the one in
+<b>mpileup</b>.
+Apply if it helps.
+<p>
+</li></ul>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-mpileup.html"><em>samtools-mpileup</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

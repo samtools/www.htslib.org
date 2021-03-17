@@ -2,8 +2,8 @@
 permalink: /doc/samtools-flagstat.html
 layout: manpage
 title: samtools-flagstat(1) manual page
-package: samtools-1.11
-date: 22 September 2020
+package: samtools-1.12
+date: 17 March 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-flagstat.1.html
 ---
@@ -21,6 +21,9 @@ to stdout.
 <p>
 Provides counts for each of 13 categories based primarily on bit flags in
 the FLAG field.
+Information on the meaning of the flags is given in the SAM specification
+document &lt;<a href="https://samtools.github.io/hts-specs/SAMv1.pdf">https://samtools.github.io/hts-specs/SAMv1.pdf</a>&gt;.
+<p>
 Each category in the output is broken down into QC pass and QC fail.
 In the default output format, these are presented as "#PASS + #FAIL" followed
 by a description of the category.

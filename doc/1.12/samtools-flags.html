@@ -1,0 +1,44 @@
+---
+permalink: /doc/1.12/samtools-flags.html
+layout: manpage
+title: samtools-flags(1) manual page
+package: samtools-1.12
+date: 17 March 2021
+section_text: Bioinformatics tools
+redirect_from: /doc/1.12/samtools-flags.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools flags &ndash; convert between textual and numeric flag representation.
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-flags.html">flags</a>
+<em>INT</em>|<em>STR</em>[,...]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Convert between textual and numeric flag representation.
+<p>
+<b>FLAGS:</b>
+<table>
+<tr><td><b>0x1</b></td><td>PAIRED</td><td>paired-end (or multiple-segment) sequencing technology</td></tr>
+<tr><td><b>0x2</b></td><td>PROPER_PAIR</td><td>each segment properly aligned according to the aligner</td></tr>
+<tr><td><b>0x4</b></td><td>UNMAP</td><td>segment unmapped</td></tr>
+<tr><td><b>0x8</b></td><td>MUNMAP</td><td>next segment in the template unmapped</td></tr>
+<tr><td><b>0x10</b></td><td>REVERSE</td><td>SEQ is reverse complemented</td></tr>
+<tr><td><b>0x20</b></td><td>MREVERSE</td><td>SEQ of the next segment in the template is reverse complemented</td></tr>
+<tr><td><b>0x40</b></td><td>READ1</td><td>the first segment in the template</td></tr>
+<tr><td><b>0x80</b></td><td>READ2</td><td>the last segment in the template</td></tr>
+<tr><td><b>0x100</b></td><td>SECONDARY</td><td>secondary alignment</td></tr>
+<tr><td><b>0x200</b></td><td>QCFAIL</td><td>not passing quality controls</td></tr>
+<tr><td><b>0x400</b></td><td>DUP</td><td>PCR or optical duplicate</td></tr>
+<tr><td><b>0x800</b></td><td>SUPPLEMENTARY</td><td>supplementary alignment</td></tr>
+</table>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Petr Danacek from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

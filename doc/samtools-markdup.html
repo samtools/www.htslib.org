@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.11
-date: 22 September 2020
+package: samtools-1.12
+date: 17 March 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -29,6 +29,7 @@ samtools <a href="samtools-markdup.html">markdup</a>
 [<b>--include-fails</b>]
 [<b>--no-PG</b>]
 [<b>-u</b>]
+[<b>--no-multi-dup</b>]
 <em>in.algsort.bam out.bam</em>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
@@ -75,6 +76,13 @@ by both modes.
 Output uncompressed SAM, BAM or CRAM.
 </dd><dt><b>--include-fails</b></dt><dd><p>
 Include quality checked failed reads.
+</dd><dt><b>--no-multi-dup</b></dt><dd><p>
+Stop checking duplicates of duplicates for correctness.  While still marking
+reads as duplicates further checks to make sure all optical duplicates are found
+are not carried out.  Also operates on <b>-t</b> tagging where reads may tagged
+with a better quality read but not necessarily the best one.  Using this option
+can speed up duplicate marking when there are a great many duplicates for each
+original read. 
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a PG line to the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>

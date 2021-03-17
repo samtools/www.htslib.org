@@ -2,8 +2,8 @@
 permalink: /doc/samtools-view.html
 layout: manpage
 title: samtools-view(1) manual page
-package: samtools-1.11
-date: 22 September 2020
+package: samtools-1.12
+date: 17 March 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-view.1.html
 ---
@@ -55,6 +55,7 @@ option is required whenever writing CRAM output.
 The
 <b>-L</b>,
 <b>-M</b>,
+<b>-N</b>,
 <b>-r</b>,
 <b>-R</b>,
 <b>-d</b>,
@@ -201,6 +202,9 @@ regions specified on the command line will be reported multiple times.
 The usage of a BED file is optional and its path has to be preceded by
 <b>-L</b>
 option.
+</dd><dt><b>-N </b><em>FILE</em></dt><dd><p>
+Output only alignments with read names listed in
+<em>FILE.</em>
 </dd><dt><b>-r </b><em>STR</em></dt><dd><p>
 Output alignments in read group
 <em>STR</em>
@@ -217,12 +221,13 @@ Note that records with no
 <b>RG</b>
 tag will also be output when using this option.
 This behaviour may change in a future release.
-</dd><dt><b>-d </b><em>STR:STR</em></dt><dd><p>
+</dd><dt><b>-d </b><em>STR1[:STR2]</em></dt><dd><p>
 Only output alignments with tag
-<em>STR</em>
+<em>STR1</em>
 and associated value
-<em>STR</em>
-[null].
+<em>STR2</em>,
+which can be a string or an integer [null].
+The value can be omitted, in which case only the tag is considered.
 </dd><dt><b>-D </b><em>STR:FILE</em></dt><dd><p>
 Only output alignments with tag
 <em>STR</em>
@@ -242,6 +247,10 @@ Only output alignments with number of CIGAR bases consuming query
 sequence &ge;
 <em>INT</em>
 [0]
+</dd><dt><b>-e </b><em>STR</em></dt><dd><p>
+Only include alignments that match the filter expression <em>STR</em>.
+The syntax for these expressions are in the main samtools(1) man page
+under the FILTER EXPRESSIONS heading.
 </dd><dt><b>-f </b><em>INT</em></dt><dd><p>
 Only output alignments with all bits set in
 <em>INT</em>

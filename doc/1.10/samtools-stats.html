@@ -1,0 +1,406 @@
+---
+permalink: /doc/1.10/samtools-stats.html
+layout: manpage
+title: samtools-stats(1) manual page
+package: samtools-1.10
+date: 6 December 2019
+section_text: Bioinformatics tools
+redirect_from: /doc/1.10/samtools-stats.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools stats &ndash; produces comprehensive statistics from alignment file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-stats.html">stats</a>
+[<em>options</em>]
+<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>
+[<em>region</em>...]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+samtools stats collects statistics from BAM files and outputs in a text format.
+The output can be visualized graphically using plot-bamstats.
+<p>
+A summary of output sections is listed below, followed by more
+detailed descriptions.
+<p>
+<table>
+<tr><td><b>CHK</b></td><td>Checksum</td></tr>
+<tr><td><b>SN</b></td><td>Summary numbers</td></tr>
+<tr><td><b>FFQ</b></td><td>First fragment qualities</td></tr>
+<tr><td><b>LFQ</b></td><td>Last fragment qualities</td></tr>
+<tr><td><b>GCF</b></td><td>GC content of first fragments</td></tr>
+<tr><td><b>GCL</b></td><td>GC content of last fragments</td></tr>
+<tr><td><b>GCC</b></td><td>ACGT content per cycle</td></tr>
+<tr><td><b>FBC</b></td><td>ACGT content per cycle for first fragments only</td></tr>
+<tr><td><b>FTC</b></td><td>ACGT raw counters for first fragments</td></tr>
+<tr><td><b>LBC</b></td><td>ACGT content per cycle for last fragments only</td></tr>
+<tr><td><b>LTC</b></td><td>ACGT raw counters for last fragments</td></tr>
+<tr><td><b>BCC</b></td><td>ACGT content per cycle for BC barcode</td></tr>
+<tr><td><b>CRC</b></td><td>ACGT content per cycle for CR barcode</td></tr>
+<tr><td><b>OXC</b></td><td>ACGT content per cycle for OX barcode</td></tr>
+<tr><td><b>RXC</b></td><td>ACGT content per cycle for RX barcode</td></tr>
+<tr><td><b>QTQ</b></td><td>Quality distribution for BC barcode</td></tr>
+<tr><td><b>CYQ</b></td><td>Quality distribution for CR barcode</td></tr>
+<tr><td><b>BZQ</b></td><td>Quality distribution for OX barcode</td></tr>
+<tr><td><b>QXQ</b></td><td>Quality distribution for RX barcode</td></tr>
+<tr><td><b>IS</b></td><td>Insert sizes</td></tr>
+<tr><td><b>RL</b></td><td>Read lengths</td></tr>
+<tr><td><b>FRL</b></td><td>Read lengths for first fragments only</td></tr>
+<tr><td><b>LRL</b></td><td>Read lengths for last fragments only</td></tr>
+<tr><td><b>ID</b></td><td>Indel size distribution</td></tr>
+<tr><td><b>IC</b></td><td>Indels per cycle</td></tr>
+<tr><td><b>COV</b></td><td>Coverage (depth) distribution</td></tr>
+<tr><td><b>GCD</b></td><td>GC-depth</td></tr>
+</table>
+<p>
+Not all sections will be reported as some depend on the data being
+coordinate sorted while others are only present when specific barcode
+tags are in use.
+<p>
+Some of the statistics are collected for &ldquo;first&rdquo; or &ldquo;last&rdquo;
+fragments.
+Records are put into these categories using the PAIRED (0x1), READ1 (0x40)
+and READ2 (0x80) flag bits, as follows:
+<p>
+<ul><li>Unpaired reads (i.e. PAIRED is not set) are all &ldquo;first&rdquo; fragments.
+For these records, the READ1 and READ2 flags are ignored.
+</li>
+<li>Reads where PAIRED and READ1 are set, and READ2 is not set are &ldquo;first&rdquo;
+fragments.
+</li>
+<li>Reads where PAIRED and READ2 are set, and READ1 is not set are &ldquo;last&rdquo;
+fragments.
+</li>
+<li>Reads where PAIRED is set and either both READ1 and READ2 are set or
+neither is set are not counted in either category.
+</li></ul><p>
+The CHK row contains distinct CRC32 checksums of read names, sequences
+and quality values.  The checksums are computed per alignment record
+and summed, meaning the checksum does not change if the input file has
+the sort-order changed.
+<p>
+The SN section contains a series of counts, percentages, and averages, in a similar style to
+<b>samtools flagstat</b>,
+but more comprehensive.
+<p>
+<b>raw total sequences</b>
+- total number of reads in a file. Same number reported by
+<b>samtools view -c</b>.
+<p>
+<b>filtered sequences</b>
+- number of discarded reads when using -f or -F option.
+<p>
+<b>sequences</b>
+- number of processed reads.
+<p>
+<b>is sorted</b>
+- flag indicating whether the file is coordinate sorted (1) or not (0).
+<p>
+<b>1st fragments</b>
+- number of
+<b>first</b>
+fragment reads (flags 0x01 not set; or flags 0x01
+and 0x40 set, 0x80 not set).
+<p>
+<b>last fragments</b>
+- number of
+<b>last</b>
+fragment reads (flags 0x01 and 0x80 set, 0x40 not set).
+<p>
+<b>reads mapped</b>
+- number of reads, paired or single, that are mapped (flag 0x4 or 0x8 not set).
+<p>
+<b>reads mapped and paired</b>
+- number of mapped paired reads (flag 0x1 is set and flags 0x4 and 0x8 are not set).
+<p>
+<b>reads unmapped</b>
+- number of unmapped reads (flag 0x4 is set).
+<p>
+<b>reads properly paired</b>
+- number of mapped paired reads with flag 0x2 set.
+<p>
+<b>paired</b>
+- number of paired reads, mapped or unmapped, that are neither secondary nor supplementary (flag 0x1 is set and flags 0x100 (256) and 0x800 (2048) are not set).
+<p>
+<b>reads duplicated</b>
+- number of duplicate reads (flag 0x400 (1024) is set).
+<p>
+<b>reads MQ0</b>
+- number of mapped reads with mapping quality 0.
+<p>
+<b>reads QC failed</b>
+- number of reads that failed the quality checks (flag 0x200 (512) is set).
+<p>
+<b>non-primary alignments</b>
+- number of secondary reads (flag 0x100 (256) set).
+<p>
+<b>total length</b>
+- number of processed bases from reads that are neither secondary nor supplementary (flags 0x100 (256) and 0x800 (2048) are not set).
+<p>
+<b>total first fragment length</b>
+- number of processed bases that belong to
+<b>first </b>fragments.
+<p>
+<b>total last fragment length</b>
+- number of processed bases that belong to
+<b>last </b>fragments.
+<p>
+<b>bases mapped</b>
+- number of processed bases that belong to
+<b>reads mapped.</b>
+<p>
+<b>bases mapped (cigar)</b>
+- number of mapped bases filtered by the CIGAR string corresponding to the read they belong to. Only alignment matches(M), inserts(I), sequence matches(=) and sequence mismatches(X) are counted.
+<p>
+<b>bases trimmed</b>
+- number of bases trimmed by bwa, that belong to non secondary and non supplementary reads. Enabled by -q option.
+<p>
+<b>bases duplicated</b>
+- number of bases that belong to
+<b>reads duplicated.</b>
+<p>
+<b>mismatches</b>
+- number of mismatched bases, as reported by the NM tag associated wit a read, if present.
+<p>
+<b>error rate</b>
+- ratio between
+<b>mismatches</b>
+and
+<b>bases mapped (cigar).</b>
+<p>
+<b>average length</b>
+- ratio between
+<b>total length</b>
+and
+<b>sequences.</b>
+<p>
+<b>average first fragment length</b>
+- ratio between
+<b>total first fragment length</b>
+and
+<b>1st fragments.</b>
+<p>
+<b>average last fragment length</b>
+- ratio between
+<b>total last fragment length</b>
+and
+<b>last fragments.</b>
+<p>
+<b>maximum length</b>
+- length of the longest read (includes hard-clipped bases).
+<p>
+<b>maximum first fragment length</b>
+- length of the longest
+<b>first</b>
+fragment read (includes hard-clipped bases).
+<p>
+<b>maximum last fragment length</b>
+- length of the longest
+<b>last</b>
+fragment read (includes hard-clipped bases).
+<p>
+<b>average quality</b>
+- ratio between the sum of base qualities and
+<b>total length.</b>
+<p>
+<b>insert size average</b>
+- the average absolute template length for paired and mapped reads.
+<p>
+<b>insert size standard deviation</b>
+- standard deviation for the average template length distribution.
+<p>
+<b>inward oriented pairs</b>
+- number of paired reads with flag 0x40 (64) set and flag 0x10 (16) not set or with flag 0x80 (128) set and flag 0x10 (16) set.
+<p>
+<b>outward oriented pairs</b>
+- number of paired reads with flag 0x40 (64) set and flag 0x10 (16) set or with flag 0x80 (128) set and flag 0x10 (16) not set.
+<p>
+<b>pairs with other orientation</b>
+- number of paired reads that don't fall in any of the above two categories.
+<p>
+<b>pairs on different chromosomes</b>
+- number of pairs where one read is on one chromosome and the pair read is on a different chromosome.
+<p>
+<b>percentage of properly paired reads</b>
+- percentage of
+<b>reads properly paired</b>
+out of
+<b>sequences.</b>
+<p>
+<b>bases inside the target</b>
+- number of bases inside the target region(s) (when a target file is specified with -t option).
+<p>
+<b>percentage of target genome with coverage &gt; VAL</b>
+- percentage of target bases with a coverage larger than VAL. By default, VAL is 0, but a custom value can be supplied by the user with -g option.
+<p>
+<p>
+The FFQ and LFQ sections report the quality distribution per
+first/last fragment and per cycle number.  They have one row per cycle
+(reported as the first column after the FFQ/LFQ key) with remaining
+columns being the observed integer counts per quality value, starting
+at quality 0 in the left-most row and ending at the largest observed
+quality.  Thus each row forms its own quality distribution and any
+cycle specific quality artefacts can be observed.
+<p>
+GCF and GCL report the total GC content of each fragment, separated
+into first and last fragments.  The columns show the GC percentile
+(between 0 and 100) and an integer count of fragments at that
+percentile.
+<p>
+GCC, FBC and LBC report the nucleotide content per cycle either combined
+(GCC) or split into first (FBC) and last (LBC) fragments.  The columns
+are cycle number (integer), and percentage counts for A, C, G, T, N
+and other (typically containing ambiguity codes) normalised against
+the total counts of A, C, G and T only (excluding N and other).
+<p>
+FTC and LTC report the total numbers of nucleotides for first and last
+fragments, respectively. The columns are the raw counters for A, C, G,
+T and N bases.
+<p>
+BCC, CRC, OXC and RXC are the barcode equivalent of GCC, showing
+nucleotide content for the barcode tags BC, CR, OX and RX respectively.
+Their quality values distributions are in the QTQ, CYQ, BZQ and
+QXQ sections, corresponding to the BC/QT, CR/CY, OX/BZ and RX/QX SAM
+format sequence/quality tags.  These quality value distributions
+follow the same format used in the FFQ and LFQ sections. All these
+section names are followed by a number (1 or 2), indicating that the
+stats figures below them correspond to the first or second barcode (in
+the case of dual indexing). Thus, these sections will appear as BCC1,
+CRC1, OXC1 and RXC1, accompanied by their quality correspondents QTQ1,
+CYQ1, BZQ1 and QXQ1. If a separator is present in the barcode sequence
+(usually a hyphen), indicating dual indexing, then sections ending in
+"2" will also be reported to show the second tag statistics (e.g. both
+BCC1 and BCC2 are present).
+<p>
+IS reports insert size distributions with one row per size, reported
+in the first column, with subsequent columns for the frequency of
+total pairs, inward oriented pairs, outward orient pairs and other
+orientation pairs.  The <b>-i</b> option specifies the maximum insert
+size reported.
+<p>
+RL reports the distribution for all read lengths, with one row per
+observed length (up to the maximum specified by the <b>-l</b> option).
+Columns are read length and frequency.  FRL and LRL contains the same
+information separated into first and last fragments.
+<p>
+ID reports the distribution of indel sizes, with one row per observed
+size. The columns are size, frequency of insertions at that size and
+frequency of deletions at that size.
+<p>
+IC reports the frequency of indels occurring per cycle, broken down by
+both insertion / deletion and by first / last read.  Note for
+multi-base indels this only counts the first base location.  Columns
+are cycle, number of insertions in first fragments, number of
+insertions in last fragments, number of deletions in first fragments,
+and number of deletions in last fragments.
+<p>
+COV reports a distribution of the alignment depth per covered
+reference site.  For example an average depth of 50 would ideally
+result in a normal distribution centred on 50, but the presence of
+repeats or copy-number variation may reveal multiple peaks at
+approximate multiples of 50.  The first column is an inclusive
+coverage range in the form of <b>[</b><em>min</em><b>-</b><em>max</em><b>]</b>.  The next
+columns are a repeat of the <em>max</em>imum portion of the depth range
+(now as a single integer) and the frequency that depth range was
+observed.  The minimum, maximum and range step size are controlled by
+the <b>-c</b> option.  Depths above and below the minimum and maximum
+are reported with ranges <b>[&lt;</b><em>min</em><b>]</b> and <b>[</b><em>max</em><b>&lt;]</b>.
+<p>
+GCD reports the GC content of the reference data aligned against per
+alignment record, with one row per observed GC percentage reported as
+the first column and sorted on this column.  The second column is a
+total sequence percentile, as a running total (ending at 100%).  The
+first and second columns may be used to produce a simple distribution
+of GC content.  Subsequent columns list the coverage depth at 10th,
+25th, 50th, 75th and 90th GC percentiles for this specific GC
+percentage, revealing any GC bias in mapping.  These columns are
+averaged depths, so are floating point with no maximum value.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-c, --coverage </b><em>MIN</em><b>,</b><em>MAX</em><b>,</b><em>STEP</em></dt><dd><p>
+Set coverage distribution to the specified range (MIN, MAX, STEP all given as integers)
+[1,1000,1]
+</dd><dt><b>-d, --remove-dups</b></dt><dd><p>
+Exclude from statistics reads marked as duplicates
+</dd><dt><b>-f, --required-flag </b><em>STR</em><b>|</b><em>INT</em></dt><dd><p>
+Required flag, 0 for unset. See also `samtools flags`
+[0]
+</dd><dt><b>-F, --filtering-flag </b><em>STR</em><b>|</b><em>INT</em></dt><dd><p>
+Filtering flag, 0 for unset. See also `samtools flags`
+[0]
+</dd><dt><b>--GC-depth </b><em>FLOAT</em></dt><dd><p>
+the size of GC-depth bins (decreasing bin size increases memory requirement)
+[2e4]
+</dd><dt><b>-h, --help</b></dt><dd><p>
+This help message
+</dd><dt><b>-i, --insert-size </b><em>INT</em></dt><dd><p>
+Maximum insert size
+[8000]
+</dd><dt><b>-I, --id </b><em>STR</em></dt><dd><p>
+Include only listed read group or sample name
+[]
+</dd><dt><b>-l, --read-length </b><em>INT</em></dt><dd><p>
+Include in the statistics only reads with the given read length
+[-1]
+</dd><dt><b>-m, --most-inserts </b><em>FLOAT</em></dt><dd><p>
+Report only the main part of inserts
+[0.99]
+</dd><dt><b>-P, --split-prefix </b><em>STR</em></dt><dd><p>
+A path or string prefix to prepend to filenames output when creating
+categorised statistics files with
+<b>-S</b>/<b>--split</b>.
+[input filename]
+</dd><dt><b>-q, --trim-quality </b><em>INT</em></dt><dd><p>
+The BWA trimming parameter
+[0]
+</dd><dt><b>-r, --ref-seq </b><em>FILE</em></dt><dd><p>
+Reference sequence (required for GC-depth and mismatches-per-cycle calculation).
+[]
+</dd><dt><b>-S, --split </b><em>TAG</em></dt><dd><p>
+In addition to the complete statistics, also output categorised statistics
+based on the tagged field
+<em>TAG</em>
+(e.g., use
+<b>--split RG</b>
+to split into read groups).
+<p>
+Categorised statistics are written to files named
+&lt;<em>prefix</em>&gt;_&lt;<em>value</em>&gt;.bamstat,
+where
+<em>prefix</em>
+is as given by
+<b>--split-prefix</b>
+(or the input filename by default) and
+<em>value</em>
+has been encountered as the specified tagged field's value in one or more
+alignment records.
+</dd><dt><b>-t, --target-regions </b><em>FILE</em></dt><dd><p>
+Do stats in these regions only. Tab-delimited file chr,from,to, 1-based, inclusive.
+[]
+</dd><dt><b>-x, --sparse</b></dt><dd><p>
+Suppress outputting IS rows where there are no insertions.
+</dd><dt><b>-p, --remove-overlaps</b></dt><dd><p>
+Remove overlaps of paired-end reads from coverage and base count computations.
+</dd><dt><b>-g, --cov-threshold </b><em>INT</em></dt><dd><p>
+Only bases with coverage above this value will be included in the target percentage computation [0]
+</dd><dt><b>-X</b></dt><dd><p>
+If this option is set, it will allows user to specify customized index file location(s) if the data
+folder does not contain any index file.
+Example usage: samtools stats [options] -X /data_folder/data.bam /index_folder/data.bai chrM:1-10
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Petr Danacek with major modifications by Nicholas Clarke,
+Martin Pollard, Nicholas Clarke, Josh Randall and Valeriu Ohan, all
+from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-flagstat.html"><em>samtools-flagstat</em></a> (1),
+<a href="samtools-idxstats.html"><em>samtools-idxstats</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

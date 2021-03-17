@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -121,19 +121,29 @@ that it is the fifth base of the corresponding read that is mapped to this
 genomic position.
 (Column only present when <b>-O</b>/<b>--output-BP</b> is used.)
 </li>
-<li>Comma-separated read names.
-(Column only present when <b>--output-QNAME</b> is used.)
+<li>Additional comma-separated read field columns,
+as selected via <b>--output-extra</b>.
+The fields selected appear in the same order as in SAM:
+<b>QNAME</b>,
+<b>FLAG</b>,
+<b>RNAME</b>,
+<b>POS</b>,
+<b>MAPQ</b>
+(displayed numerically),
+<b>RNEXT</b>,
+<b>PNEXT</b>.
 </li>
-<li>Additional columns containing other specified read fields or tags,
-as selected via the <b>--output-extra</b>, <b>--output-sep</b>,
-and <b>--output-empty</b> options.
+<li>Additional read tag field columns, as selected via <b>--output-extra</b>.
+These columns are formatted as determined by <b>--output-sep</b> and
+<b>--output-empty</b> (comma-separated by default), and appear in the
+same order as the tags are given in <b>--output-extra</b>.
 <p>
 </li></ul>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-6, --illumina1.3+</b></dt><dd><p>
 Assume the quality is in the Illumina 1.3+ encoding.
 </dd><dt><b>-A, --count-orphans</b></dt><dd><p>
-Do not skip anomalous read pairs in variant calling.  Anomolous read
+Do not skip anomalous read pairs in variant calling.  Anomalous read
 pairs are those marked in the FLAG field as paired in sequencing but
 without the properly-paired flag set.
 </dd><dt><b>-b, --bam-list</b><em> FILE</em></dt><dd><p>
@@ -208,9 +218,9 @@ Filter flags: skip reads with mask bits set
 </dd><dt><b>-x, --ignore-overlaps</b></dt><dd><p>
 Disable read-pair overlap detection.
 </dd><dt><b>-X</b></dt><dd><p>
-Include customized index file as a part of arugments. See
+Include customized index file as a part of arguments. See
 <b>EXAMPLES</b>
-section for sample of useage.
+section for sample of usage.
 <p>
 </dd></dl><p>
 <b>Output Options:</b>
@@ -236,8 +246,7 @@ or
 </dd><dt><b>-O, --output-BP</b></dt><dd><p>
 Output base positions on reads.
 </dd><dt><b>-s, --output-MQ</b></dt><dd><p>
-Output mapping quality.
-Equivalent to <b>--output-extra MAPQ</b>.
+Output mapping qualities encoded as ASCII characters.
 </dd><dt><b>--output-QNAME</b></dt><dd><p>
 Output an extra column containing comma-separated read names.
 Equivalent to <b>--output-extra QNAME</b>.
@@ -354,7 +363,7 @@ technology may affect the performance of indel calling.
 samtools mpileup -uf ref.fa aln.bam | bcftools call -c | vcfutils.pl vcf2fq &gt; cns.fq
 </pre>
 </li>
-<li>Include customized index file as a part of arugments.
+<li>Include customized index file as a part of arguments.
 <pre>
 samtools mpileup [options] -X /data_folder/in1.bam [/data_folder/in2.bam [...]] /index_folder/index1.bai [/index_folder/index2.bai [...]]
 </pre>

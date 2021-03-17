@@ -15,7 +15,7 @@ to consult the documentation for the release you are using.
 * [samtools](samtools.html)
 * [tabix](tabix.html)
 
-Older manual pages are available for releases: [0.1.19](0.1.19), [1.0](1.0), [1.1](1.1), [1.2](1.2), [1.3](1.3), [1.3.1](1.3.1), [1.4](1.4), [1.4.1](1.4.1), [1.5](1.5), [1.6](1.6), [1.7](1.7), [1.8](1.8), [1.9](1.9)
+Older manual pages are available for releases: [0.1.19](0.1.19), [1.0](1.0), [1.1](1.1), [1.2](1.2), [1.3](1.3), [1.3.1](1.3.1), [1.4](1.4), [1.4.1](1.4.1), [1.5](1.5), [1.6](1.6), [1.7](1.7), [1.8](1.8), [1.9](1.9), [1.10](1.10)
 
 ## HowTos
 

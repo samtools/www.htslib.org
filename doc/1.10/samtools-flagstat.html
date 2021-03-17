@@ -1,0 +1,136 @@
+---
+permalink: /doc/1.10/samtools-flagstat.html
+layout: manpage
+title: samtools-flagstat(1) manual page
+package: samtools-1.10
+date: 6 December 2019
+section_text: Bioinformatics tools
+redirect_from: /doc/1.10/samtools-flagstat.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools flagstat &ndash; counts the number of alignments for each FLAG type
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-flagstat.html">flagstat</a>
+<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Does a full pass through the input file to calculate and print statistics
+to stdout.
+<p>
+Provides counts for each of 13 categories based primarily on bit flags in
+the FLAG field.
+Each category in the output is broken down into QC pass and QC fail.
+In the default output format, these are presented as "#PASS + #FAIL" followed
+by a description of the category.
+<p>
+The first row of output gives the total number of reads that are QC pass and
+fail (according to flag bit 0x200). For example:
+<p>
+  122 + 28 in total (QC-passed reads + QC-failed reads)
+<p>
+Which would indicate that there are a total of 150 reads in the input file,
+122 of which are marked as QC pass and 28 of which are marked as "not passing
+quality controls"
+<p>
+Following this, additional categories are given for reads which are:
+<p>
+<dl><dt>secondary</dt><dd><p>
+0x100 bit set
+</dd><dt>supplementary</dt><dd><p>
+0x800 bit set
+</dd><dt>duplicates</dt><dd><p>
+0x400 bit set
+</dd><dt>mapped</dt><dd><p>
+0x4 bit not set
+</dd><dt>paired in sequencing</dt><dd><p>
+0x1 bit set
+</dd><dt>read1</dt><dd><p>
+both 0x1 and 0x40 bits set
+</dd><dt>read2</dt><dd><p>
+both 0x1 and 0x80 bits set
+</dd><dt>properly paired</dt><dd><p>
+both 0x1 and 0x2 bits set and 0x4 bit not set
+</dd><dt>with itself and mate mapped</dt><dd><p>
+0x1 bit set and neither 0x4 nor 0x8 bits set
+</dd><dt>singletons</dt><dd><p>
+both 0x1 and 0x8 bits set and bit 0x4 not set
+</dd></dl>
+<p>
+And finally, two rows are given that additionally filter on the reference
+name (RNAME), mate reference name (MRNM), and mapping quality (MAPQ) fields:
+<p>
+<dl><dt>with mate mapped to a different chr</dt><dd><p>
+0x1 bit set and neither 0x4 nor 0x8 bits set and MRNM not equal to RNAME
+</dd><dt>with mate mapped to a different chr (mapQ&gt;=5)</dt><dd><p>
+0x1 bit set and neither 0x4 nor 0x8 bits set
+and MRNM not equal to RNAME and MAPQ &gt;= 5
+</dd></dl>
+<p>
+<h1 id="ALTERNATIVE_OUTPUT_FORMATS"><a href="#ALTERNATIVE_OUTPUT_FORMATS">ALTERNATIVE OUTPUT FORMATS</a></h1>
+<p>
+The
+<b>-O</b>
+option can be used to select two alternative formats for the output.
+<p>
+Using
+<b>-O tsv</b>
+selects a tab-separated values format that can easily be imported into
+spreadsheet software.
+In this format the first column contains the values for QC-passed reads,
+the second column has the values for QC-failed reads and the third
+contains the category names.
+<p>
+Using
+<b>-O json</b>
+generates an ECMA-404 JSON data interchange format object
+&lt;<a href="https://www.json.org/">https://www.json.org/</a>&gt;.
+The top-level object contains two named objects
+<b>QC-passed reads</b> and <b>QC-failed reads</b>.
+These contain the various categories listed above as names and
+the corresponding count as value.
+<p>
+For the default format, the
+<b>mapped</b>, <b>properly paired</b>, and <b>singletons</b>
+show the count as a percentage of the total number of QC-passed or QC-failed
+reads after the category name.
+For example:
+<pre>
+32 + 0 mapped (94.12% : N/A)
+</pre>
+<p>
+In the
+<b>tsv</b> and <b>json</b>
+formats, these percentages are listed in separate categories
+<b>mapped %</b>, <b>properly paired %</b>, and <b>singletons %</b>.
+If the percentage cannot be calculated (because the total is zero)
+then in the
+<b>default</b> and <b>tsv</b>
+formats it will be reported as `N/A'.
+In the
+<b>json</b>
+format, it will be reported as a JSON `null' value.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-@ </b><em>INT</em></dt><dd><p>
+Set number of additional threads to use when reading the file.
+</dd><dt><b>-O </b><em>FORMAT</em></dt><dd><p>
+Set the output format.
+<em>FORMAT</em>
+can be set to `default', `json' or `tsv' to select the default, JSON
+or tab-separated values output format.
+If this option is not used, the default format will be selected.
+<p>
+</dd></dl>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-idxstats.html"><em>samtools-idxstats</em></a> (1),
+<a href="samtools-stats.html"><em>samtools-stats</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

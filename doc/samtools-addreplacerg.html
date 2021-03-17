@@ -2,8 +2,8 @@
 permalink: /doc/samtools-addreplacerg.html
 layout: manpage
 title: samtools-addreplacerg(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-addreplacerg.1.html
 ---
@@ -19,8 +19,7 @@ samtools <a href="samtools-addreplacerg.html">addreplacerg</a>
 <em>rg-ID</em>]
 [<b>-m</b>
 <em>mode</em>]
-[<b>-l</b>
-<em>level</em>]
+[<b>-u</b>]
 [<b>-o</b>
 <em>out.bam</em>]
 <em>in.bam</em>
@@ -46,15 +45,16 @@ Write the final output to STRING. The default is to write to stdout.
 By default, samtools tries to select a format based on the output
 filename extension; if output is to standard output or no format can be
 deduced,
-<b>bam</b>
+<b>sam</b>
 is selected.
+</dd><dt><b>-u</b></dt><dd><p>
+Output uncompressed SAM, BAM or CRAM.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of input/output compression threads to use in addition to main thread [0].
 <p>
 </dd></dl>
-<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Martin Pollard from the Sanger Institute.

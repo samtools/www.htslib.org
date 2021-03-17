@@ -1,0 +1,77 @@
+---
+permalink: /doc/1.10/samtools-index.html
+layout: manpage
+title: samtools-index(1) manual page
+package: samtools-1.10
+date: 6 December 2019
+section_text: Bioinformatics tools
+redirect_from: /doc/1.10/samtools-index.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools index &ndash; indexes SAM/BAM/CRAM files
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-index.html">index</a>
+[<b>-bc</b>]
+[<b>-m</b>
+<em>INT</em>]
+<em>aln.sam</em>|<em>aln.bam</em>|<em>aln.cram</em>
+[<em>out.index</em>]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Index a coordinate-sorted BGZIP-compressed SAM, BAM or CRAM file for fast
+random access.
+Note for SAM this only works if the file has been BGZF compressed first.
+<p>
+This index is needed when
+<em>region</em>
+arguments are used to limit
+<b>samtools view</b>
+and similar commands to particular regions of interest.
+<p>
+If an output filename is given, the index file will be written to
+<em>out.index</em>.
+Otherwise, for a CRAM file
+<em>aln.cram</em>,
+index file
+<em>aln.cram</em><b>.crai</b>
+will be created; for a BAM file
+<em>aln.bam</em>,
+either
+<em>aln.bam</em><b>.bai</b>
+or
+<em>aln.bam</em><b>.csi</b>
+will be created; and for a compressed SAM file
+<em>aln.sam.gz</em>,
+either
+<em>aln.sam.gz</em><b>.bai</b>
+or
+<em>aln.sam.gz</em><b>.csi</b>
+will be created, depending on the index format selected.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-b</b></dt><dd><p>
+Create a BAI index.
+This is currently the default when no format options are used.
+</dd><dt><b>-c</b></dt><dd><p>
+Create a CSI index.
+By default, the minimum interval size for the index is 2^14, which is the same
+as the fixed value used by the BAI format.
+</dd><dt><b>-m </b><em>INT</em></dt><dd><p>
+Create a CSI index, with a minimum interval size of 2^INT.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-idxstats.html"><em>samtools-idxstats</em></a> (1),
+<a href="samtools-view.html"><em>samtools-view</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

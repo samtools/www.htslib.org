@@ -2,8 +2,8 @@
 permalink: /doc/samtools-view.html
 layout: manpage
 title: samtools-view(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-view.1.html
 ---
@@ -81,7 +81,7 @@ The
 option can be used to allow user to specify customized index file location(s) if the data
 folder does not contain any index file. See
 <b>EXAMPLES</b>
-section for sample of useage.
+section for sample of usage.
 <p>
 Finally, the
 <b>-@</b>
@@ -116,7 +116,6 @@ Output all alignments.
 <p>
 <p>
 </dd></dl>
-<p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-b</b></dt><dd><p>
 Output in the BAM format.
@@ -172,7 +171,23 @@ optionally compressed by
 and ideally indexed by
 <b>samtools</b>
 <b>faidx</b>.
-If an index is not present, one will be generated for you.
+If an index is not present one will be generated for you, if the reference
+file is local.
+<p>
+If the reference file is not local,
+but is accessed instead via an https://, s3:// or other URL,
+the index file will need to be supplied by the server alongside the reference.
+It is possible to have the reference and index files in different locations
+by supplying both to this option separated by the string "##idx##",
+for example:
+<p>
+<b>-T ftp://x.com/ref.fa##idx##ftp://y.com/index.fa.fai</b>
+<p>
+However, note that only the location of the reference will be stored
+in the output file header.
+If this method is used to make CRAM files, the cram reader may not be able to
+find the index, and may not be able to decode the file unless it can get
+the references it needs using a different method.
 </dd><dt><b>-L </b><em>FILE</em></dt><dd><p>
 Only output alignments overlapping the input BED
 <em>FILE</em>
@@ -277,14 +292,13 @@ Previously this option was required if input was in SAM format, but now the
 correct format is automatically detected by examining the first few characters
 of input.
 </dd><dt><b>-X</b></dt><dd><p>
-Include customized index file as a part of arugments. See
+Include customized index file as a part of arguments. See
 <b>EXAMPLES</b>
-section for sample of useage.
+section for sample of usage.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file.
 <p>
 </dd></dl>
-<p>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
 <ul><li>Import SAM to BAM when
 <b>@SQ</b>
@@ -334,7 +348,7 @@ samtools view --input-fmt cram,decode_md=0 -o aln.new.bam aln.cram
 </pre>
 <p>
 </li>
-<li>Include customized index file as a part of arugments.
+<li>Include customized index file as a part of arguments.
 <pre>
 samtools view [options] -X /data_folder/data.bam /index_folder/data.bai chrM:1-10
 </pre>
@@ -359,7 +373,7 @@ This does almost the same than <b>-r grp2</b> but will not keep records without 
 samtools view -d RG:grp2 -o /data_folder/data.rg2_only.bam /data_folder/data.bam
 </pre>
 <p>
-</ul>
+</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

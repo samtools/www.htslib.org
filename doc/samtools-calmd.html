@@ -2,8 +2,8 @@
 permalink: /doc/samtools-calmd.html
 layout: manpage
 title: samtools-calmd(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-calmd.1.html
 ---
@@ -26,6 +26,15 @@ Calmd can also read and write CRAM files although in most cases it is
 pointless as CRAM recalculates MD and NM tags on the fly.  The one
 exception to this case is where both input and output CRAM files
 have been / are being created with the <em>no_ref</em> option.
+<p>
+Note that some aligners do not include sequence or confidence values
+in secondary and supplementary alignment records.
+Where this happens in SAM files, a &ldquo;*&rdquo; character will be
+seen in the <b>SEQ</b> and <b>QUAL</b> columns.
+These records will be skipped, as it is not possible to recalculate
+the MD and NM tags without access to the query sequence.
+<b>samtools calmd</b>
+will emit a warning if any records have been skipped for this reason.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-A</b></dt><dd><p>
@@ -54,7 +63,6 @@ Do not add a @PG line to the header of the output file.
 Number of input/output compression threads to use in addition to main thread [0].
 <p>
 </dd></dl>
-<p>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
 <ul><li>Dump BAQ applied alignment for other SNP callers:
 <pre>
@@ -72,7 +80,7 @@ option, the same as the one in
 <b>mpileup</b>.
 Apply if it helps.
 <p>
-</ul>
+</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

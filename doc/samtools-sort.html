@@ -2,8 +2,8 @@
 permalink: /doc/samtools-sort.html
 layout: manpage
 title: samtools-sort(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-sort.1.html
 ---
@@ -13,12 +13,16 @@ samtools sort &ndash; sorts SAM/BAM/CRAM files
 samtools <a href="samtools-sort.html">sort</a>
 [<b>-l</b>
 <em>level</em>]
+[<b>-u</b>]
 [<b>-m</b>
 <em>maxMem</em>]
 [<b>-o</b>
 <em>out.bam</em>]
 [<b>-O</b>
 <em>format</em>]
+[<b>-M</b>]
+[<b>-K</b>
+<em>kmerLen</em>]
 [<b>-n</b>]
 [<b>-t</b>
 <em>tag</em>]
@@ -53,9 +57,21 @@ Consider using
 <b>samtools collate</b>
 instead if you need name collated data without a full lexicographical sort.
 <p>
+Note that if the sorted output file is to be indexed with
+<b>samtools index</b>,
+the default coordinate sort must be used.
+Thus the
+<b>-n</b>
+and
+<b>-t</b>
+options are incompatible with
+<b>samtools index</b>.
+<p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <p>
-<dl><dt><b>-l </b><em>INT</em></dt><dd><p>
+<dl><dt><b>-K </b><em>INT</em></dt><dd><p>
+Sets the kmer size to be used in the <b>-M</b> option. [20]
+</dd><dt><b>-l </b><em>INT</em></dt><dd><p>
 Set the desired compression level for the final output file, ranging from 0
 (uncompressed) or 1 (fastest but minimal compression) to 9 (best compression
 but slowest to write), similarly to
@@ -65,6 +81,9 @@ compression level setting.
 If
 <b>-l</b>
 is not used, the default compression level will apply.
+</dd><dt><b>-u </b></dt><dd><p>
+Set the compression level to 0, for uncompressed output.  This is a
+synonym for <b>-l 0</b>.
 </dd><dt><b>-m </b><em>INT</em></dt><dd><p>
 Approximately the maximum required memory per thread, specified either in bytes
 or with a
@@ -74,6 +93,16 @@ suffix.
 <p>
 To prevent sort from creating a huge number of temporary files, it enforces a
 minimum value of 1M for this setting.
+</dd><dt><b>-M </b></dt><dd><p>
+Sort unmapped reads (those in chromosome "*") by their sequence
+minimiser (Schleimer et al., 2003; Roberts et al., 2004), also reverse
+complementing as appropriate.  This has the effect of collating some
+similar data together, improving the compressibility of the unmapped
+sequence.  The minimiser kmer size is adjusted using the <b>-K</b>
+option.  Note data compressed in this manner may need to be name
+collated prior to conversion back to fastq.
+<p>
+Mapped sequences are sorted by chromosome and position.
 </dd><dt><b>-n</b></dt><dd><p>
 Sort by read names (i.e., the
 <b>QNAME</b>
@@ -145,7 +174,7 @@ function.
 </li>
 <li>No attempt is made to compare tags of other types &mdash; notably type B
 array values will not be compared.
-</ul><p>
+</li></ul><p>
 When the <b>-n</b> option is present, records are sorted by name.  Names are
 compared so as to give a &ldquo;natural&rdquo; ordering &mdash; i.e. sections
 consisting of digits are compared numerically while all other sections are

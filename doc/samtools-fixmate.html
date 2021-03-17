@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fixmate.html
 layout: manpage
 title: samtools-fixmate(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fixmate.1.html
 ---
@@ -12,7 +12,7 @@ samtools fixmate &ndash; fills in mate coordinates and insert size fields.
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 <p>
 samtools <a href="samtools-fixmate.html">fixmate</a>
-[<b>-rpcm</b>]
+[<b>-rpcmu</b>]
 [<b>-O</b>
 <em>format</em>]
 <em>in.nameSrt.bam out.bam</em>
@@ -33,6 +33,8 @@ Add template cigar ct tag.
 Add ms (mate score) tags.  These are used by
 <b>markdup</b>
 to select the best reads to keep.
+</dd><dt><b>-u</b></dt><dd><p>
+Output uncompressed BAM or CRAM.
 </dd><dt><b>-O </b><em>FORMAT</em></dt><dd><p>
 Write the final output as
 <b>sam</b>, <b>bam</b>, or <b>cram</b>.
@@ -48,7 +50,6 @@ Do not add a @PG line to the header of the output file.
 Number of input/output compression threads to use in addition to main thread [0].
 <p>
 </dd></dl>
-<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.
@@ -58,6 +59,5 @@ Written by Heng Li from the Sanger Institute.
 <a href="samtools-markdup.html"><em>samtools-markdup</em></a> (1),
 <a href="samtools-sort.html"><em>samtools-sort</em></a> (1),
 <a href="samtools-collate.html"><em>samtools-collate</em></a> (1)
-<a href="samtools-sort.html"><em>samtools-sort</em></a> (1)
 <p>
 Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

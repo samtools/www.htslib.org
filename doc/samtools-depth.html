@@ -2,8 +2,8 @@
 permalink: /doc/samtools-depth.html
 layout: manpage
 title: samtools-depth(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-depth.1.html
 ---
@@ -60,9 +60,9 @@ specified.
 Write output to <em>FILE</em>.  Using &ldquo;-&rdquo; for <em>FILE</em>
 will send the output to stdout (also the default if this option is not used).
 </dd><dt><b>-q </b><em>INT</em></dt><dd><p>
-Only count reads with base quality greater than <em>INT</em>
+Only count reads with base quality greater than or equal to <em>INT</em>
 </dd><dt><b>-Q </b><em>INT</em></dt><dd><p>
-Only count reads with mapping quality greater than <em>INT</em>
+Only count reads with mapping quality greater than or equal to <em>INT</em>
 </dd><dt><b>-r </b><em>CHR</em><b>:</b><em>FROM</em><b>-</b><em>TO</em></dt><dd><p>
 Only report depth in specified region.
 </dd><dt><b>-X</b></dt><dd><p>
@@ -85,9 +85,15 @@ Discard any read that has any of the flags specified by
 set.  FLAGS are specified as for the
 <b>-g</b>
 option. [UNMAP,SECONDARY,QCFAIL,DUP]
+</dd><dt><b>-J</b></dt><dd><p>
+Include reads with deletions in depth computation.
+</dd><dt><b>-s</b></dt><dd><p>
+For the overlapping section of a read pair, count only the bases of a single
+read. This is accomplished by lowering to 0 the quality values of one read for
+the span of the overlapping section. As a consequence, the algorithm will
+consider only bases with a quality above 0.
 <p>
 </dd></dl>
-<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

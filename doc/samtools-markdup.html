@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -28,6 +28,7 @@ samtools <a href="samtools-markdup.html">markdup</a>
 [<b>--mode</b>]
 [<b>--include-fails</b>]
 [<b>--no-PG</b>]
+[<b>-u</b>]
 <em>in.algsort.bam out.bam</em>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
@@ -70,6 +71,8 @@ Mode <b>s</b> measures positions based on sequence start.
 While the two methods identify mostly the same reads as duplicates, mode 
 <b>s</b> tends to return more results.  Unpaired reads are treated identically
 by both modes.
+</dd><dt><b>-u</b></dt><dd><p>
+Output uncompressed SAM, BAM or CRAM.
 </dd><dt><b>--include-fails</b></dt><dd><p>
 Include quality checked failed reads.
 </dd><dt><b>--no-PG</b></dt><dd><p>

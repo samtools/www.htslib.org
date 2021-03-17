@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fasta.html
 layout: manpage
 title: samtools-fasta(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fasta.1.html
 ---
@@ -172,20 +172,20 @@ mean 'read until the separator or end of tag', for example:
 </dd><dt><b>n*i*</b></dt><dd><p>
 ignore the left part of the tag until the separator, then use the second part
 <p>
-</dd></dl>
-<p>
+</dd></dl></dl>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
-Output paired reads to separate files, discarding singletons, supplementary
-and secondary reads.
+Starting from a coordinate sorted file, output paired reads to
+separate files, discarding singletons, supplementary and secondary reads.
 The resulting files can be used with, for example, the
 <b>bwa</b>
 aligner.
 <pre>
-samtools fastq -1 paired1.fq -2 paired2.fq -0 /dev/null -s /dev/null -n in.bam
+samtools collate -u -O in_pos.bam | \\
+samtools fastq -1 paired1.fq -2 paired2.fq -0 /dev/null -s /dev/null -n
 </pre>
 <p>
-Output paired and singleton reads in a single file, discarding supplementary
-and secondary reads.
+Starting with a name collated file, output paired and singleton reads
+in a single file, discarding supplementary and secondary reads.
 To get all of the reads in a single file, it is necessary to redirect the
 output of samtools fastq.
 The output file is suitable for use with
@@ -193,7 +193,7 @@ The output file is suitable for use with
 which understands interleaved files containing a mixture of paired and
 singleton reads.
 <pre>
-samtools fastq -0 /dev/null in.bam &gt; all_reads.fq
+samtools fastq -0 /dev/null in_name.bam &gt; all_reads.fq
 </pre>
 <p>
 Output paired reads in a single file, discarding supplementary and
@@ -206,13 +206,13 @@ when using its
 <b>-p</b> and <b>-q</b> options.
 With this aligner, paired reads must be mapped separately to the singletons.
 <pre>
-samtools fastq -0 /dev/null -s single.fq -N in.bam &gt; paired.fq
+samtools fastq -0 /dev/null -s single.fq -N in_name.bam &gt; paired.fq
 </pre>
 <p>
 <h1 id="BUGS"><a href="#BUGS">BUGS</a></h1>
 <ul><li>The way of specifying output files is far to complicated and easy to get wrong.
 <p>
-</ul>
+</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li, with modifications by Martin Pollard and Jennifer Liddle,

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-index.html
 layout: manpage
 title: samtools-index(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-index.1.html
 ---
@@ -50,6 +50,11 @@ or
 <em>aln.sam.gz</em><b>.csi</b>
 will be created, depending on the index format selected.
 <p>
+The BAI index format can handle individual chromosomes up to 512 Mbp
+(2^29 bases) in length.
+If your input file might contain reads mapped to positions greater than that,
+you will need to use a CSI index.
+<p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-b</b></dt><dd><p>
 Create a BAI index.
@@ -64,7 +69,6 @@ Create a CSI index, with a minimum interval size of 2^INT.
 Number of input/output compression threads to use in addition to main thread [0].
 <p>
 </dd></dl>
-<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

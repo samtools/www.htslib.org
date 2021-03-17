@@ -2,8 +2,8 @@
 permalink: /doc/samtools-merge.html
 layout: manpage
 title: samtools-merge(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-merge.1.html
 ---
@@ -96,14 +96,18 @@ differentiate similar IDs.
 If this option is set, it will allows user to specify customized index file location(s) if the data 
 folder does not contain any index file. See
 <b>EXAMPLES</b>
-section for sample of useage.
+section for sample of usage.
+</dd><dt><b>-L</b><em> FILE</em></dt><dd><p>
+BED file for specifying multiple regions on which the merge will be performed.
+This option extends the usage of
+<b>-R</b>
+option and cannot be used concurrently with it.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of input/output compression threads to use in addition to main thread [0].
 <p>
 </dd></dl>
-<p>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
 <ul><li>Attach the
 <b>RG</b>
@@ -127,12 +131,12 @@ will be attached
 <em>RG:Z:454</em>.
 <p>
 </li>
-<li>Include customized index file as a part of arugments:
+<li>Include customized index file as a part of arguments:
 <pre>
 samtools merge [options] -X &lt;out.bam&gt; &lt;/data_folder/in1.bam&gt; [&lt;/data_folder/in2.bam&gt; ... &lt;/data_folder/inN.bam&gt;] &lt;/index_folder/index1.bai&gt; [&lt;/index_folder/index2.bai&gt; ... &lt;/index_folder/indexN.bai&gt;]
 </pre>
 <p>
-</ul>
+</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

@@ -4,6 +4,7 @@ BCFTOOLS = ../bcftools
 
 MAN2FHTML = man2fhtml
 ADD_MANPAGE_LINKS = ./add_manpage_links.pl
+VERS_SORT = ./vers_sort.pl
 
 all:	samtools-doc htslib-doc bcftools-doc update_doc.md
 
@@ -36,7 +37,7 @@ htslib-doc:
 	done
 
 update_doc.md:
-	vers="";for v in `echo doc/[0-9]*|sed 's#doc/##g'`;do vers="$$vers$${vers:+, }[$$v]($$v)";done; \
+	vers="";for v in `$(VERS_SORT) doc/[0-9]*|sed 's#doc/##g'`;do vers="$$vers$${vers:+, }[$$v]($$v)";done; \
 	mv doc.md doc.md~ && sed "s#for releases:.*#for releases: $$vers#" doc.md~ > doc.md
 	rm doc.md~
 

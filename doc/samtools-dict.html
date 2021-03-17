@@ -2,8 +2,8 @@
 permalink: /doc/samtools-dict.html
 layout: manpage
 title: samtools-dict(1) manual page
-package: samtools-1.10
-date: 6 December 2019
+package: samtools-1.11
+date: 22 September 2020
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-dict.1.html
 ---
@@ -21,6 +21,12 @@ Create a sequence dictionary file from a fasta file.
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-a, --assembly</b><em> STR</em></dt><dd><p>
 Specify the assembly for the AS tag.
+</dd><dt><b>-A, --alias, --alternative-name</b></dt><dd><p>
+Add an AN tag with the same value as the SN tag, except that a &ldquo;chr&rdquo;
+prefix is removed if SN has one or added if it does not.
+For mitochondria (i.e., when SN is &ldquo;M&rdquo; or &ldquo;MT&rdquo;, with or without a
+&ldquo;chr&rdquo; prefix), also adds the remaining combiniations of &ldquo;chr/M/MT&rdquo;
+to the AN tag.
 </dd><dt><b>-H, --no-header</b></dt><dd><p>
 Do not print the @HD header line.
 </dd><dt><b>-o, --output</b><em> FILE</em></dt><dd><p>
@@ -36,7 +42,6 @@ the absolute path of
 unless reading from stdin.
 <p>
 </dd></dl>
-<p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Shane McCarthy from the Sanger Institute.

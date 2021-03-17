@@ -28,21 +28,21 @@ sub add_frontmatter_redirects {
     my ($in, $out) = @_;
 
     my %redirects = (
-        '/doc/bgzip.html'            => '/doc/bgzip.1.html',
-        '/doc/faidx.html'            => '/doc/faidx.5.html',
-        '/doc/htsfile.html'          => '/doc/htsfile.1.html',
-        '/doc/htslib-s3-plugin.html' => '/doc/htslib-s3-plugin.7.html',
-        '/doc/sam.html'              => '/doc/sam.5.html',
-        '/doc/samtools.html'         => '/doc/samtools.1.html',
-        '/doc/tabix.html'            => '/doc/tabix.1.html',
-        '/doc/vcf.html'              => '/doc/vcf.5.html');
+        'bgzip.html'            => 'bgzip.1.html',
+        'faidx.html'            => 'faidx.5.html',
+        'htsfile.html'          => 'htsfile.1.html',
+        'htslib-s3-plugin.html' => 'htslib-s3-plugin.7.html',
+        'sam.html'              => 'sam.5.html',
+        'samtools.html'         => 'samtools.1.html',
+        'tabix.html'            => 'tabix.1.html',
+        'vcf.html'              => 'vcf.5.html');
 
     my $redirect;
     while (<$in>) {
-        if (/^permalink:\s+(\S+)/ && exists($redirects{$1})) {
-            $redirect = $redirects{$1};
-        } elsif (/^permalink:\s+\/doc\/(samtools-[a-z]+)\.html/) {
-            $redirect = "/doc/${1}.1.html";
+        if (m#^permalink:\s+(/doc(?:/[0-9][^/]+))/(\S+)# && exists($redirects{$2})) {
+            $redirect = "${1}/$redirects{$2}";
+        } elsif (m#^permalink:\s+(/doc(?:/[0-9][^/]+))/(samtools-[a-z]+)\.html#) {
+            $redirect = "${1}/${2}.1.html";
         } elsif (/^---$/ && $redirect) {
             print $out "redirect_from: $redirect\n";
         }

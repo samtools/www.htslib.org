@@ -6,23 +6,38 @@ MAN2FHTML = man2fhtml
 ADD_MANPAGE_LINKS = ./add_manpage_links.pl
 VERS_SORT = ./vers_sort.pl
 
+ifeq ($(VERSION),)
+HTSLIB_VERSION ?= $(shell git --git-dir=$(HTSLIB)/.git describe --match '[0-9].[0-9]*' | sed 's/-.*//')
+SAMTOOLS_VERSION ?= $(shell git --git-dir=$(SAMTOOLS)/.git describe --match '[0-9].[0-9]*' | sed 's/-.*//')
+BCFTOOLS_VERSION ?= $(shell git --git-dir=$(BCFTOOLS)/.git describe --match '[0-9].[0-9]*' | sed 's/-.*//')
+else
+HTSLIB_VERSION ?= $(VERSION)
+SAMTOOLS_VERSION ?= $(VERSION)
+BCFTOOLS_VERSION ?= $(VERSION)
+endif
+
+HTSLIB_VERSIONED_DOC ?= doc/$(HTSLIB_VERSION)
+SAMTOOLS_VERSIONED_DOC ?= doc/$(SAMTOOLS_VERSION)
+BCFTOOLS_VERSIONED_DOC ?= doc/$(BCFTOOLS_VERSION)
+
 all:	samtools-doc htslib-doc bcftools-doc update_doc.md
 
-samtools-doc:
+samtools-doc: | $(SAMTOOLS_VERSIONED_DOC)
 	@ for i in $(SAMTOOLS)/doc/*.1; do \
 	    base=`echo $$i | sed 's:.*/::;s:\.[1-9]$$::'`; \
 	    echo Processing $$i;\
-	    $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
-	    $(ADD_MANPAGE_LINKS) doc/$$base.html;\
+	    $(MAN2FHTML) --mode jekyll --location /$(SAMTOOLS_VERSIONED_DOC)/$$base.html --output $(SAMTOOLS_VERSIONED_DOC)/$$base.html < $$i;\
+	    $(ADD_MANPAGE_LINKS) $(SAMTOOLS_VERSIONED_DOC)/$$base.html;\
+	    sed -E '/^(permalink|redirect_from):/s#doc/$(SAMTOOLS_VERSION)/#doc/#' $(SAMTOOLS_VERSIONED_DOC)/$$base.html > doc/$$base.html ; \
 	done
 
-BCFTOOLS_VERSION ?= $(shell git --git-dir=$(BCFTOOLS)/.git describe --match '[0-9].[0-9]*' | sed 's/-.*//')
 BCFTOOLS_DOC_DATE = $(shell git --git-dir=$(BCFTOOLS)/.git log -n 1 0.1.0.. --date=short --pretty=format:%cd -- doc/bcftools.txt)
 
-bcftools-doc:
-	a2x -adate='$(BCFTOOLS_DOC_DATE)' -aversion=$(BCFTOOLS_VERSION) --doctype manpage --format xhtml -D doc $(BCFTOOLS)/doc/bcftools.txt
+bcftools-doc: | $(BCFTOOLS_VERSIONED_DOC)
+	a2x -adate='$(BCFTOOLS_DOC_DATE)' -aversion=$(BCFTOOLS_VERSION) --doctype manpage --format xhtml -D doc $(BCFTOOLS)/doc/bcftools.txt && \
+	sed 's#href="docbook-xsl\.css"#href="../docbook-xsl.css"#' doc/bcftools.html > $(BCFTOOLS_VERSIONED_DOC)/bcftools.html 
 
-htslib-doc:
+htslib-doc: | $(HTSLIB_VERSIONED_DOC)
 	@ for i in $(HTSLIB)/*.[1-9]; do \
 	    case $$i in \
 	    *".so."*) \
@@ -30,11 +45,31 @@ htslib-doc:
 	    *) \
 	        base=`echo $$i | sed 's:.*/::;s:\.[1-9]$$::'`; \
 	        echo Processing $$i;\
-	        $(MAN2FHTML) --mode jekyll --location /doc/$$base.html --output doc/$$base.html < $$i;\
-	        $(ADD_MANPAGE_LINKS) doc/$$base.html;\
+	        $(MAN2FHTML) --mode jekyll --location /$(HTSLIB_VERSIONED_DOC)/$$base.html --output $(HTSLIB_VERSIONED_DOC)/$$base.html < $$i;\
+	        $(ADD_MANPAGE_LINKS) $(HTSLIB_VERSIONED_DOC)/$$base.html;\
+	        sed -E '/^(permalink|redirect_from):/s#doc/$(HTSLIB_VERSION)/#doc/#' $(HTSLIB_VERSIONED_DOC)/$$base.html > doc/$$base.html ; \
 	        ;; \
 	    esac \
 	done
+
+$(HTSLIB_VERSIONED_DOC) $(filter-out $(HTSLIB_VERSIONED_DOC),$(SAMTOOLS_VERSIONED_DOC)) $(filter-out $(HTSLIB_VERSIONED_DOC) $(SAMTOOLS_VERSIONED_DOC),$(BCFTOOLS_VERSIONED_DOC)):
+	mkdir -p "$@" && \
+	dir="$@" && \
+	vers=$${dir##*/} && \
+	printf -- '---\nlayout: default\ntitle: Samtools - Documentation\n---\n## Manual pages\n\nDocumentation for BCFtools, SAMtools, and HTSlib'"'"'s utilities is available\nby using <code>man <em>command</em></code> on the command line.\n' > $@/index.md && \
+	printf 'The manual pages for the %s release are listed below.\n\n' "$$vers" >> $@/index.md && \
+	( if [ "$(BCFTOOLS_VERSIONED_DOC)" = "$@" ] ; then \
+	    printf '* [bcftools](bcftools.html)\n' >> "$@"/index.md ; \
+	fi ; \
+	if [ "$(HTSLIB_VERSIONED_DOC)" = "$@" ] ; then \
+	    printf '* [bgzip](bgzip.html)\n* [htsfile](htsfile.html)\n' >> "$@"/index.md ; \
+	fi ; \
+	if [ "$(SAMTOOLS_VERSIONED_DOC)" = "$@" ] ; then \
+	    printf '* [samtools](samtools.html)\n' >> "$@"/index.md ; \
+	fi ; \
+	if [ "$(HTSLIB_VERSIONED_DOC)" = "$@" ]	; then \
+            printf '* [tabix](tabix.html)\n' >> "$@"/index.md ; \
+        fi )
 
 update_doc.md:
 	vers="";for v in `$(VERS_SORT) doc/[0-9]*|sed 's#doc/##g'`;do vers="$$vers$${vers:+, }[$$v]($$v)";done; \

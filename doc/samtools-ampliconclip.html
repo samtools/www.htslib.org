@@ -2,8 +2,8 @@
 permalink: /doc/samtools-ampliconclip.html
 layout: manpage
 title: samtools-ampliconclip(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-ampliconclip.1.html
 ---
@@ -31,6 +31,7 @@ samtools <a href="samtools-ampliconclip.html">ampliconclip</a>
 <em>rejects.file</em>]
 [<b>--original</b>]
 [<b>--keep-tag</b>]
+[<b>--tolerance</b>]
 [<b>--no-PG</b>]
 [<b>-u</b>]
 <b>-b</b>
@@ -38,8 +39,16 @@ samtools <a href="samtools-ampliconclip.html">ampliconclip</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Clip reads in a SAM compatible file based on data from a BED file.  By default
-the reads are soft clipped and clip is only done from the 5' end.
+Clips the ends of read alignments if they intersect with regions defined in a
+BED file.  While this tool was originally written for clipping read alignment
+positions which correspond to amplicon primer locations it can also be used in
+other contexts.
+<p>
+BED file entries used are chrom, chromStart, chromEnd and, optionally, strand. 
+There is a default tolerance of 5 bases when matching chromStart and chromEnd
+to alignments.
+<p>
+By default the reads are soft clipped and clip is only done from the 5' end.
 <p>
 Some things to be aware of.  While ordering is not significant, adjustments to
 the left most mapping position (<em>POS</em>) will mean that coordinate sorted
@@ -52,7 +61,7 @@ output is in CRAM format these tags will be automatically regenerated.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-b </b><em>FILE</em></dt><dd><p>
-BED file of amplicons to be removed.
+BED file of regions (e.g. amplicon primers) to be removed.
 </dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
 Output file name (defaults to stdout).
 </dd><dt><b>-f </b><em>FILE</em></dt><dd><p>
@@ -64,9 +73,10 @@ Soft clip reads (default).
 </dd><dt><b>--hard-clip</b></dt><dd><p>
 Hard clip reads.
 </dd><dt><b>--both-ends</b></dt><dd><p>
-Clip at both ends as opposed to just the 5' end.
+Clip at both the 5' and the 3' ends where regions match.
 </dd><dt><b>--strand</b></dt><dd><p>
-Use strand entry from the BED file.
+Use strand entry from the BED file to clip on the matching forward or reverse
+alignment. 
 </dd><dt><b>--clipped</b></dt><dd><p>
 Only output clipped reads.  Filter all others.
 </dd><dt><b>--fail</b></dt><dd><p>
@@ -85,6 +95,8 @@ Write any filtered reads out to a file.
 Add an OA tag with the original data for clipped files.
 </dd><dt><b>--keep-tag</b></dt><dd><p>
 In clipped reads, keep the possibly invalid NM and MD tags.  By default these tags are deleted.  
+</dd><dt><b>--tolerance </b><em>INT</em></dt><dd><p>
+The amount of latitude given in matching regions to alignments.  Default 5 bases.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not at a PG line to the header.
 <p>

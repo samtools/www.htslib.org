@@ -2,8 +2,8 @@
 permalink: /doc/samtools.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools.1.html
 ---
@@ -46,6 +46,8 @@ samtools <a href="samtools-merge.html">merge</a> out.bam in1.bam in2.bam in3.bam
 samtools <a href="samtools-split.html">split</a> merged.bam
 <p>
 samtools <a href="samtools-cat.html">cat</a> out.bam in1.bam in2.bam in3.bam
+<p>
+samtools <a href="samtools-import.html">import</a> input.fastq &gt; output.bam
 <p>
 samtools <a href="samtools-fastq.html">fastq</a> input.bam &gt; output.fastq
 <p>
@@ -431,6 +433,17 @@ dictionary of each input file must be identical, although this command
 does not check this. This command uses a similar trick to
 <b>reheader</b>
 which enables fast BAM concatenation.
+<p>
+</dd><dt><b>import</b></dt><dd><p>
+samtools import
+[<em>options</em>]
+<em>in.fastq</em> [ ... ]
+<p>
+Converts one or more FASTQ files to unaligned SAM, BAM or CRAM.  These
+formats offer a richer capability of tracking sample meta-data via the
+SAM header and per-read meta-data via the auxiliary tags.  The
+<b>fastq</b>
+command may be used to reverse this conversion.
 <p>
 </dd><dt><b>fastq/a</b></dt><dd><p>
 samtools fastq
@@ -858,7 +871,7 @@ The operator precedence, from strongest binding to weakest, is:
 <tr><td>Values:</td><td><b>literals, vars</b></td><td>Numbers, strings and variables</td></tr>
 <tr><td>Unary ops:</td><td><b>+, -, !, ~</b></td><td>E.g. -10 +10, !10 (not), ~5 (bit not)</td></tr>
 <tr><td>Math ops:</td><td><b>*, /, %</b></td><td>Multiply, division and (integer) modulo</td></tr>
-<tr><td>Math ops:</td><td><b>+, -</b></td><td>Addition / subtractin</td></tr>
+<tr><td>Math ops:</td><td><b>+, -</b></td><td>Addition / subtraction</td></tr>
 <tr><td>Bit-wise:</td><td><b>&amp;</b></td><td>Integer AND</td></tr>
 <tr><td>Bit-wise</td><td><b>^</b></td><td>Integer XOR</td></tr>
 <tr><td>Bit-wise</td><td><b>|</b></td><td>Integer OR</td></tr>
@@ -940,7 +953,7 @@ for alignments with many mismatches and <b>[RG]=~"grp[ABC]-"</b> will
 match the read-group string.
 <p>
 If no comparison is used with an auxiliary tag it is taken simply to
-be a test for the existance of that tag.  So "[NM]" will return any
+be a test for the existence of that tag.  So "[NM]" will return any
 record containing an NM tag, even if that tag is zero (<b>NM:i:0</b>).
 <p>
 If you need to check specifically for a non-zero value then use <b>[NM]
@@ -1001,7 +1014,7 @@ local cache is used.
 <p>
 To avoid many files being stored in the same directory, REF_CACHE may
 be defined as a pattern using <b>%</b><em>num</em><b>s</b> to consume <em>num</em>
-chracters of the MD5sum and <b>%s</b> to consume all remaining characters.
+characters of the MD5sum and <b>%s</b> to consume all remaining characters.
 If REF_CACHE lacks <b>%s</b> then it will get an implicit <b>/%s</b> appended.
 <p>
 To aid population of the REF_CACHE directory a script
@@ -1078,6 +1091,7 @@ for further authorship.
 <a href="samtools-flagstat.html"><em>samtools-flagstat</em></a> (1),
 <a href="samtools-fqidx.html"><em>samtools-fqidx</em></a> (1),
 <a href="samtools-idxstats.html"><em>samtools-idxstats</em></a> (1),
+<a href="samtools-import.html"><em>samtools-import</em></a> (1),
 <a href="samtools-index.html"><em>samtools-index</em></a> (1),
 <a href="samtools-markdup.html"><em>samtools-markdup</em></a> (1),
 <a href="samtools-merge.html"><em>samtools-merge</em></a> (1),

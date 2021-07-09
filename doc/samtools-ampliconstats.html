@@ -2,8 +2,8 @@
 permalink: /doc/samtools-ampliconstats.html
 layout: manpage
 title: samtools-ampliconstats(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-ampliconstats.1.html
 ---
@@ -57,8 +57,7 @@ detailed descriptions.
 <tr><td><b>FTCOORD</b></td><td>File specific: template start,end coordinate frequencies per amplicon</td></tr>
 <tr><td><b>FAMP</b></td><td>File specific: amplicon correct / double / treble length counts</td></tr>
 <tr><td><b>FDP_ALL</b></td><td>File specific: template depth per reference base, all templates</td></tr>
-<tr><td><b>FDP_VALID</b></td><td>File specific: template depth per reference base,</td></tr>
-<tr><td><b>valid templates only</b></td></tr>
+<tr><td><b>FDP_VALID</b></td><td>File specific: template depth per reference base, valid templates only</td></tr>
 <tr><td><b>CSS</b></td><td>Combined  summary stats</td></tr>
 <tr><td><b>CRPERC</b></td><td>Combined: read percentage distribution between amplicons</td></tr>
 <tr><td><b>CDEPTH</b></td><td>Combined: average read depth per amplicon</td></tr>
@@ -68,8 +67,7 @@ detailed descriptions.
 <tr><td><b>CTCOORD</b></td><td>Combined: template coordinates per amplicon</td></tr>
 <tr><td><b>CAMP</b></td><td>Combined: amplicon correct / double / treble length counts</td></tr>
 <tr><td><b>CDP_ALL</b></td><td>Combined: template depth per reference base, all templates</td></tr>
-<tr><td><b>CDP_VALID</b></td><td>Combined: template depth per reference base,</td></tr>
-<tr><td><b>valid templates only</b></td></tr>
+<tr><td><b>CDP_VALID</b></td><td>Combined: template depth per reference base, valid templates only</td></tr>
 </table>
 <p>
 File specific sections start with both the section key and the
@@ -89,14 +87,17 @@ rows contain stats aggregated across all input files.
 This section is once per file and includes summary information to be
 utilised for scaling of plots, for example the total number of
 amplicons and files present, tool version number, and command line
-arguments.
+arguments.  The second column is the filename or "COMBINED".  This is
+followed by the reference name (unless single-ref mode is enabled),
+and the summary statistic name and value.
 <p>
 The AMPLICON section is a reformatting of the input BED file.  Each
-line consists of the amplicon number and the <em>start</em>-<em>end</em>
-coordinates of the left and right primers.  Where multiple primers are
-available these are comma separated, for example <b>10-30,15-40</b> in
-the left primer column indicates two primers have been multiplex
-together covering genome coords 10-30 inclusive and 14-40 inclusively.
+line consists of the reference name (unless single-ref mode is
+enable), the amplicon number and the <em>start</em>-<em>end</em> coordinates
+of the left and right primers.  Where multiple primers are available
+these are comma separated, for example <b>10-30,15-40</b> in the left
+primer column indicates two primers have been multiplex together
+covering genome coordinates 10-30 inclusive and 14-40 inclusively.
 <p>
 <p>
 <h1 id="CSS_SECTION"><a href="#CSS_SECTION">CSS SECTION</a></h1>
@@ -183,6 +184,12 @@ left-most amplicon covered.
 Th COORD data may indicate which primers are being utilised if there
 are alternates available for a given amplicon.
 <p>
+For COORD lines amplicon number 0 holds the frequency data for data
+that reads that have not been assigned to any amplicon.  That is, they
+may lie within an amplicon, but they do not start or end at a known
+primer location.  It is not recorded for BED files containing multiple
+references.
+<p>
 The FAMP / CAMP section is a simple count per amplicon of the number
 of templates coming from this amplicon.  Templates are counted once
 per amplicon, but and like the FTCOORD field if a read-pair spans
@@ -192,6 +199,9 @@ of templates with both ends within this amplicon, the number of
 templates with the rightmost end in another amplicon, and the number
 of templates where the other end has failed to be assigned to an
 amplicon.
+<p>
+Note FAMP / CAMP amplicon number 0 is the summation of data for all
+amplicons (1 onwards).
 <p>
 <h1 id="FDP_ALL_/_CDP_ALL_/_FDP_VALID_/_CDP_VALID_section"><a href="#FDP_ALL_/_CDP_ALL_/_FDP_VALID_/_CDP_VALID_section">FDP_ALL / CDP_ALL / FDP_VALID / CDP_VALID section</a></h1>
 <p>
@@ -212,12 +222,13 @@ amplicon 10 and the last half of amplicon 12.  Counting the number of
 reads or bases alone in the amplicon does not reveal the potential for
 non-uniformity of coverage.
 <p>
-The format of the data is a series of tab separated tuples consisting
-of <em>depth,length</em>.  The length field is a basic form of run-length
-encoding where all depth values within a specified fraction of each
-other (e.g. &gt;= (1-fract)*midpoint and &lt;= (1+fract)*midpoint) are
-combined into a single run.  This fraction is controlled via the
-<b>-D</b> option..
+The lines start with the type keyword, file / sample name, reference
+name (unless single-ref mode is enabled), followed by a variable
+number of tab separated tuples consisting of <em>depth,length</em>.  The
+length field is a basic form of run-length encoding where all depth
+values within a specified fraction of each other (e.g. &gt;=
+(1-fract)*midpoint and &lt;= (1+fract)*midpoint) are combined into a
+single run.  This fraction is controlled via the <b>-D</b> option.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-f, --required-flag </b><em>INT|STR</em></dt><dd><p>
@@ -283,6 +294,13 @@ Output stats to FILE.  The default is to write to stdout.
 Instead of using the basename component of the input path names, use
 the SM field from the first @RG header line.
 <p>
+</dd><dt><b>-S, --single-ref</b></dt><dd><p>
+Force the output format to match the older single-reference style
+used in Samtools 1.12 and earlier.  This removes the reference names
+from the SS, AMPLICON, DP_ALL and DP_VALID sections.  It cannot be
+enabled if the input BED file has more than one reference present.
+Note that plot-ampliconstats can process both output styles.
+<p>
 </dd><dt><b>-t, --tlen-adjust </b><em>INT</em></dt><dd><p>
 Adjust the TLEN field by +/- <em>INT</em> to compensate for primer clipping.
 This defaults to zero, but if the primers have been clipped and the
@@ -303,10 +321,10 @@ Number of BAM/CRAM (de)compression threads to use in addition to main thread [0]
 To run ampliconstats on a directory full of CRAM files and then
 produce a series of PNG images named "mydata*.png":
 <p>
-<pre>
+</pre>
 samtools ampliconstats V3/nCoV-2019.bed /path/*.cram &gt; astats
 plot-ampliconstats -size 1200,900 mydata astats
-</pre>
+<pre>
 <p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>

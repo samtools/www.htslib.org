@@ -2,8 +2,8 @@
 permalink: /doc/samtools-addreplacerg.html
 layout: manpage
 title: samtools-addreplacerg(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-addreplacerg.1.html
 ---
@@ -26,7 +26,8 @@ samtools <a href="samtools-addreplacerg.html">addreplacerg</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Adds or replaces read group tags in a file.
+Adds or replaces read group tags in a file. Also allows for adding and updating
+@RG lines in the header.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-r </b><em>STRING</em></dt><dd><p>
@@ -49,6 +50,8 @@ deduced,
 is selected.
 </dd><dt><b>-u</b></dt><dd><p>
 Output uncompressed SAM, BAM or CRAM.
+</dd><dt><b>-w</b></dt><dd><p>
+Overwrite an existing @RG line, if a new one with the same ID value is provided.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>

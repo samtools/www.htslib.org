@@ -1,0 +1,438 @@
+---
+permalink: /doc/1.13/samtools-view.html
+layout: manpage
+title: samtools-view(1) manual page
+package: samtools-1.13
+date: 7 July 2021
+section_text: Bioinformatics tools
+redirect_from: /doc/1.13/samtools-view.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools view &ndash; views and converts SAM/BAM/CRAM files
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+<b>samtools view</b>
+[<em>options</em>]
+<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>
+[<em>region</em>...]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+With no options or regions specified, prints all alignments in the specified
+input alignment file (in SAM, BAM, or CRAM format) to standard output
+in SAM format (with no header).
+<p>
+You may specify one or more space-separated region specifications after the
+input filename to restrict output to only those alignments which overlap the
+specified region(s). Use of region specifications requires a coordinate-sorted
+and indexed input file (in BAM or CRAM format).
+<p>
+The
+<b>-b</b>,
+<b>-C</b>,
+<b>-1</b>,
+<b>-u</b>,
+<b>-h</b>,
+<b>-H</b>,
+and
+<b>-c</b>
+options change the output format from the default of headerless SAM, and the
+<b>-o</b>
+and
+<b>-U</b>
+options set the output file name(s).
+<p>
+The
+<b>-t</b>
+and
+<b>-T</b>
+options provide additional reference data. One of these two options is required
+when SAM input does not contain @SQ headers, and the
+<b>-T</b>
+option is required whenever writing CRAM output.
+<p>
+The
+<b>-L</b>,
+<b>-M</b>,
+<b>-N</b>,
+<b>-r</b>,
+<b>-R</b>,
+<b>-d</b>,
+<b>-D</b>,
+<b>-s</b>,
+<b>-q</b>,
+<b>-l</b>,
+<b>-m</b>,
+<b>-f</b>,
+<b>-F</b>,
+and
+<b>-G</b>
+options filter the alignments that will be included in the output to only those
+alignments that match certain criteria.
+<p>
+The
+<b>-x</b>,
+<b>-B</b>,
+<b>--add-flags</b>,
+and
+<b>--remove-flags</b>
+options modify the data which is contained in each alignment.
+<p>
+The
+<b>-X</b>
+option can be used to allow user to specify customized index file location(s) if the data
+folder does not contain any index file. See
+<b>EXAMPLES</b>
+section for sample of usage.
+<p>
+Finally, the
+<b>-@</b>
+option can be used to allocate additional threads to be used for compression, and the
+<b>-?</b>
+option requests a long help message.
+<p>
+<dl><dt><b>REGIONS:</b></dt><dd><p>
+Regions can be specified as: RNAME[:STARTPOS[-ENDPOS]] and all position
+coordinates are 1-based.
+<p>
+Important note: when multiple regions are given, some alignments may be output
+multiple times if they overlap more than one of the specified regions.
+<p>
+Examples of region specifications:
+<dl><dt><b>chr1</b></dt><dd><p>
+Output all alignments mapped to the reference sequence named `chr1' (i.e. @SQ SN:chr1).
+</dd><dt><b>chr2:1000000</b></dt><dd><p>
+The region on chr2 beginning at base position 1,000,000 and ending at the
+end of the chromosome.
+</dd><dt><b>chr3:1000-2000</b></dt><dd><p>
+The 1001bp region on chr3 beginning at base position 1,000 and ending at base
+position 2,000 (including both end positions).
+</dd><dt><b>'*'</b></dt><dd><p>
+Output the unmapped reads at the end of the file.
+(This does not include any unmapped reads placed on a reference sequence
+alongside their mapped mates.)
+</dd><dt><b>.</b></dt><dd><p>
+Output all alignments.
+(Mostly unnecessary as not specifying a region at all has the same effect.)
+</dd></dl>
+<p>
+<p>
+</dd></dl>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-b</b>, <b>--bam</b></dt><dd><p>
+Output in the BAM format.
+</dd><dt><b>-C</b>, <b>--cram</b></dt><dd><p>
+Output in the CRAM format (requires -T).
+</dd><dt><b>-1</b>, <b>--fast</b></dt><dd><p>
+Enable fast BAM compression (implies -b).
+</dd><dt><b>-u</b>, <b>--uncompressed</b></dt><dd><p>
+Output uncompressed BAM. This option saves time spent on
+compression/decompression and is thus preferred when the output is piped
+to another samtools command.
+</dd><dt><b>-h</b>, <b>--with-header</b></dt><dd><p>
+Include the header in the output.
+</dd><dt><b>-H</b>, <b>--header-only</b></dt><dd><p>
+Output the header only.
+</dd><dt><b>--no-header</b></dt><dd><p>
+When producing SAM format, output alignment records but not headers.
+This is the default; the option can be used to reset the effect of
+<b>-h</b>/<b>-H</b>.
+</dd><dt><b>-c</b>, <b>--count</b></dt><dd><p>
+Instead of printing the alignments, only count them and print the
+total number. All filter options, such as
+<b>-f</b>,
+<b>-F</b>,
+and
+<b>-q</b>,
+are taken into account.
+</dd><dt><b>-?</b>, <b>--help</b></dt><dd><p>
+Output long help and exit immediately.
+</dd><dt><b>-o </b><em>FILE</em><b>, --output </b><em>FILE</em></dt><dd><p>
+Output to
+<em>FILE [stdout].</em>
+</dd><dt><b>-U </b><em>FILE</em><b>, --unoutput </b><em>FILE</em><b>, --output-unselected </b><em>FILE</em></dt><dd><p>
+Write alignments that are
+<em>not</em>
+selected by the various filter options to
+<em>FILE</em>.
+When this option is used, all alignments (or all alignments intersecting the
+<em>regions</em>
+specified) are written to either the output file or this file, but never both.
+</dd><dt><b>-t </b><em>FILE</em><b>, --fai-reference </b><em>FILE</em></dt><dd><p>
+A tab-delimited
+<em>FILE</em>.
+Each line must contain the reference name in the first column and the length of
+the reference in the second column, with one line for each distinct reference.
+Any additional fields beyond the second column are ignored. This file also
+defines the order of the reference sequences in sorting. If you run:
+`samtools faidx &lt;ref.fa&gt;', the resulting index file
+<em>&lt;ref.fa&gt;.fai</em>
+can be used as this
+<em>FILE</em>.
+</dd><dt><b>-T </b><em>FILE</em><b>, --reference </b><em>FILE</em></dt><dd><p>
+A FASTA format reference
+<em>FILE</em>,
+optionally compressed by
+<b>bgzip</b>
+and ideally indexed by
+<b>samtools</b>
+<b>faidx</b>.
+If an index is not present one will be generated for you, if the reference
+file is local.
+<p>
+If the reference file is not local,
+but is accessed instead via an https://, s3:// or other URL,
+the index file will need to be supplied by the server alongside the reference.
+It is possible to have the reference and index files in different locations
+by supplying both to this option separated by the string "##idx##",
+for example:
+<p>
+<b>-T ftp://x.com/ref.fa##idx##ftp://y.com/index.fa.fai</b>
+<p>
+However, note that only the location of the reference will be stored
+in the output file header.
+If this method is used to make CRAM files, the cram reader may not be able to
+find the index, and may not be able to decode the file unless it can get
+the references it needs using a different method.
+</dd><dt><b>-L </b><em>FILE</em><b>, --target-file </b><em>FILE</em><b>, --targets-file </b><em>FILE</em></dt><dd><p>
+Only output alignments overlapping the input BED
+<em>FILE</em>
+[null].
+</dd><dt><b>-M</b>, <b>--use-index</b></dt><dd><p>
+Use the multi-region iterator on the union of a BED file and
+command-line region arguments.  This avoids re-reading the same regions
+of files so can sometimes be much faster.  Note this also removes
+duplicate sequences.  Without this a sequence that overlaps multiple
+regions specified on the command line will be reported multiple times.
+The usage of a BED file is optional and its path has to be preceded by
+<b>-L</b>
+option.
+</dd><dt><b>--region-file </b><em>FILE</em><b>, --regions-file </b><em>FILE</em></dt><dd><p>
+Use an index and multi-region iterator to only output alignments
+overlapping the input BED
+<em>FILE</em>.
+Equivalent to
+<b>-M -L </b><em>FILE</em>
+or
+<b>--use-index --target-file</b>
+<em>FILE</em>.
+</dd><dt><b>-N </b><em>FILE</em><b>, --qname-file </b><em>FILE</em></dt><dd><p>
+Output only alignments with read names listed in
+<em>FILE</em>.
+</dd><dt><b>-r </b><em>STR</em><b>, --read-group </b><em>STR</em></dt><dd><p>
+Output alignments in read group
+<em>STR</em>
+[null].
+Note that records with no
+<b>RG</b>
+tag will also be output when using this option.
+This behaviour may change in a future release.
+</dd><dt><b>-R </b><em>FILE</em><b>, --read-group-file </b><em>FILE</em></dt><dd><p>
+Output alignments in read groups listed in
+<em>FILE</em>
+[null].
+Note that records with no
+<b>RG</b>
+tag will also be output when using this option.
+This behaviour may change in a future release.
+</dd><dt><b>-d </b><em>STR1[:STR2]</em><b>, --tag </b><em>STR1[:STR2]</em></dt><dd><p>
+Only output alignments with tag
+<em>STR1</em>
+and associated value
+<em>STR2</em>,
+which can be a string or an integer [null].
+The value can be omitted, in which case only the tag is considered.
+</dd><dt><b>-D </b><em>STR:FILE</em><b>, --tag-file </b><em>STR:FILE</em></dt><dd><p>
+Only output alignments with tag
+<em>STR</em>
+and associated values listed in
+<em>FILE</em>
+[null].
+</dd><dt><b>-q </b><em>INT</em><b>, --min-MQ </b><em>INT</em></dt><dd><p>
+Skip alignments with MAPQ smaller than
+<em>INT</em>
+[0].
+</dd><dt><b>-l </b><em>STR</em><b>, --library </b><em>STR</em></dt><dd><p>
+Only output alignments in library
+<em>STR</em>
+[null].
+</dd><dt><b>-m </b><em>INT</em><b>, --min-qlen </b><em>INT</em></dt><dd><p>
+Only output alignments with number of CIGAR bases consuming query
+sequence &ge;
+<em>INT</em>
+[0]
+</dd><dt><b>-e </b><em>STR</em><b>, --expr </b><em>STR</em></dt><dd><p>
+Only include alignments that match the filter expression <em>STR</em>.
+The syntax for these expressions is described in the main samtools(1) man page
+under the FILTER EXPRESSIONS heading.
+</dd><dt><b>-f </b><em>FLAG</em><b>, --require-flags </b><em>FLAG</em></dt><dd><p>
+Only output alignments with all bits set in
+<em>FLAG</em>
+present in the FLAG field.
+<em>FLAG</em>
+can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/),
+in octal by beginning with `0' (i.e. /^0[0-7]+/), as a decimal number
+not beginning with '0' or as a comma-separated list of flag names.
+<p>
+<p>
+For a list of flag names see
+<em>samtools-flags</em>(1).
+</dd><dt><b>-F </b><em>FLAG</em><b>, --excl-flags </b><em>FLAG</em><b>, --exclude-flags </b><em>FLAG</em></dt><dd><p>
+Do not output alignments with any bits set in
+<em>FLAG</em>
+present in the FLAG field.
+<em>FLAG</em>
+can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/),
+in octal by beginning with `0' (i.e. /^0[0-7]+/), as a decimal number
+not beginning with '0' or as a comma-separated list of flag names.
+</dd><dt><b>-G </b><em>FLAG</em></dt><dd><p>
+Do not output alignments with all bits set in
+<em>INT</em>
+present in the FLAG field.  This is the opposite of <em>-f</em> such
+that <em>-f12 -G12</em> is the same as no filtering at all.
+<em>FLAG</em>
+can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/),
+in octal by beginning with `0' (i.e. /^0[0-7]+/), as a decimal number
+not beginning with '0' or as a comma-separated list of flag names.
+</dd><dt><b>-x </b><em>STR</em><b>, --remove-tag </b><em>STR</em></dt><dd><p>
+Read tag to exclude from output (repeatable) [null]
+</dd><dt><b>-B</b>, <b>--remove-B</b></dt><dd><p>
+Collapse the backward CIGAR operation.
+</dd><dt><b>--add-flags </b><em>FLAG</em></dt><dd><p>
+Adds flag(s) to read.
+<em>FLAG</em>
+can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/),
+in octal by beginning with `0' (i.e. /^0[0-7]+/), as a decimal number
+not beginning with '0' or as a comma-separated list of flag names.
+</dd><dt><b>--remove-flags </b><em>FLAG</em></dt><dd><p>
+Remove flag(s) from read.
+<em>FLAG</em>
+is specified in the same way as with the
+<b>--add-flags</b>
+option.
+</dd><dt><b>--subsample </b><em>FLOAT</em></dt><dd><p>
+Output only a proportion of the input alignments, as specified by 0.0 &le;
+<em>FLOAT</em>
+&le; 1.0, which gives the fraction of templates/pairs to be kept.
+This subsampling acts in the same way on all of the alignment records in
+the same template or read pair, so it never keeps a read but not its mate.
+</dd><dt><b>--subsample-seed </b><em>INT</em></dt><dd><p>
+Subsampling seed used to influence
+<em>which</em>
+subset of reads is kept.
+When subsampling data that has previously been subsampled, be sure to use
+a different seed value from those used previously; otherwise more reads
+will be retained than expected.
+[0]
+</dd><dt><b>-s </b><em>FLOAT</em></dt><dd><p>
+Subsampling shorthand option:
+<b>-s </b><em>INT</em><b>.</b><em>FRAC</em>
+is equivalent to
+<b>--subsample-seed </b><em>INT</em><b> --subsample </b>
+0.<em>FRAC</em>.
+</dd><dt><b>-@ </b><em>INT</em><b>, --threads </b><em>INT</em></dt><dd><p>
+Number of BAM compression threads to use in addition to main thread [0].
+</dd><dt><b>-S</b></dt><dd><p>
+Ignored for compatibility with previous samtools versions.
+Previously this option was required if input was in SAM format, but now the
+correct format is automatically detected by examining the first few characters
+of input.
+</dd><dt><b>-X</b>, <b>--customized-index</b></dt><dd><p>
+Include customized index file as a part of arguments. See
+<b>EXAMPLES</b>
+section for sample of usage.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+<p>
+</dd></dl>
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+<ul><li>Import SAM to BAM when
+<b>@SQ</b>
+lines are present in the header:
+<pre>
+samtools view -bo aln.bam aln.sam
+</pre>
+If
+<b>@SQ</b>
+lines are absent:
+<pre>
+samtools faidx ref.fa
+samtools view -bt ref.fa.fai -o aln.bam aln.sam
+</pre>
+where
+<em>ref.fa.fai</em>
+is generated automatically by the
+<b>faidx</b>
+command.
+<p>
+</li>
+<li>Convert a BAM file to a CRAM file using a local reference sequence.
+<pre>
+samtools view -C -T ref.fa -o aln.cram aln.bam
+</pre>
+<p>
+</li>
+<li>Convert a BAM file to a CRAM with NM and MD tags stored verbatim
+rather than calculating on the fly during CRAM decode, so that mixed
+data sets with MD/NM only on some records, or NM calculated using
+different definitions of mismatch, can be decoded without change.  The
+second command demonstrates how to decode such a file.  The request to
+not decode MD here is turning off auto-generation of both MD and NM;
+it will still emit the MD/NM tags on records that had these stored
+verbatim.
+<pre>
+samtools view -C --output-fmt-option store_md=1 --output-fmt-option store_nm=1 -o aln.cram aln.bam
+samtools view --input-fmt-option decode_md=0 -o aln.new.bam aln.cram
+</pre>
+</li>
+<li>An alternative way of achieving the above is listing multiple options
+after the <b>--output-fmt</b> or <b>-O</b> option.  The commands below
+are equivalent to the two above.
+<pre>
+samtools view -O cram,store_md=1,store_nm=1 -o aln.cram aln.bam
+samtools view --input-fmt cram,decode_md=0 -o aln.new.bam aln.cram
+</pre>
+<p>
+</li>
+<li>Include customized index file as a part of arguments.
+<pre>
+samtools view [options] -X /data_folder/data.bam /index_folder/data.bai chrM:1-10
+</pre>
+<p>
+</li>
+<li>Output alignments in read group <b>grp2</b> (records with no <b>RG</b> tag will also be in the output).
+<pre>
+samtools view -r grp2 -o /data_folder/data.rg2.bam /data_folder/data.bam
+</pre>
+<p>
+</li>
+<li>Only keep reads with tag <b>BC</b> and were the barcode
+matches the barcodes listed in the barcode file.
+<pre>
+samtools view -D BC:barcodes.txt -o /data_folder/data.barcodes.bam /data_folder/data.bam
+</pre>
+<p>
+</li>
+<li>Only keep reads with tag <b>RG</b> and read group <b>grp2</b>.
+This does almost the same than <b>-r grp2</b> but will not keep records without the <b>RG</b> tag.
+<pre>
+samtools view -d RG:grp2 -o /data_folder/data.rg2_only.bam /data_folder/data.bam
+</pre>
+<p>
+</li>
+<li>Remove the actions of samtools markdup.  Clear the duplicate flag and remove the <b>dt</b> tag, keep the header.
+<pre>
+samtools view -h --remove-flags DUP -x dt -o /data_folder/dat.no_dup_markings.bam /data_folder/data.bam
+</pre>
+<p>
+</li></ul>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-tview.html"><em>samtools-tview</em></a> (1),
+<a href="sam.html"><em>sam</em></a> (5)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

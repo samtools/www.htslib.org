@@ -1,0 +1,202 @@
+---
+permalink: /doc/1.13/faidx.html
+layout: manpage
+title: faidx(5) manual page
+package: htslib
+date: June 2018
+section_text: Bioinformatics formats
+redirect_from: /doc/1.13/faidx.5.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+faidx &ndash; an index enabling random access to FASTA and FASTQ files
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<em>file.fa</em>.fai,
+<em>file.fasta</em>.fai,
+<em>file.fq</em>.fai,
+<em>file.fastq</em>.fai
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+Using an <b>fai index</b> file in conjunction with a FASTA/FASTQ file containing
+reference sequences enables efficient access to arbitrary regions within
+those reference sequences.
+The index file typically has the same filename as the corresponding FASTA/FASTQ
+file, with <b>.fai</b> appended.
+<p>
+An <b>fai index</b> file is a text file consisting of lines each with
+five TAB-delimited columns for a FASTA file and six for FASTQ:
+<table>
+<tr><td><b>NAME</b></td><td>Name of this reference sequence</td></tr>
+<tr><td><b>LENGTH</b></td><td>Total length of this reference sequence, in bases</td></tr>
+<tr><td><b>OFFSET</b></td><td>Offset in the FASTA/FASTQ file of this sequence's first base</td></tr>
+<tr><td><b>LINEBASES</b></td><td>The number of bases on each line</td></tr>
+<tr><td><b>LINEWIDTH</b></td><td>The number of bytes in each line, including the newline</td></tr>
+<tr><td><b>QUALOFFSET</b></td><td>Offset of sequence's first quality within the FASTQ file</td></tr>
+</table>
+<p>
+The <b>NAME</b> and <b>LENGTH</b> columns contain the same
+data as would appear in the <b>SN</b> and <b>LN</b> fields of a
+SAM <b>@SQ</b> header for the same reference sequence.
+<p>
+The <b>OFFSET</b> column contains the offset within the FASTA/FASTQ file, in
+bytes starting from zero, of the first base of this reference sequence, i.e., of
+the character following the newline at the end of the header line (the 
+"<b>&gt;</b>" line in FASTA, "<b>@</b>" in FASTQ). Typically the lines of a
+<b>fai index</b> file appear in the order in which the reference sequences
+appear in the FASTA/FASTQ file, so <b>.fai</b> files are typically sorted
+according to this column.
+<p>
+The <b>LINEBASES</b> column contains the number of bases in each of the sequence
+lines that form the body of this reference sequence, apart from the final line
+which may be shorter.
+The <b>LINEWIDTH</b> column contains the number of <em>bytes</em> in each of
+the sequence lines (except perhaps the final line), thus differing from
+<b>LINEBASES</b> in that it also counts the bytes forming the line terminator.
+<p>
+The <b>QUALOFFSET</b> works the same way as <b>OFFSET</b> but for the first
+quality score of this reference sequence.  This would be the first character
+following the newline at the end of the "<b>+</b>" line.  For FASTQ files only.
+<h2 id="FASTA_Files"><a href="#FASTA_Files">FASTA Files</a></h2>
+In order to be indexed with <b>samtools faidx</b>, a FASTA file must be a text
+file of the form
+<p>
+&gt;<em>name</em>
+[<em>description</em>...]
+<br>
+ATGCATGCATGCATGCATGCATGCATGCAT
+<br>
+GCATGCATGCATGCATGCATGCATGCATGC
+<br>
+ATGCAT
+<br>
+&gt;<em>name</em>
+[<em>description</em>...]
+<br>
+ATGCATGCATGCAT
+<br>
+GCATGCATGCATGC
+<br>
+[...]
+<p>
+In particular, each reference sequence must be "well-formatted", i.e., all
+of its sequence lines must be the same length, apart from the final sequence
+line which may be shorter.
+(While this sequence line length must be the same within each sequence,
+it may vary between different reference sequences in the same FASTA file.)
+<p>
+This also means that although the FASTA file may have Unix- or Windows-style
+or other line termination, the newline characters present must be consistent,
+at least within each reference sequence.
+<p>
+The <b>samtools</b> implementation uses the first word of the "<b>&gt;</b>" header
+line text (i.e., up to the first whitespace character, having skipped any
+initial whitespace after the "&gt;") as the <b>NAME</b> column.
+<h2 id="FASTQ_Files"><a href="#FASTQ_Files">FASTQ Files</a></h2>
+FASTQ files for indexing work in the same way as the FASTA files.
+<p>
+@<em>name</em>
+[<em>description...]</em>
+<br>
+ATGCATGCATGCATGCATGCATGCATGCAT
+<br>
+GCATGCATGCATGCATGCATGCATGCATGC
+<br>
+ATGCAT
+<br>
++
+<br>
+FFFA@@FFFFFFFFFFHHB:::@BFFFFGG
+<br>
+HIHIIIIIIIIIIIIIIIIIIIIIIIFFFF
+<br>
+8011&lt;&lt;
+<br>
+@<em>name</em>
+[<em>description...]</em>
+<br>
+ATGCATGCATGCAT
+<br>
+GCATGCATGCATGC
+<br>
++
+<br>
+IIA94445EEII==
+<br>
+=&gt;IIIIIIIIICCC
+<br>
+[...]
+<p>
+Quality lines must be wrapped at the same length as the corresponding
+sequence lines.
+<h1 id="EXAMPLE"><a href="#EXAMPLE">EXAMPLE</a></h1>
+For example, given this FASTA file
+<p>
+&gt;one
+<br>
+ATGCATGCATGCATGCATGCATGCATGCAT
+<br>
+GCATGCATGCATGCATGCATGCATGCATGC
+<br>
+ATGCAT
+<br>
+&gt;two another chromosome
+<br>
+ATGCATGCATGCAT
+<br>
+GCATGCATGCATGC
+<br>
+<p>
+formatted with Unix-style (LF) line termination, the corresponding fai index
+would be
+<table>
+<tr><td>one</td><td>66</td><td>5</td><td>30</td><td>31</td></tr>
+<tr><td>two</td><td>28</td><td>98</td><td>14</td><td>15</td></tr>
+</table>
+<p>
+If the FASTA file were formatted with Windows-style (CR-LF) line termination,
+the fai index would be
+<table>
+<tr><td>one</td><td>66</td><td>6</td><td>30</td><td>32</td></tr>
+<tr><td>two</td><td>28</td><td>103</td><td>14</td><td>16</td></tr>
+</table>
+<p>
+An example FASTQ file
+<p>
+@fastq1
+<br>
+ATGCATGCATGCATGCATGCATGCATGCAT
+<br>
+GCATGCATGCATGCATGCATGCATGCATGC
+<br>
+ATGCAT
+<br>
++
+<br>
+FFFA@@FFFFFFFFFFHHB:::@BFFFFGG
+<br>
+HIHIIIIIIIIIIIIIIIIIIIIIIIFFFF
+<br>
+8011&lt;&lt;
+<br>
+@fastq2
+<br>
+ATGCATGCATGCAT
+<br>
+GCATGCATGCATGC
+<br>
++
+<br>
+IIA94445EEII==
+<br>
+=&gt;IIIIIIIIICCC
+<br>
+<p>
+Formatted with Unix-style line termination would give this fai index
+<table>
+<tr><td>fastq1</td><td>66</td><td>8</td><td>30</td><td>31</td><td>79</td></tr>
+<tr><td>fastq2</td><td>28</td><td>156</td><td>14</td><td>15</td><td>188</td></tr>
+</table>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<dl><dt><a href="https://en.wikipedia.org/wiki/FASTA_format">https://en.wikipedia.org/wiki/FASTA_format</a></dt><dd><p>
+</dd><dt><a href="https://en.wikipedia.org/wiki/FASTQ_format">https://en.wikipedia.org/wiki/FASTQ_format</a></dt><dd><p>
+<p>
+Further description of the FASTA and FASTQ formats

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -187,7 +187,7 @@ for all reads aligned to a reference in the file.  See
 <b>BAQ</b>
 below.
 </dd><dt><b>-G, --exclude-RG</b><em> FILE</em></dt><dd><p>
-Exclude reads from readgroups listed in FILE (one @RG-ID per line)
+Exclude reads from read groups listed in FILE (one @RG-ID per line)
 </dd><dt><b>-l, --positions</b><em> FILE</em></dt><dd><p>
 BED or position list file containing a list of regions or sites where
 pileup or BCF should be generated. Position list files contain two
@@ -211,9 +211,9 @@ two requests.
 </dd><dt><b>-R, --ignore-RG</b></dt><dd><p>
 Ignore RG tags. Treat all reads in one BAM as one sample.
 </dd><dt><b>--rf, --incl-flags</b><em> STR|INT</em></dt><dd><p>
-Required flags: skip reads with mask bits unset [null]
+Required flags: include reads with any of the mask bits set [null]
 </dd><dt><b>--ff, --excl-flags</b><em> STR|INT</em></dt><dd><p>
-Filter flags: skip reads with mask bits set
+Filter flags: skip reads with any of the mask bits set
 [UNMAP,SECONDARY,QCFAIL,DUP]
 </dd><dt><b>-x, --ignore-overlaps</b></dt><dd><p>
 Disable read-pair overlap detection.
@@ -275,7 +275,7 @@ comma-separated read names, followed by a list of flag values, a list of RG tag
 values and a list of NM tag values. Field values are always displayed before
 tag values.
 </dd><dt><b>--output-sep</b><em> CHAR</em></dt><dd><p>
-Specify a different separtor character for tag value lists, when those values
+Specify a different separator character for tag value lists, when those values
 might contain one or more commas (<b>,</b>), which is the default list separator.
 This option only affects columns for two-letter tags like NM; standard
 fields like FLAG or QNAME will always be separated by commas.
@@ -315,7 +315,7 @@ option.  To disable it, use the
 <b>-B</b>
 option.
 <p>
-It is possible to store pre-calculated BAQ values in a SAM BQ:Z tag.
+It is possible to store precalculated BAQ values in a SAM BQ:Z tag.
 Samtools mpileup will use the precalculated values if it finds them.
 The
 <b>-E</b>

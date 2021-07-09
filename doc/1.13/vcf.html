@@ -1,0 +1,83 @@
+---
+permalink: /doc/1.13/vcf.html
+layout: manpage
+title: vcf(5) manual page
+package: htslib
+date: August 2013
+section_text: Bioinformatics formats
+redirect_from: /doc/1.13/vcf.5.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+vcf &ndash; Variant Call Format
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+The Variant Call Format (VCF) is a TAB-delimited format with each data line
+consisting of the following fields:
+<table>
+<tr><td>1</td><td><b>CHROM</b></td><td>CHROMosome name</td></tr>
+<tr><td>2</td><td><b>POS</b></td><td>the left-most POSition of the variant</td></tr>
+<tr><td>3</td><td><b>ID</b></td><td>unique variant IDentifier</td></tr>
+<tr><td>4</td><td><b>REF</b></td><td>the REFerence allele</td></tr>
+<tr><td>5</td><td><b>ALT</b></td><td>the ALTernate allele(s) (comma-separated)</td></tr>
+<tr><td>6</td><td><b>QUAL</b></td><td>variant/reference QUALity</td></tr>
+<tr><td>7</td><td><b>FILTER</b></td><td>FILTERs applied</td></tr>
+<tr><td>8</td><td><b>INFO</b></td><td>INFOrmation related to the variant (semicolon-separated)</td></tr>
+<tr><td>9</td><td><b>FORMAT</b></td><td>FORMAT of the genotype fields (optional; colon-separated)</td></tr>
+<tr><td>10+</td><td><b>SAMPLE</b></td><td>SAMPLE genotypes and per-sample information (optional)</td></tr>
+</table>
+<p>
+The following table gives the <b>INFO</b> tags used by samtools and bcftools.
+<dl><dt><b>AF1</b></dt><dd><p>
+Max-likelihood estimate of the site allele frequency (AF) of the first ALT allele
+(double)
+</dd><dt><b>DP</b></dt><dd><p>
+Raw read depth (without quality filtering)
+(int)
+</dd><dt><b>DP4</b></dt><dd><p>
+# high-quality reference forward bases, ref reverse, alternate for and alt rev bases
+(int[4])
+</dd><dt><b>FQ</b></dt><dd><p>
+Consensus quality. Positive: sample genotypes different; negative: otherwise
+(int)
+</dd><dt><b>MQ</b></dt><dd><p>
+Root-Mean-Square mapping quality of covering reads
+(int)
+</dd><dt><b>PC2</b></dt><dd><p>
+Phred probability of AF in group1 samples being larger (,smaller) than in group2
+(int[2])
+</dd><dt><b>PCHI2</b></dt><dd><p>
+Posterior weighted chi^2 P-value between group1 and group2 samples
+(double)
+</dd><dt><b>PV4</b></dt><dd><p>
+P-value for strand bias, baseQ bias, mapQ bias and tail distance bias
+(double[4])
+</dd><dt><b>QCHI2</b></dt><dd><p>
+Phred-scaled PCHI2
+(int)
+</dd><dt><b>RP</b></dt><dd><p>
+# permutations yielding a smaller PCHI2
+(int)
+</dd><dt><b>CLR</b></dt><dd><p>
+Phred log ratio of genotype likelihoods with and without the trio/pair constraint
+(int)
+</dd><dt><b>UGT</b></dt><dd><p>
+Most probable genotype configuration without the trio constraint
+(string)
+</dd><dt><b>CGT</b></dt><dd><p>
+Most probable configuration with the trio constraint
+(string)
+</dd><dt><b>VDB</b></dt><dd><p>
+Tests variant positions within reads. Intended for filtering RNA-seq artifacts around splice sites
+(float)
+</dd><dt><b>RPB</b></dt><dd><p>
+Mann-Whitney rank-sum test for tail distance bias
+(float)
+</dd><dt><b>HWE</b></dt><dd><p>
+Hardy-Weinberg equilibrium test (Wigginton et al)
+(float)
+</dd></dl><p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<dl><dt><a href="https://github.com/samtools/hts-specs">https://github.com/samtools/hts-specs</a></dt><dd><p>
+The full VCF/BCF file format specification
+</dd><dt><em>A note on exact tests of Hardy-Weinberg equilibrium</em></dt><dd><p>
+Wigginton JE et al
+PMID:15789306

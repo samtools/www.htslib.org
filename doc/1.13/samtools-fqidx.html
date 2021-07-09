@@ -1,0 +1,92 @@
+---
+permalink: /doc/1.13/samtools-fqidx.html
+layout: manpage
+title: samtools-fqidx(1) manual page
+package: samtools-1.13
+date: 7 July 2021
+section_text: Bioinformatics tools
+redirect_from: /doc/1.13/samtools-fqidx.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools fqidx &ndash; Indexes or queries regions from a fastq file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-fqidx.html">fqidx</a>
+<em>ref.fastq</em> [<em>region1</em> [...]]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Index reference sequence in the FASTQ format or extract subsequence from
+indexed reference sequence. If no region is specified,
+<b>fqidx</b>
+will index the file and create
+<em>&lt;ref.fastq&gt;.fai</em>
+on the disk. If regions are specified, the subsequences will be
+retrieved and printed to stdout in the FASTQ format.
+<p>
+The input file can be compressed in the
+<b>BGZF</b>
+format.
+<p>
+The sequences in the input file should all have different names.
+If they do not, indexing will emit a warning about duplicate sequences and
+retrieval will only produce subsequences from the first sequence with the
+duplicated name.
+<p>
+<b>samtools fqidx</b>
+should only be used on fastq files with a small number of entries.
+Trying to use it on a file containing millions of short sequencing reads
+will produce an index that is almost as big as the original file, and
+searches using the index will be very slow and use a lot of memory.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-o, --output </b><em>FILE</em></dt><dd><p>
+Write FASTQ to file rather than to stdout.
+</dd><dt><b>-n, --length </b><em>INT</em></dt><dd><p>
+Length of FASTQ sequence line.
+[60]
+</dd><dt><b>-c, --continue</b></dt><dd><p>
+Continue working if a non-existent region is requested.
+</dd><dt><b>-r, --region-file </b><em>FILE</em></dt><dd><p>
+Read regions from a file. Format is chr:from-to, one per line.
+</dd><dt><b>-i, --reverse-complement</b></dt><dd><p>
+Output the sequence as the reverse complement.
+When this option is used, &ldquo;/rc&rdquo; will be appended to the sequence names.
+To turn this off or change the string appended, use the
+<b>--mark-strand</b>
+option.
+</dd><dt><b>--mark-strand TYPE</b></dt><dd><p>
+Append strand indicator to sequence name.  TYPE can be one of:
+<dl><dt><b>rc</b></dt><dd><p>
+Append '/rc' when writing the reverse complement.  This is the default.
+</dd><dt><b>no</b></dt><dd><p>
+Do not append anything.
+</dd><dt><b>sign</b></dt><dd><p>
+Append '(+)' for forward strand or '(-)' for reverse complement.  This matches
+the output of &ldquo;bedtools getfasta -s&rdquo;.
+</dd><dt><b>custom,&lt;pos&gt;,&lt;neg&gt;</b></dt><dd><p>
+Append string &lt;pos&gt; to names when writing the forward strand and &lt;neg&gt; when
+writing the reverse strand.  Spaces are preserved, so it is possible to move
+the indicator into the comment part of the description line by including
+a leading space in the strings &lt;pos&gt; and &lt;neg&gt;.
+</dd></dl>
+</dd><dt><b>--fai-idx FILE</b></dt><dd><p>
+Read/Write to specified index file.
+</dd><dt><b>--gzi-idx FILE</b></dt><dd><p>
+Read/Write to specified compressed file index (used with .gz files).
+</dd><dt><b>-h, --help</b></dt><dd><p>
+Print help message and exit.
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li, with modifications by Andrew Whitwham and Robert Davies,
+all from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-faidx.html"><em>samtools-faidx</em></a> (1),
+<a href="samtools-fasta.html"><em>samtools-fasta</em></a> (1),
+<a href="samtools-fastq.html"><em>samtools-fastq</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

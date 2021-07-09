@@ -2,31 +2,38 @@
 permalink: /doc/samtools-merge.html
 layout: manpage
 title: samtools-merge(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-merge.1.html
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
-samtools merge &ndash; merges multiple sorted input files into a single output.
+samtools merge &ndash; merges multiple sorted files into a single file
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 <p>
-<b>merge</b>
-samtools <a href="samtools-merge.html">merge</a>
-[<b>-nur1f</b>]
-[<b>-h</b>
-<em>inh.sam</em>]
-[<b>-t</b>
-<em>tag</em>]
-[<b>-R</b>
-<em>reg</em>]
-[<b>-b</b>
-<em>list</em>] <em>out.bam</em> <em>in1.bam</em> [<em>in2.bam</em> <em>in3.bam</em> ... <em>inN.bam</em>]
+<b>samtools merge</b>
+[<em>options</em>]
+<b>-o</b>
+<em>out.bam</em>
+[<em>options</em>]
+<em>in1.bam</em> ... <em>inN.bam</em>
+<p>
+<b>samtools merge</b>
+[<em>options</em>]
+<em>out.bam</em>
+<em>in1.bam</em> ... <em>inN.bam</em>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
 Merge multiple sorted alignment files, producing a single sorted output file
 that contains all the input records and maintains the existing sort order.
+<p>
+The output file can be specified via <b>-o</b> as shown in the first synopsis.
+Otherwise the first non-option filename argument is taken to be <em>out.bam</em>
+rather than an input file, as in the second synopsis.
+There is no default; to write to standard output (or to a pipe), use either
+&ldquo;<b>-o -</b>&rdquo; or the equivalent using &ldquo;<b>-</b>&rdquo; as the first
+filename argument.
 <p>
 If
 <b>-h</b>
@@ -68,6 +75,13 @@ are ignored.)
 </dd><dt><b>-n</b></dt><dd><p>
 The input alignments are sorted by read names rather than by chromosomal
 coordinates
+</dd><dt><b>-o</b><em> FILE</em></dt><dd><p>
+Write merged output to
+<em>FILE</em>,
+specifying the filename via an option rather than as the first filename
+argument.
+When <b>-o</b> is used, all non-option filename arguments specify input
+files to be merged.
 </dd><dt><b>-t TAG</b></dt><dd><p>
 The input alignments have been sorted by the value of TAG, then by either
 position or name (if <b>-n</b> is given).

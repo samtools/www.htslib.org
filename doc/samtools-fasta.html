@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fasta.html
 layout: manpage
 title: samtools-fasta(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fasta.1.html
 ---
@@ -62,7 +62,7 @@ Sequences will be written to standard output unless one of the
 <b>-1</b>, <b>-2</b>, <b>-o</b>, or <b>-0</b>
 options is used, in which case sequences for that category will be written to
 the specified file.
-The same filename may be specified with multiple options, in which ase the
+The same filename may be specified with multiple options, in which case the
 sequences will be multiplexed in order of occurrence.
 <p>
 If a singleton file is specified using the
@@ -171,8 +171,9 @@ If the tag contains a separator, then the numeric part can be replaced with '*' 
 mean 'read until the separator or end of tag', for example:
 </dd><dt><b>n*i*</b></dt><dd><p>
 ignore the left part of the tag until the separator, then use the second part
+</dd></dl>
 <p>
-</dd></dl></dl>
+</dd></dl>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
 Starting from a coordinate sorted file, output paired reads to
 separate files, discarding singletons, supplementary and secondary reads.
@@ -222,5 +223,6 @@ all from the Sanger Institute.
 <a href="samtools.html"><em>samtools</em></a> (1),
 <a href="samtools-faidx.html"><em>samtools-faidx</em></a> (1),
 <a href="samtools-fqidx.html"><em>samtools-fqidx</em></a> (1)
+<a href="samtools-import.html"><em>samtools-import</em></a> (1)
 <p>
 Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

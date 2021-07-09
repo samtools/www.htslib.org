@@ -2,8 +2,8 @@
 permalink: /doc/samtools-flagstat.html
 layout: manpage
 title: samtools-flagstat(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-flagstat.1.html
 ---
@@ -39,14 +39,20 @@ quality controls"
 <p>
 Following this, additional categories are given for reads which are:
 <p>
-<dl><dt>secondary</dt><dd><p>
+<dl><dt>primary</dt><dd><p>
+neither 0x100 nor 0x800 bit set
+</dd><dt>secondary</dt><dd><p>
 0x100 bit set
 </dd><dt>supplementary</dt><dd><p>
 0x800 bit set
 </dd><dt>duplicates</dt><dd><p>
 0x400 bit set
+</dd><dt>primary duplicates</dt><dd><p>
+0x400 bit set and neither 0x100 nor 0x800 bit set 
 </dd><dt>mapped</dt><dd><p>
 0x4 bit not set
+</dd><dt>primary mapped</dt><dd><p>
+0x4, 0x100 and 0x800 bits not set
 </dd><dt>paired in sequencing</dt><dd><p>
 0x1 bit set
 </dd><dt>read1</dt><dd><p>
@@ -94,19 +100,27 @@ The top-level object contains two named objects
 These contain the various categories listed above as names and
 the corresponding count as value.
 <p>
-For the default format, the
-<b>mapped</b>, <b>properly paired</b>, and <b>singletons</b>
-show the count as a percentage of the total number of QC-passed or QC-failed
+For the default format, 
+<b>mapped</b> 
+shows the count as a percentage of the total number of QC-passed or QC-failed
 reads after the category name.
 For example:
 <pre>
 32 + 0 mapped (94.12% : N/A)
 </pre>
 <p>
+The
+<b>properly paired</b> and <b>singletons</b>
+counts work in a similar way but the percentage is against the total number of
+QC-passed and QC-failed pairs.  The
+<b>primary mapped</b>
+count is a percentage of the total number of QC-passed and QC-failed primary
+reads. 
+<p>
 In the
 <b>tsv</b> and <b>json</b>
 formats, these percentages are listed in separate categories
-<b>mapped %</b>, <b>properly paired %</b>, and <b>singletons %</b>.
+<b>mapped %</b>, <b>primary mapped %</b>, <b>properly paired %</b>, and <b>singletons %</b>.
 If the percentage cannot be calculated (because the total is zero)
 then in the
 <b>default</b> and <b>tsv</b>

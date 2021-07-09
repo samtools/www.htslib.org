@@ -2,8 +2,8 @@
 permalink: /doc/samtools-depth.html
 layout: manpage
 title: samtools-depth(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-depth.1.html
 ---
@@ -40,22 +40,19 @@ The names are CHROM, POS, and then the input file name for each depth column.
 If one of the inputs came from stdin, the name &ldquo;-&rdquo; will be used for
 the corresponding column.
 </dd><dt><b>-l </b><em>INT</em></dt><dd><p>
-Ignore reads shorter than <em>INT</em>
+Ignore reads shorter than <em>INT</em>.
+This is the number of bases in the sequence, minus any soft clips.
 </dd><dt><b>-m, -d </b><em>INT</em></dt><dd><p>
-At a position, read at most
-<em>INT</em>
-reads per input file.  This means figures greater than
-<em>INT</em>
-may be reported in the output.
+(Deprecated since 1.13) This option previously limited the depth to a maximum
+value.  It is still accepted as an option, but ignored.
 <p>
-Setting this limit reduces the amount of memory and time needed to
-process regions with very high coverage.  Passing zero for this option
-sets it to the highest possible value, effectively removing the depth
-limit. [8000]
-<p>
-Note that up to release 1.8, samtools would enforce a minimum value for
-this option.  This no longer happens and the limit is set exactly as
-specified.
+Note for single files, the behaviour of old
+<b>samtools depth -J -q0 -d</b>
+<em>INT FILE</em>
+is identical to
+<b>samtools mpileup -A -Q0 -x -d</b>
+<em>INT FILE</em>
+<b>| cut -f 1,2,4</b>
 </dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
 Write output to <em>FILE</em>.  Using &ldquo;-&rdquo; for <em>FILE</em>
 will send the output to stdout (also the default if this option is not used).
@@ -66,7 +63,7 @@ Only count reads with mapping quality greater than or equal to <em>INT</em>
 </dd><dt><b>-r </b><em>CHR</em><b>:</b><em>FROM</em><b>-</b><em>TO</em></dt><dd><p>
 Only report depth in specified region.
 </dd><dt><b>-X</b></dt><dd><p>
-If this option is set, it will allows user to specify customized index file location(s) if the data
+If this option is set, it will allow the user to specify customized index file location(s) if the data
 folder does not contain any index file. Example usage: samtools depth [options] -X /data_folder/in1.bam [/data_folder/in2.bam [...]] /index_folder/index1.bai [/index_folder/index2.bai [...]]
 </dd><dt><b>-g </b><em>FLAGS</em></dt><dd><p>
 By default, reads that have any of the flags UNMAP, SECONDARY, QCFAIL,
@@ -88,15 +85,56 @@ option. [UNMAP,SECONDARY,QCFAIL,DUP]
 </dd><dt><b>-J</b></dt><dd><p>
 Include reads with deletions in depth computation.
 </dd><dt><b>-s</b></dt><dd><p>
-For the overlapping section of a read pair, count only the bases of a single
-read. This is accomplished by lowering to 0 the quality values of one read for
-the span of the overlapping section. As a consequence, the algorithm will
-consider only bases with a quality above 0.
+For the overlapping section of a read pair, count only the bases of
+the first read.  Note this algorithm changed in 1.13 so the
+results may differ slightly to older releases.
 <p>
 </dd></dl>
+<h1 id="CAVEATS"><a href="#CAVEATS">CAVEATS</a></h1>
+It may appear that "samtools depth" is simply "samtools mpileup" with some
+of the columns removed, and indeed earlier versions of this command
+were just this.  However both then and now there are subtle
+differences in parameters which make the two not entirely comparable.
+Differences, other than the obvious speed benefits, include:
+<p>
+<ul><li>Deletions (CIGAR element "D") are counted by default in "depth".  This
+can be turned off with the <b>-J</b> option.  "Mpileup" always ignores
+these bases, and has no option to count them.
+<p>
+</li>
+<li>Beware there are idiosyncrasies in option naming.  Specifically
+<b>-q</b> and <b>-Q</b> options have their meanings swapped between
+"depth" and "mpileup".
+<p>
+</li>
+<li>The removal of overlapping sequences (option <b>-s</b>) is on by
+default in "mpileup" and off by default in "depth".  Additionally the
+overlap removal algorithm differs, giving subtle changes when Ns are
+present in the sequence.  Also any paired read is considered for overlap
+removal by "depth", rather than only those with the properly-paired flag
+set ("mpileup").  See above for a more detailed description.
+<p>
+</li>
+<li>The default minimum quality value is 0 for "depth" and 13 for "mpileup".
+<p>
+</li>
+<li>Specifying multiple BAMs will produce one depth column per file with
+"depth", but these are merged in "mpileup".
+<p>
+</li>
+<li>"Depth" doesn't have a maximum depth limit, while "mpileup" defaults
+to a maximum of 8000.
+<p>
+</li>
+<li>If a reference is specified to "mpileup" the BAQ algorithm will be
+used to adjust quality values, although it can be disabled.  "Depth"
+never uses BAQ.
+</pre>
+<p>
+</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
-Written by Heng Li from the Sanger Institute.
+Written by Heng Li and James Bonfield from the Sanger Institute.
 <p>
 <h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
 <a href="samtools.html"><em>samtools</em></a> (1),

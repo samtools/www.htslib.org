@@ -2,8 +2,8 @@
 permalink: /doc/samtools-coverage.html
 layout: manpage
 title: samtools-coverage(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-coverage.1.html
 ---
@@ -51,6 +51,9 @@ Required flags: skip reads with mask bits unset [null]
 </dd><dt><b>--ff, --excl-flags</b><em> STR|INT</em></dt><dd><p>
 Filter flags: skip reads with mask bits set
 [UNMAP,SECONDARY,QCFAIL,DUP]
+</dd><dt><b>-d, --depth</b><em> INT</em></dt><dd><p>
+Maximum allowed coverage depth [1000000]. If 0, depth is set to the maximum
+integer value effectively removing any depth limit.
 <p>
 </dd></dl><p>
 Output options:
@@ -58,7 +61,8 @@ Output options:
 <dl><dt><b>-m, --histogram</b></dt><dd><p>
 Show histogram instead of tabular output.
 </dd><dt><b>-A, --ascii</b></dt><dd><p>
-Show only ASCII characters in histogram.
+Show only ASCII characters in histogram using colon and fullstop for
+full and half height characters.
 </dd><dt><b>-o, --output</b><em> FILE</em></dt><dd><p>
 Write output to FILE [stdout].
 </dd><dt><b>-H, --no-header</b></dt><dd><p>
@@ -90,16 +94,16 @@ characters replaced by "#" for rendering in this man page.
 samtools coverage -A -w 32 -r chr1:1M-12M input.bam
 <p>
 chr1 (249.25Mbp)
-&gt;  24.19% | #                              | Number of reads: 528695
-&gt;  21.50% |##                              |     (132000 filtered)
-&gt;  18.81% |##                              | Covered bases:   1.07Mbp
-&gt;  16.12% |##                           #  | Percent covered: 9.727%
-&gt;  13.44% |##  #  #       ##            # #| Mean coverage:   3.5x
-&gt;  10.75% |## ##  #       ##          # # #| Mean baseQ:      34.4
-&gt;   8.06% |#####  #       ##        # # # #| Mean mapQ:       55.8
-&gt;   5.37% |##### ##      ###      # ##### #| 
-&gt;   2.69% |##### ###     ###  ### #########| Histo bin width: 343.8Kbp
-&gt;   0.00% |############ ###################| Histo max bin:   26.873%
+&gt;  24.19% | .                              | Number of reads: 528695
+&gt;  21.50% |::                              |     (132000 filtered)
+&gt;  18.81% |::                              | Covered bases:   1.07Mbp
+&gt;  16.12% |::                           :  | Percent covered: 9.727%
+&gt;  13.44% |::  :  .       ::            : :| Mean coverage:   3.5x
+&gt;  10.75% |:: ::  :       ::          : : :| Mean baseQ:      34.4
+&gt;   8.06% |:::::  :       ::        : : : :| Mean mapQ:       55.8
+&gt;   5.37% |::::: ::      :::      : ::::: :| 
+&gt;   2.69% |::::: :::     :::  ::: :::::::::| Histo bin width: 343.8Kbp
+&gt;   0.00% |:::::::::::. :::::::::::::::::::| Histo max bin:   26.873%
         1.00M     4.44M     7.87M       12.00M 
 </pre>
 <p>

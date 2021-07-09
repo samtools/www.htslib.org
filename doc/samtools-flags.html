@@ -2,8 +2,8 @@
 permalink: /doc/samtools-flags.html
 layout: manpage
 title: samtools-flags(1) manual page
-package: samtools-1.12
-date: 17 March 2021
+package: samtools-1.13
+date: 7 July 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-flags.1.html
 ---
@@ -12,11 +12,16 @@ samtools flags &ndash; convert between textual and numeric flag representation.
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 <p>
 samtools <a href="samtools-flags.html">flags</a>
-<em>INT</em>|<em>STR</em>[,...]
+<em>FLAGS</em>...
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
 Convert between textual and numeric flag representation.
+<p>
+Each <em>FLAGS</em> argument may be either an integer (in decimal, hexadecimal,
+or octal) representing a combination of the listed numeric flag values,
+or a comma-separated string <em>NAME</em><b>,</b>...<b>,</b><em>NAME</em> representing
+a combination of the flag names listed below.
 <p>
 <b>FLAGS:</b>
 <table>

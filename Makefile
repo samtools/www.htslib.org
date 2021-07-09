@@ -34,7 +34,7 @@ samtools-doc: | $(SAMTOOLS_VERSIONED_DOC)
 BCFTOOLS_DOC_DATE = $(shell git --git-dir=$(BCFTOOLS)/.git log -n 1 0.1.0.. --date=short --pretty=format:%cd -- doc/bcftools.txt)
 
 bcftools-doc: | $(BCFTOOLS_VERSIONED_DOC)
-	a2x -adate='$(BCFTOOLS_DOC_DATE)' -aversion=$(BCFTOOLS_VERSION) --doctype manpage --format xhtml -D doc $(BCFTOOLS)/doc/bcftools.txt && \
+	asciidoctor -adate='$(BCFTOOLS_DOC_DATE)' -aversion=$(BCFTOOLS_VERSION) --doctype manpage --backend xhtml -D doc $(BCFTOOLS)/doc/bcftools.txt && \
 	sed 's#href="docbook-xsl\.css"#href="../docbook-xsl.css"#' doc/bcftools.html > $(BCFTOOLS_VERSIONED_DOC)/bcftools.html 
 
 htslib-doc: | $(HTSLIB_VERSIONED_DOC)

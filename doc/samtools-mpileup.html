@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.13
-date: 7 July 2021
+package: samtools-1.14
+date: 22 October 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -119,7 +119,8 @@ contain &ldquo;*&rdquo; for this read indicating the deleted bases.)
 <li>Comma-separated 1-based positions within the alignments, e.g., 5 indicates
 that it is the fifth base of the corresponding read that is mapped to this
 genomic position.
-(Column only present when <b>-O</b>/<b>--output-BP</b> is used.)
+(Column only present when <b>-O</b>/<b>--output-BP</b> or
+<b>--output-BP-5</b> is used.)
 </li>
 <li>Additional comma-separated read field columns,
 as selected via <b>--output-extra</b>.
@@ -244,7 +245,11 @@ entirely numeric filename use
 or
 <b>--output 123</b>.)
 </dd><dt><b>-O, --output-BP</b></dt><dd><p>
-Output base positions on reads.
+Output base positions on reads in orientation listed in the SAM file
+(left to right). This is mutually exclusive with <b>--output-BP-5</b>.
+</dd><dt><b>--output-BP-5</b></dt><dd><p>
+Output base positions on reads in their original 5' to 3' orientation.
+This is mutually exclusive with <b>--output-BP</b>.
 </dd><dt><b>-s, --output-MQ</b></dt><dd><p>
 Output mapping qualities encoded as ASCII characters.
 </dd><dt><b>--output-QNAME</b></dt><dd><p>
@@ -287,6 +292,76 @@ default is <b>*</b>.
 This option only applies to rows that have at least one read in the pileup,
 and only to columns for two-letter tags.
 Columns for empty rows will always be printed as <b>*</b>.
+<p>
+</dd><dt><b>-M, --output-mods</b></dt><dd><p>
+Adds base modification markup into the sequence column.  This uses the
+<b>Mm</b> and <b>Ml</b> auxiliary tags (or their uppercase
+equivalents).  Any base in the sequence output may be followed by a
+series of <em>strand</em> <em>code</em> <em>quality</em> strings enclosed
+within square brackets where strand is "+" or "-", code is a single
+character (such as "m" or "h") or a ChEBI numeric in parentheses, and
+quality is an optional numeric quality value.  For example a "C" base
+with possible 5mC and 5hmC base modification may be reported as
+"C[+m179+h40]".
+<p>
+Quality values are from 0 to 255 inclusive, representing a linear
+scale of probability 0.0 to 1.0 in 1/256ths increments.  If quality
+values are absent (no <b>Ml</b> tag) these are omitted, giving an
+example string of "C[+m+h]".
+<p>
+Note the base modifications may be identified on the reverse strand,
+either due to the native ability for this detection by the sequencing
+instrument or by the sequence subsequently being reverse
+complemented.  This can lead to modification codes, such as "m"
+meaning 5mC, being shown for their complementary bases, such as
+"G[-m50]".
+<p>
+When <b>--output-mods</b> is selected base modifications can appear on
+any base in the sequence output, including during insertions.  This
+may make parsing the string more complex, so also see the
+<b>--no-output-ins-mods</b> and <b>--no-output-ins</b> options to
+simplify this process.
+<p>
+</dd><dt><b>--no-output-ins</b></dt><dd><p>
+Do not output the inserted bases in the sequence column.  Usually this
+is reported as "+<em>length</em> <em>sequence</em>", but with this option
+it becomes simply "+<em>length</em>".  For example an insertion of AGT
+in a pileup column changes from "CCC+3AGTGCC" to "CCC+3GCC".
+<p>
+Specifying this option twice also removes the "+<em>length</em>"
+portion, changing the example above to "CCCGCC".
+<p>
+The purpose of this change is to simplify parsing using basic regular
+expressions, which traditionally cannot perform counting operations.
+It is particularly beneficial when used in conjunction with
+<b>--output-mods</b> as the syntax of the inserted sequence is adjusted
+to also report possible base modifications, but see also
+<b>--no-output-ins-mods</b> as an alternative.
+<p>
+</dd><dt><b>--no-output-ins-mods</b></dt><dd><p>
+Outputs the inserted bases in the sequence, but excluding any base
+modifications.  This only affects output when <b>--output-mods</b> is
+also used.
+<p>
+</dd><dt><b>--no-output-del</b></dt><dd><p>
+Do not output deleted reference bases in the sequence column.
+Normally this is reported as "+<em>length</em> <em>sequence</em>", but with this option
+it becomes simply "+<em>length</em>".  For example an deletion of 3
+unknown bases (due to no reference being specified) would normally be
+seen in a column as e.g. "CCC-3NNNGCC", but will be reported as
+"CCC-3GCC" with this option.
+<p>
+Specifying this option twice also removes the "-<em>length</em>"
+portion, changing the example above to "CCCGCC".
+<p>
+The purpose of this change is to simplify parsing using basic regular
+expressions, which traditionally cannot perform counting operations.
+See also <b>--no-output-ins</b>.
+<p>
+</dd><dt><b>--no-output-ends</b></dt><dd><p>
+Removes the &ldquo;^&rdquo; (with mapping quality) and &ldquo;$&rdquo; markup from
+the sequence column.
+<p>
 </dd><dt><b>--reverse-del</b></dt><dd><p>
 Mark the deletions on the reverse strand with the character
 <b>#</b>,

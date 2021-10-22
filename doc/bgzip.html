@@ -2,8 +2,8 @@
 permalink: /doc/bgzip.html
 layout: manpage
 title: bgzip(1) manual page
-package: htslib-1.13
-date: 7 July 2021
+package: htslib-1.14
+date: 22 October 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/bgzip.1.html
 ---
@@ -13,7 +13,7 @@ bgzip &ndash; Block compression/decompression utility
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 <p>
 <b>bgzip</b>
-[<b>-cdfhir</b>]
+[<b>-cdfhikrt</b>]
 [<b>-b</b>
 <em>virtualOffset</em>]
 [<b>-I</b>
@@ -55,6 +55,12 @@ Decompress.
 Overwrite files without asking, or decompress files that don't have a known
 compression filename extension (e.g., <em>.gz</em>) without asking.
 Use <b>--force</b> twice to do both without asking.
+</dd><dt><b>-g, --rebgzip</b></dt><dd><p>
+Try to use an existing index to create a compressed file with matching
+block offsets.
+Note that this assumes that the same compression library and level are in use
+as when making the original file.
+Don't use it unless you know what you're doing.
 </dd><dt><b>-h, --help</b></dt><dd><p>
 Displays a help message.
 </dd><dt><b>-i, --index</b></dt><dd><p>
@@ -63,20 +69,18 @@ Unless the -I option is used, this will have the name of the compressed
 file with .gzi appended to it.
 </dd><dt><b>-I, --index-name </b><em>FILE</em></dt><dd><p>
 Index file name.
+</dd><dt><b>-k, --keep</b></dt><dd><p>
+Do not delete input file during operation.
 </dd><dt><b>-l, --compress-level </b><em>INT</em></dt><dd><p>
 Compression level to use when compressing.
 From 0 to 9, or -1 for the default level set by the compression library. [-1]
 </dd><dt><b>-r, --reindex</b></dt><dd><p>
 Rebuild the index on an existing compressed file.
-</dd><dt><b>-g, --rebgzip</b></dt><dd><p>
-Try to use an existing index to create a compressed file with matching
-block offsets.
-Note that this assumes that the same compression library and level are in use
-as when making the original file.
-Don't use it unless you know what you're doing.
 </dd><dt><b>-s, --size </b><em>INT</em></dt><dd><p>
 Decompress INT bytes (uncompressed size) to standard output.
 Implies -c.
+</dd><dt><b>-t, --test</b></dt><dd><p>
+Test the intregrity of the compressed file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of threads to use [1].
 </dd></dl><p>

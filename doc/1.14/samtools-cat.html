@@ -1,0 +1,56 @@
+---
+permalink: /doc/1.14/samtools-cat.html
+layout: manpage
+title: samtools-cat(1) manual page
+package: samtools-1.14
+date: 22 October 2021
+section_text: Bioinformatics tools
+redirect_from: /doc/1.14/samtools-cat.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools cat &ndash; concatenate files together
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-cat.html">cat</a>
+[<b>-b</b>
+<em>list</em>]
+[<b>-h</b>
+<em>header.sam</em>]
+[<b>-o</b>
+<em>out.bam</em>] <em>in1.bam</em> <em>in2.bam</em> [ ... ]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Concatenate BAMs or CRAMs. Although this works on either BAM or CRAM,
+all input files must be the same format as each other. The sequence
+dictionary of each input file must be identical, although this command
+does not check this. This command uses a similar trick to
+<b>reheader</b>
+which enables fast BAM concatenation.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-b </b><em>FOFN</em></dt><dd><p>
+Read the list of input BAM or CRAM files from <em>FOFN</em>.  These are
+concatenated prior to any files specified on the command line.
+Multiple <b>-b</b> <em>FOFN</em> options may be specified to concatenate
+multiple lists of BAM/CRAM files.
+</dd><dt><b>-h </b><em>FILE</em></dt><dd><p>
+Uses the SAM header from <em>FILE</em>.  By default the header is taken
+from the first file to be concatenated.
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Write the concatenated output to <em>FILE</em>.  By default this is sent
+to stdout.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

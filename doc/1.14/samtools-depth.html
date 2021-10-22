@@ -1,0 +1,145 @@
+---
+permalink: /doc/1.14/samtools-depth.html
+layout: manpage
+title: samtools-depth(1) manual page
+package: samtools-1.14
+date: 22 October 2021
+section_text: Bioinformatics tools
+redirect_from: /doc/1.14/samtools-depth.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools depth &ndash; computes the read depth at each position or region
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-depth.html">depth</a>
+[<em>options</em>]
+[<em>in1.sam</em>|<em>in1.bam</em>|<em>in1.cram</em> [<em>in2.sam</em>|<em>in2.bam</em>|<em>in2.cram</em>] [...]]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Computes the depth at each position or region.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-a</b></dt><dd><p>
+Output all positions (including those with zero depth)
+</dd><dt><b>-a -a, -aa</b></dt><dd><p>
+Output absolutely all positions, including unused reference sequences.
+Note that when used in conjunction with a BED file the -a option may
+sometimes operate as if -aa was specified if the reference sequence
+has coverage outside of the region specified in the BED file.
+</dd><dt><b>-b </b><em>FILE</em></dt><dd><p>
+Compute depth at list of positions or regions in specified BED <em>FILE.</em>
+[]
+</dd><dt><b>-f </b><em>FILE</em></dt><dd><p>
+Use the BAM files specified in the <em>FILE</em>
+(a file of filenames, one file per line)
+[]
+</dd><dt><b>-H</b></dt><dd><p>
+Write a comment line showing column names at the beginning of the output.
+The names are CHROM, POS, and then the input file name for each depth column.
+If one of the inputs came from stdin, the name &ldquo;-&rdquo; will be used for
+the corresponding column.
+</dd><dt><b>-l </b><em>INT</em></dt><dd><p>
+Ignore reads shorter than <em>INT</em>.
+This is the number of bases in the sequence, minus any soft clips.
+</dd><dt><b>-m, -d </b><em>INT</em></dt><dd><p>
+(Deprecated since 1.13) This option previously limited the depth to a maximum
+value.  It is still accepted as an option, but ignored.
+<p>
+Note for single files, the behaviour of old
+<b>samtools depth -J -q0 -d</b>
+<em>INT FILE</em>
+is identical to
+<b>samtools mpileup -A -Q0 -x -d</b>
+<em>INT FILE</em>
+<b>| cut -f 1,2,4</b>
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Write output to <em>FILE</em>.  Using &ldquo;-&rdquo; for <em>FILE</em>
+will send the output to stdout (also the default if this option is not used).
+</dd><dt><b>-q </b><em>INT</em></dt><dd><p>
+Only count reads with base quality greater than or equal to <em>INT</em>
+</dd><dt><b>-Q </b><em>INT</em></dt><dd><p>
+Only count reads with mapping quality greater than or equal to <em>INT</em>
+</dd><dt><b>-r </b><em>CHR</em><b>:</b><em>FROM</em><b>-</b><em>TO</em></dt><dd><p>
+Only report depth in specified region.
+</dd><dt><b>-X</b></dt><dd><p>
+If this option is set, it will allow the user to specify customized index file location(s) if the data
+folder does not contain any index file. Example usage: samtools depth [options] -X /data_folder/in1.bam [/data_folder/in2.bam [...]] /index_folder/index1.bai [/index_folder/index2.bai [...]]
+</dd><dt><b>-g </b><em>FLAGS</em></dt><dd><p>
+By default, reads that have any of the flags UNMAP, SECONDARY, QCFAIL,
+or DUP set are skipped. To include these reads back in the analysis, use
+this option together with the desired flag or flag combination.
+<em>FLAGS</em>
+can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/),
+in octal by beginning with `0' (i.e. /^0[0-7]+/), as a decimal number
+not beginning with '0' or as a comma-separated list of flag names. [0]
+<p>
+For a list of flag names see
+<em>samtools-flags</em>(1).
+</dd><dt><b>-G </b><em>FLAGS</em></dt><dd><p>
+Discard any read that has any of the flags specified by
+<em>FLAGS</em>
+set.  FLAGS are specified as for the
+<b>-g</b>
+option. [UNMAP,SECONDARY,QCFAIL,DUP]
+</dd><dt><b>-J</b></dt><dd><p>
+Include reads with deletions in depth computation.
+</dd><dt><b>-s</b></dt><dd><p>
+For the overlapping section of a read pair, count only the bases of
+the first read.  Note this algorithm changed in 1.13 so the
+results may differ slightly to older releases.
+<p>
+</dd></dl>
+<h1 id="CAVEATS"><a href="#CAVEATS">CAVEATS</a></h1>
+It may appear that "samtools depth" is simply "samtools mpileup" with some
+of the columns removed, and indeed earlier versions of this command
+were just this.  However both then and now there are subtle
+differences in parameters which make the two not entirely comparable.
+Differences, other than the obvious speed benefits, include:
+<p>
+<ul><li>Deletions (CIGAR element "D") are counted by default in "depth".  This
+can be turned off with the <b>-J</b> option.  "Mpileup" always ignores
+these bases, and has no option to count them.
+<p>
+</li>
+<li>Beware there are idiosyncrasies in option naming.  Specifically
+<b>-q</b> and <b>-Q</b> options have their meanings swapped between
+"depth" and "mpileup".
+<p>
+</li>
+<li>The removal of overlapping sequences (option <b>-s</b>) is on by
+default in "mpileup" and off by default in "depth".  Additionally the
+overlap removal algorithm differs, giving subtle changes when Ns are
+present in the sequence.  Also any paired read is considered for overlap
+removal by "depth", rather than only those with the properly-paired flag
+set ("mpileup").  See above for a more detailed description.
+<p>
+</li>
+<li>The default minimum quality value is 0 for "depth" and 13 for "mpileup".
+<p>
+</li>
+<li>Specifying multiple BAMs will produce one depth column per file with
+"depth", but these are merged in "mpileup".
+<p>
+</li>
+<li>"Depth" doesn't have a maximum depth limit, while "mpileup" defaults
+to a maximum of 8000.
+<p>
+</li>
+<li>If a reference is specified to "mpileup" the BAQ algorithm will be
+used to adjust quality values, although it can be disabled.  "Depth"
+never uses BAQ.
+</pre>
+<p>
+</li></ul>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li and James Bonfield from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-mpileup.html"><em>samtools-mpileup</em></a> (1),
+<a href="samtools-coverage.html"><em>samtools-coverage</em></a> (1),
+<a href="samtools-sort.html"><em>samtools-sort</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

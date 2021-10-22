@@ -2,8 +2,8 @@
 permalink: /doc/samtools-ampliconstats.html
 layout: manpage
 title: samtools-ampliconstats(1) manual page
-package: samtools-1.13
-date: 7 July 2021
+package: samtools-1.14
+date: 22 October 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-ampliconstats.1.html
 ---
@@ -321,10 +321,10 @@ Number of BAM/CRAM (de)compression threads to use in addition to main thread [0]
 To run ampliconstats on a directory full of CRAM files and then
 produce a series of PNG images named "mydata*.png":
 <p>
-</pre>
+<pre>
 samtools ampliconstats V3/nCoV-2019.bed /path/*.cram &gt; astats
 plot-ampliconstats -size 1200,900 mydata astats
-<pre>
+</pre>
 <p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>

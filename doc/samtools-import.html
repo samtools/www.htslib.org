@@ -2,8 +2,8 @@
 permalink: /doc/samtools-import.html
 layout: manpage
 title: samtools-import(1) manual page
-package: samtools-1.13
-date: 7 July 2021
+package: samtools-1.14
+date: 22 October 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-import.1.html
 ---
@@ -79,6 +79,12 @@ barcode (BC) and quality (QT) tags.
 </dd><dt><b>-i</b></dt><dd><p>
 Specifies that the Illumina CASAVA identifiers should be processed.
 This may set the READ1, READ2 and QCFAIL flags and add a barcode tag.
+<p>
+</dd><dt><b>-N, --name2</b></dt><dd><p>
+Assume the read names are encoded in the SRA and ENA formats where the
+first word is an automatically generated name with the second field
+being the original name.  This option extracts that second field
+instead.
 <p>
 </dd><dt><b>--barcode-tag TAG</b></dt><dd><p>
 Changes the auxiliary tag used for barcode sequence.  Defaults to BC.

@@ -2,8 +2,8 @@
 permalink: /doc/samtools.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.13
-date: 7 July 2021
+package: samtools-1.14
+date: 22 October 2021
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools.1.html
 ---
@@ -76,6 +76,8 @@ samtools <a href="samtools-phase.html">phase</a> input.bam
 samtools <a href="samtools-depad.html">depad</a> input.bam
 <p>
 samtools <a href="samtools-ampliconclip.html">ampliconclip</a> -b bed.file input.bam
+<p>
+samtools <a href="samtools-samples.html">samples</a> input.bam
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
@@ -663,6 +665,21 @@ samtools ampliconclip
 <p>
 Clip reads in a SAM compatible file based on data from a BED file.
 <p>
+</dd><dt><b>samples</b></dt><dd><p>
+samtools samples
+[<b>-o</b>
+<em>out.file</em>]
+[<b>-i</b>]
+[<b>-T</b>
+<em>TAG</em>]
+[<b>-f</b>
+<em>refs.fasta</em>]
+[<b>-F</b>
+<em>refs_list</em>]
+[<b>-X</b>]
+<p>
+Prints the samples from alignment files
+<p>
 </dd></dl>
 <h1 id="SAMTOOLS_OPTIONS"><a href="#SAMTOOLS_OPTIONS">SAMTOOLS OPTIONS</a></h1>
 These are options that are passed after the <b>samtools</b> command,
@@ -900,6 +917,7 @@ insert size, we may use the expression "<b>mapq &gt;= 30 &amp;&amp; (tlen &gt;= 
 Valid variable names and their data types are:
 <p>
 <table>
+<tr><td><b>endpos</b></td><td>int</td><td>Alignment end position (1-based)</td></tr>
 <tr><td><b>flag</b></td><td>int</td><td>Combined FLAG field</td></tr>
 <tr><td><b>flag.paired</b></td><td>int</td><td>Single bit, 0 or 1</td></tr>
 <tr><td><b>flag.proper_pair</b></td><td>int</td><td>Single bit, 0 or 2</td></tr>
@@ -941,6 +959,11 @@ equivalent to <b>flag &amp; 1024</b>.
 number of query (sequence) and reference bases consumed.  Note "qlen"
 may not exactly match the length of the "seq" field if the sequence is
 "*".
+<p>
+"endpos" is the (1-based inclusive) position of the rightmost mapped base
+of the read, as measured using the CIGAR string, and for mapped reads
+is equivalent to "pos+rlen-1". For unmapped reads, it is the same as
+"pos".
 <p>
 Reference names may be matched either by their string forms ("rname"
 and "mrname") or as the Nth <b>@SQ</b> line (counting from zero) as
@@ -1052,11 +1075,6 @@ command.
 <pre>
 samtools view -C -T ref.fa aln.bam &gt; aln.cram
 </pre>
-<p>
-</li></ul>
-<h1 id="LIMITATIONS"><a href="#LIMITATIONS">LIMITATIONS</a></h1>
-<p>
-<ul><li>Unaligned words used in bam_endian.h, bam.c and bam_aux.c.
 <p>
 </li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>

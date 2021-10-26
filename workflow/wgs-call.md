@@ -1,10 +1,10 @@
 ---
+permalink: /workflow/wgs-call.html
 layout: default
-title: Samtools - Workflows: Mapping to Variant Calls
-redirect_from: /workflow#mapping_to_variant
 ---
 
-# <a name="mapping_to_variant"></a>WGS/WES Mapping to Variant Calls - Version 1.0
+# WGS/WES Mapping to Variant Calls
+
 The standard workflow for working with DNA sequence data consists of three major steps:
 
 * Mapping

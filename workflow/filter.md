@@ -1,7 +1,9 @@
 ---
+permalink: /workflow/filter.html
 layout: default
-title: Samtools - Workflows: Filtering of VCF Files
 ---
+
+# Filtering of VCF Files
 
 It is important to note this guide is covering filtering a single WGS
 sample with an expectation of broadly even allele frequencies and
@@ -36,25 +38,23 @@ and InDel sections.
 is permitted.  Some of these aren't strictly filters, but weights that
 impact on when to call. The appropriate options are.
 
-Option &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      | Description
------------ | -----------
--I          | Skips indel calling altogether
--L INT      | Maximum depth permitted to output an indel [250].<br>This can be filtered later using INFO/IDV so consider increasing this.
--m INT      | Minimum number of gapped reads for indel candidates [1].<br>The default is 2, but was 1 in earlier bcftools releases.<br>This can be filtered later using INFO/IDV.
--F FLOAT    | Minimum fraction of gapped reads [0.05].<br>This can be filtered later using INFO/IMF.
--h  INT     | A coefficient for the likelihood of variations in
-homopolymer being genuine or sequencing artifact.  Lower indicates
-more likely to be an error.  The default is now 500, but used to be 100.
---indel-bias FLOAT | A catch-all parameter to call more indels (higher
-FLOAT) at the expense of precision, or fewer (lower FLOAT) but more
-precise calls.  The default is 1.0.
+| Option <img width=150/>| Description
+| ----------- | -----------
+| -I          | Skips indel calling altogether
+| -L INT      | Maximum depth permitted to output an indel [250].<br>This can be filtered later using INFO/IDV so consider increasing this.
+| -m INT      | Minimum number of gapped reads for indel candidates [1].<br>The default is 2, but was 1 in earlier bcftools releases.<br>This can be filtered later using INFO/IDV.
+| -F FLOAT    | Minimum fraction of gapped reads [0.05].<br>This can be filtered later using INFO/IMF.
+| -h  INT     | A coefficient for the likelihood of variations in homopolymer being genuine or sequencing artifact.  Lower indicates more likely to be an error.  The default is now 500, but used to be 100.
+| --indel-bias FLOAT | A catch-all parameter to call more indels (higher FLOAT) at the expense of precision, or fewer (lower FLOAT) but more precise calls.  The default is 1.0.
+
+&nbsp;
 
 Additionally `bcftools call` has some options which govern output of variants.
 
-Option &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;      | Description
------------ | -----------
--A          | Keep all possible alternate alleles at variant sites
--V TYPE     | Skip TYPE (indels or SNPs).
+| Option <img width=150/>| Description
+| ----------- | -----------
+| -A          | Keep all possible alternate alleles at variant sites
+| -V TYPE     | Skip TYPE (indels or SNPs).
 
 There are also options which tune both SNP and indel calling, but they
 are various priors and scaling factors rather than hard filtering.
@@ -73,7 +73,7 @@ fields.
 The most obvious filter parameter however is the QUAL field.
 
 Bcftools can filter-in or filter-out using options `-i` and `-e`
-respectively on the `bcftools view` or `bcftools filter1 commands.  For
+respectively on the `bcftools view` or `bcftools filter` commands.  For
 example:
 
     bcftools filter -O z -o filtered.vcf.gz -i '%QUAL>50' in.vcf.gz
@@ -159,8 +159,8 @@ gnuplot> plot \
     "QUAL_3_hist" with lines lw 2 title "True"
 ```
 
-![15x quality distribution](images/15x_QUAL_lhist.png)
-![150x quality distribution](images/150x_QUAL_lhist.png)
+![15x quality distribution](../images/15x_QUAL_lhist.png)
+![150x quality distribution](../images/150x_QUAL_lhist.png)
 
 There are some strange spikes at very high values, but overall the
 trend is as we'd hope with an enrichment for false calls at low
@@ -187,8 +187,8 @@ indication of misalignment or an additional repeat copy in this sample
 vs the reference.  Such cases can lead to incorrect calls, which are
 often extremely confident due to the high depth.
 
-![15x normalised depth](images/15x_DP_lhist.png)
-![150x normalised depth](images/150x_DP_lhist.png)
+![15x normalised depth](../images/15x_DP_lhist.png)
+![150x normalised depth](../images/150x_DP_lhist.png)
 
 We see a sharp spike in depth for the true variants somewhere around
 the expected average depth.  The false variants have a broader
@@ -218,8 +218,8 @@ Note in bcftools 1.12 and earlier this is expressed as a probability
 value, so filter rules will need to check against very small values,
 such as `MQB < 1e-5`.
 
-![15x MAPQ Bias](images/15x_MQBZ_lhist.png)
-![150x MAPQ Bias](images/150x_MQBZ_lhist.png)
+![15x MAPQ Bias](../images/15x_MQBZ_lhist.png)
+![150x MAPQ Bias](../images/150x_MQBZ_lhist.png)
 
 While there is a large overlap between the false and true
 distributions, at both low and high depth there is a clear shifting
@@ -237,8 +237,8 @@ Note in bcftools 1.12 and earlier this is expressed as a probability
 value, so filter rules will need to check against very small values,
 such as `BQB < 1e-5`.
 
-![15x Base Bias](images/15x_BQBZ_lhist.png)
-![150x Base Bias](images/150x_BQBZ_lhist.png)
+![15x Base Bias](../images/15x_BQBZ_lhist.png)
+![150x Base Bias](../images/150x_BQBZ_lhist.png)
 
 There is a slight skew towards lower BQBZ values for both low and high
 depth, with a more noticable discrimination at depth.  The useful
@@ -264,8 +264,8 @@ of REF and ALT calls.  As MQBZ this cannot be calculated for many
 SNPS, but where possible it can help spot false calls due to reference
 bias.
 
-![15x Read Pos Bias](images/15x_RPBZ_lhist.png)
-![150x Read Pos Bias](images/150x_RPBZ_lhist.png)
+![15x Read Pos Bias](../images/15x_RPBZ_lhist.png)
+![150x Read Pos Bias](../images/150x_RPBZ_lhist.png)
 
 At shallow depth there isn't any discrimination power between false
 and true variants.  It's more likely to be wrong at the extreme ends
@@ -283,8 +283,8 @@ again.  The SCBZ is a Mann-Whitney U Z-score for the relative
 distribution of length of soft-clip within the proximity of the
 variant.
 
-![15x Soft Clip Bias](images/15x_SCBZ_lhist.png)
-![150x Soft Clip Bias](images/150x_SCBZ_lhist.png)
+![15x Soft Clip Bias](../images/15x_SCBZ_lhist.png)
+![150x Soft Clip Bias](../images/150x_SCBZ_lhist.png)
 
 This test shows a sharp increase to the right end of the distribution
 for false variants.  As with some other tests, the exact cutoff point
@@ -300,8 +300,8 @@ This statistic is not enabled by default, but can be added with the
 
 The plots below are normalises, and truncated in X.
 
-![15x Strand Bias](images/15x_SP_lhist.png)
-![150x Strand Bias](images/150x_SP_lhist.png)
+![15x Strand Bias](../images/15x_SP_lhist.png)
+![150x Strand Bias](../images/150x_SP_lhist.png)
 
 Both true and false variants have a sharp decay, but the tail is
 considerably longer for false variants.  The test is still quite
@@ -349,7 +349,7 @@ known truth set to be able to distinguish the variants.  Doing this we
 see the combined power of the additional statistics.  The below figure
 is for a 60x subsampling of GIAB HG002 chr1, showing SNP counts only.
 
-![60x plot of FN vs FP](images/60x-filt.png)
+![60x plot of FN vs FP](../images/60x-filt.png)
 
 The ideal position in this plot is the bottom left hand corner, with
 as few false positives (high precision) and few false negatives (high
@@ -368,8 +368,8 @@ statistics available.
 
 ### Quality
 
-![15x Quality](images/15x_iQUAL_lhist.png)
-![150x Quality](images/150x_iQUAL_lhist.png)
+![15x Quality](../images/15x_iQUAL_lhist.png)
+![150x Quality](../images/150x_iQUAL_lhist.png)
 
 Unfortunately the QUAL field really doesn't seem particularly
 beneficial for indel filtering.  There is perhaps a slight change in
@@ -381,8 +381,8 @@ powerful metric.
 
 As with SNPs, the total depth can be assessed via the INFO/DP field.
 
-![15x Depth](images/15x_iDP_lhist.png)
-![150x Depth](images/150x_iDP_lhist.png)
+![15x Depth](../images/15x_iDP_lhist.png)
+![150x Depth](../images/150x_iDP_lhist.png)
 
 Unlike SNPs however the discrimination between true and false indels
 is weak.  However the same depth filtering values of 35 and 250 (or 2x
@@ -393,8 +393,8 @@ still apply.
 
 This field is specific to indels: the INFO/IDV metric.
 
-![15x](images/15x_iIDV_lhist.png)
-![150x](images/150x_iIDV_lhist.png)
+![15x](../images/15x_iIDV_lhist.png)
+![150x](../images/150x_iIDV_lhist.png)
 
 There is a very sharp drop in accuracy for low IDV values.  A single
 read is quite unreliable, and a minimum of 2 would be recommended.
@@ -407,8 +407,8 @@ The INFO/IMF field is a fraction of the total reads matching an
 indel.  This is a more useful metric than IDV for particularly deep
 data sets.  It can also be controlled by the `mpileup -F FLOAT` option.
 
-![15x Indel Fraction](images/15x_iIMF_lhist.png)
-![150x Indel Fraction](images/150x_iIMF_lhist.png)
+![15x Indel Fraction](../images/15x_iIMF_lhist.png)
+![150x Indel Fraction](../images/150x_iIMF_lhist.png)
 
 Note in this plot the X axis is also logarithmic, as the bulk of the
 discrimination power is in the very low fractions.  For both data sets
@@ -416,16 +416,16 @@ however `IMF < 0.1` looks to be a suitable filter option.
 
 ### Read Position Bias
 
-![15x read position bias](images/15x_iRPBZ_lhist.png)
-![150x read position bias](images/150x_iRPBZ_lhist.png)
+![15x read position bias](../images/15x_iRPBZ_lhist.png)
+![150x read position bias](../images/150x_iRPBZ_lhist.png)
 
 The RPBZ INFO field has an enrichment for false variants at above 6 or
 7, although with shallow data this generally isn't reached.
 
 ### Soft-clip Bias
 
-![15x soft clip bias](images/15x_iSCBZ_lhist.png)
-![150x soft clip bias](images/150x_iSCBZ_lhist.png)
+![15x soft clip bias](../images/15x_iSCBZ_lhist.png)
+![150x soft clip bias](../images/150x_iSCBZ_lhist.png)
 
 As for RPBZ, the SCBZ INFO field also has an enrichment for false
 variants at high values, above 8 or so for deep data.
@@ -435,8 +435,8 @@ together before filtering works well.  For example `RPBZ + SCBZ > 9`.
 
 ### Mapping Quality Bias
 
-![15x mapping quality bias](images/15x_iMQBZ_lhist.png)
-![150x mapping quality bias](images/150x_iMQBZ_lhist.png)
+![15x mapping quality bias](../images/15x_iMQBZ_lhist.png)
+![150x mapping quality bias](../images/150x_iMQBZ_lhist.png)
 
 This isn't as strong a selector as for SNPs, but the overall shape is
 consistent with extreme low values being more likely to be false
@@ -465,7 +465,7 @@ accuracy, boosting this with e.g. `--indel-bias 2.0` may help.  These
 are calling parameters that may have a better outcome than simply
 filtering.  (No filter can ever generate more calls.)
 
-![15x plot of indel FN vs FP](images/15x.indels-filt.png)
+![15x plot of indel FN vs FP](../images/15x.indels-filt.png)
 
 The above plot is showing false negatives (missing indels) vs false
 positives (incorrect indel calls) on a low 15x depth data set with and

@@ -1,10 +1,10 @@
 ---
+permalink: /workflow/cram.html
 layout: default
-title: Samtools - Workflows: Using CRAM
-redirect_from: /workflow#mapping_to_cram
 ---
 
-# <a name="mapping_to_cram"></a>Using CRAM within Samtools
+# Using CRAM within Samtools
+
 CRAM is primarily a reference-based compressed format, meaning that only differences between the stored sequences and the reference are stored.
 
 For a workflow this has a few fundamental effects:

@@ -1,10 +1,9 @@
 ---
+permalink: /workflow/fastq.html
 layout: default
-title: Samtools - Workflows: FASTQ to BAM / CRAM
-redirect_from: /workflow#fastq_to_bam
 ---
 
-# <a name="fastq_to_bam"></a>FASTQ to BAM / CRAM - Version 1.0
+# FASTQ to BAM / CRAM
 
 Sequencing instruments produce unaligned data, typically in FASTQ
 format.  It is possible to store unaligned data in BAM or CRAM, and

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.14
-date: 22 October 2021
+package: samtools-1.15
+date: 21 February 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -30,6 +30,8 @@ samtools <a href="samtools-markdup.html">markdup</a>
 [<b>--no-PG</b>]
 [<b>-u</b>]
 [<b>--no-multi-dup</b>]
+[<b>--read-coords</b>]
+[<b>--coords-order</b>]
 <em>in.algsort.bam out.bam</em>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
@@ -60,7 +62,7 @@ optical duplicates.  When set, duplicate reads are tagged with <b>dt:Z:SQ</b> fo
 optical duplicates and <b>dt:Z:LB</b> otherwise.  Calculation of distance depends
 on coordinate data embedded in the read names produced by the Illumina
 sequencing machines.  Optical duplicate detection will not work on non standard
-names.
+names without the use of <b>--read-coords</b>.
 </dd><dt><b>-c</b></dt><dd><p>
 Clear previous duplicate settings and tags.
 </dd><dt><b>-t</b></dt><dd><p>
@@ -83,6 +85,16 @@ are not carried out.  Also operates on <b>-t</b> tagging where reads may tagged
 with a better quality read but not necessarily the best one.  Using this option
 can speed up duplicate marking when there are a great many duplicates for each
 original read. 
+</dd><dt><b>--read-coords </b><em>REGEX</em></dt><dd><p>
+This takes a POSIX regular expression for at least x and y to be used in
+optical duplicate marking It can also include another part of the read name
+to test for equality, eg lane:tile elements. Elements wanted are captured with
+parentheses.  Examples below.
+</dd><dt><b>--coords-order </b><em>ORDER</em></dt><dd><p>
+The order of the elements captured in the regular expression. Default is txy
+where t is a part of the read name selected for string comparison and x/y the
+coordinates used for optical duplicate detection.  Valid orders are: txy, tyx,
+xyt, yxt, xty, ytx, xy and yx.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a PG line to the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
@@ -165,6 +177,23 @@ samtools markdup positionsort.bam markdup.bam
 Typically the fixmate step would be applied immediately after sequence
 alignment and the markdup step after sorting by chromosome and
 position.  Thus no <em>additional</em> sort steps are normally needed.
+<p>
+To use the regex to obtain coordinates from reads, two or three values have to
+be captured.  To mimic the normal behaviour and match a read name of the format
+<em>machine:run:flowcell:lane:tile:x:y</em> use:
+<pre>
+--read-coords '(\w+:[0-9]+:[0-9]+:[0-9]+:[0-9]+):([0-9]+):([0-9]+)'
+--coords-order txy
+</pre>
+<p>
+To match only the coordinates of <em>x:y:randomstuff</em> use:
+<pre>
+--read-coords '^([[:digit:]]):([[:digit:]])'
+--coords-order xy
+</pre>
+<p>
+It is possible that complex regular expressions may slow the running of the
+program.  It would be best to keep them simple. 
 <p>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>

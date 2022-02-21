@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.14
-date: 22 October 2021
+package: samtools-1.15
+date: 21 February 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -33,15 +33,6 @@ samtools <a href="samtools-mpileup.html">mpileup</a>
 <p>
 Generate text pileup output for one or multiple BAM files.
 Each input file produces a separate group of pileup columns in the output.
-<p>
-Samtools mpileup can still produce VCF and BCF output (with
-<b>-g</b> or<b> -u</b>),
-but this feature is
-deprecated and will be removed in a future release.  Please use
-<b>bcftools mpileup</b>
-for this instead.  (Documentation on the deprecated options has been removed
-from this manual page, but older versions are available online
-at &lt;<a href="http://www.htslib.org/doc/">http://www.htslib.org/doc/</a>&gt;.)
 <p>
 Note that there are two orthogonal ways to specify locations in the
 input file; via <b>-r</b> <em>region</em> and <b>-l</b> <em>file</em>.  The
@@ -116,11 +107,11 @@ contain &ldquo;*&rdquo; for this read indicating the deleted bases.)
 <li>Alignment mapping qualities, encoded as ASCII characters.
 (Column only present when <b>-s</b>/<b>--output-MQ</b> is used.)
 </li>
-<li>Comma-separated 1-based positions within the alignments, e.g., 5 indicates
+<li>Comma-separated 1-based positions within the alignments, in the
+orientation shown in the input file.  E.g., 5 indicates
 that it is the fifth base of the corresponding read that is mapped to this
 genomic position.
-(Column only present when <b>-O</b>/<b>--output-BP</b> or
-<b>--output-BP-5</b> is used.)
+(Column only present when <b>-O</b>/<b>--output-BP</b> is used.)
 </li>
 <li>Additional comma-separated read field columns,
 as selected via <b>--output-extra</b>.
@@ -134,10 +125,20 @@ The fields selected appear in the same order as in SAM:
 <b>RNEXT</b>,
 <b>PNEXT</b>.
 </li>
+<li>Comma-separated 1-based positions within the alignments, in 5' to 3'
+orientation.  E.g., 5 indicates that it is the fifth base of the
+corresponding read as produced by the sequencing instrument, that is
+mapped to this genomic position. (Column only present when <b>--output-BP-5</b> is used.)
+<p>
+</li>
 <li>Additional read tag field columns, as selected via <b>--output-extra</b>.
 These columns are formatted as determined by <b>--output-sep</b> and
 <b>--output-empty</b> (comma-separated by default), and appear in the
 same order as the tags are given in <b>--output-extra</b>.
+<p>
+Any output column that would be empty, such as a tag which is not
+present or the filtered sequence depth is zero, is reported as "*".
+This ensures a consistent number of columns across all reported positions.
 <p>
 </li></ul>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
@@ -202,7 +203,12 @@ coordinate systems. [null]
 </dd><dt><b>-q, --min-MQ</b><em> INT</em></dt><dd><p>
 Minimum mapping quality for an alignment to be used [0]
 </dd><dt><b>-Q, --min-BQ</b><em> INT</em></dt><dd><p>
-Minimum base quality for a base to be considered [13]
+Minimum base quality for a base to be considered. [13]
+<p>
+Note base-quality 0 is used as a filtering mechanism for overlap
+removal.  Hence using <b>--min-BQ 0</b> will disable the overlap
+removal code and act as if the <b>--ignore-overlaps</b> option has
+been set.
 </dd><dt><b>-r, --region</b><em> STR</em></dt><dd><p>
 Only generate pileup in region. Requires the BAM files to be indexed.
 If used in conjunction with -l then considers the intersection of the
@@ -230,26 +236,11 @@ Write pileup output to
 <em>FILE</em>,
 rather than the default of standard output.
 <p>
-(The same short option is used for both the deprecated
-<b>--open-prob</b>
-option and
-<b>--output</b>.
-If
-<b>-o</b>'s
-argument contains any non-digit characters other than a leading + or - sign,
-it is interpreted as
-<b>--output</b>.
-Usually the filename extension will take care of this, but to write to an
-entirely numeric filename use
-<b>-o ./123</b>
-or
-<b>--output 123</b>.)
 </dd><dt><b>-O, --output-BP</b></dt><dd><p>
 Output base positions on reads in orientation listed in the SAM file
-(left to right). This is mutually exclusive with <b>--output-BP-5</b>.
+(left to right).
 </dd><dt><b>--output-BP-5</b></dt><dd><p>
 Output base positions on reads in their original 5' to 3' orientation.
-This is mutually exclusive with <b>--output-BP</b>.
 </dd><dt><b>-s, --output-MQ</b></dt><dd><p>
 Output mapping qualities encoded as ASCII characters.
 </dd><dt><b>--output-QNAME</b></dt><dd><p>
@@ -270,7 +261,8 @@ Anything that is not on this list is treated as a potential tag, although only
 two character tags are accepted. In the mpileup output, tag columns are
 displayed in the order they were provided by the user in the command line.
 Field and tag names have to be provided in a comma-separated string to the
-mpileup command.
+mpileup command.  Tags with type <b>B</b> (byte array) type are not
+supported.  An absent or unsupported tag will be listed as "*".
 E.g.
 <p>
 <b>samtools mpileup --output-extra FLAG,QNAME,RG,NM in.bam</b>
@@ -397,61 +389,6 @@ The
 option can be used to make it ignore the contents of the BQ:Z tag and
 force it to recalculate the BAQ scores by making a new alignment.
 <p>
-<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
-<ul><li>Call SNPs and short INDELs:
-<pre>
-samtools mpileup -uf ref.fa aln.bam | bcftools call -mv &gt; var.raw.vcf
-bcftools filter -s LowQual -e '%QUAL&lt;20 || DP&gt;100' var.raw.vcf  &gt; var.flt.vcf
-</pre>
-The
-<b>bcftools filter</b>
-command marks low quality sites and sites with the read depth exceeding
-a limit, which should be adjusted to about twice the average read depth
-(bigger read depths usually indicate problematic regions which are
-often enriched for artefacts).  One may consider to add
-<b>-C50</b>
-to
-<b>mpileup</b>
-if mapping quality is overestimated for reads containing excessive
-mismatches. Applying this option usually helps
-<b>BWA-short</b>
-but may not other mappers.
-<p>
-Individuals are identified from the
-<b>SM</b>
-tags in the
-<b>@RG</b>
-header lines. Individuals can be pooled in one alignment file; one
-individual can also be separated into multiple files. The
-<b>-P</b>
-option specifies that indel candidates should be collected only from
-read groups with the
-<b>@RG-PL</b>
-tag set to
-<em>ILLUMINA</em>.
-Collecting indel candidates from reads sequenced by an indel-prone
-technology may affect the performance of indel calling.
-<p>
-</li>
-<li>Generate the consensus sequence for one diploid individual:
-<pre>
-samtools mpileup -uf ref.fa aln.bam | bcftools call -c | vcfutils.pl vcf2fq &gt; cns.fq
-</pre>
-</li>
-<li>Include customized index file as a part of arguments.
-<pre>
-samtools mpileup [options] -X /data_folder/in1.bam [/data_folder/in2.bam [...]] /index_folder/index1.bai [/index_folder/index2.bai [...]]
-</pre>
-</li>
-<li>Phase one individual:
-<pre>
-samtools calmd -AEur aln.bam ref.fa | samtools phase -b prefix - &gt; phase.out
-</pre>
-The
-<b>calmd</b>
-command is used to reduce false heterozygotes around INDELs.
-<p>
-</li></ul>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

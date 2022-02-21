@@ -1,0 +1,64 @@
+---
+permalink: /doc/1.15/samtools-bedcov.html
+layout: manpage
+title: samtools-bedcov(1) manual page
+package: samtools-1.15
+date: 21 February 2022
+section_text: Bioinformatics tools
+redirect_from: /doc/1.15/samtools-bedcov.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools bedcov &ndash; reports coverage over regions in a supplied BED file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-bedcov.html">bedcov</a>
+[<em>options</em>]
+<em>region.bed</em> <em>in1.sam</em>|<em>in1.bam</em>|<em>in1.cram</em>[...]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+<p>
+Reports the total read base count (i.e. the sum of per base read depths)
+for each genomic region specified in the supplied BED file. The regions
+are output as they appear in the BED file and are 0-based.
+Counts for each alignment file supplied are reported in separate columns.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-Q, --min-MQ </b><em>INT</em></dt><dd><p>
+Only count reads with mapping quality greater than or equal to <em>INT</em>
+</dd><dt><b>-g </b><em>FLAGS</em></dt><dd><p>
+By default, reads that have any of the flags UNMAP, SECONDARY, QCFAIL,
+or DUP set are skipped. To include these reads back in the analysis, use
+this option together with the desired flag or flag combination.
+<em>FLAGS</em>
+can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/),
+in octal by beginning with `0' (i.e. /^0[0-7]+/), as a decimal number
+not beginning with '0' or as a comma-separated list of flag names. [0]
+<p>
+For a list of flag names see
+<em>samtools-flags</em>(1).
+</dd><dt><b>-G </b><em>FLAGS</em></dt><dd><p>
+Discard any read that has any of the flags specified by
+<em>FLAGS</em>
+set.  FLAGS are specified as for the
+<b>-g</b>
+option. [UNMAP,SECONDARY,QCFAIL,DUP]
+</dd><dt><b>-j</b></dt><dd><p>
+Do not include deletions (D) and ref skips (N) in bedcov computation.
+</dd><dt><b>-d </b><em>INT</em></dt><dd><p>
+Print an additional column, for each file, containing the number of bases having
+a depth above and including the given threshold. If the option is not used, the
+extra column is not displayed. The option value must be an integer &gt;= 0.
+</dd><dt><b>-X</b></dt><dd><p>
+If this option is set, it will allows user to specify customized index file location(s) if the data
+folder does not contain any index file. Example usage: samtools bedcov [options] -X &lt;in.bed&gt; &lt;/data_folder/in1.bam&gt; [...] &lt;/index_folder/index1.bai&gt; [...]
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

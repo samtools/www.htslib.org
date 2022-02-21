@@ -1,0 +1,208 @@
+---
+permalink: /doc/1.15/samtools-markdup.html
+layout: manpage
+title: samtools-markdup(1) manual page
+package: samtools-1.15
+date: 21 February 2022
+section_text: Bioinformatics tools
+redirect_from: /doc/1.15/samtools-markdup.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools markdup &ndash; mark duplicate alignments in a coordinate sorted file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-markdup.html">markdup</a>
+[<b>-l</b>
+<em>length</em>]
+[<b>-r</b>]
+[<b>-s</b>]
+[<b>-T</b>]
+[<b>-S</b>]
+[<b>-f</b>
+<em>file</em>]
+[<b>-d</b>
+<em>distance</em>]
+[<b>-c</b>]
+[<b>-t</b>]
+[<b>-m</b>]
+[<b>--mode</b>]
+[<b>--include-fails</b>]
+[<b>--no-PG</b>]
+[<b>-u</b>]
+[<b>--no-multi-dup</b>]
+[<b>--read-coords</b>]
+[<b>--coords-order</b>]
+<em>in.algsort.bam out.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Mark duplicate alignments from a coordinate sorted file that
+has been run through <b>samtools fixmate</b> with the <b>-m</b> option.  This program
+relies on the MC and ms tags that fixmate provides.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-l </b><em>INT</em></dt><dd><p>
+Expected maximum read length of <em>INT</em> bases.
+[300]
+</dd><dt><b>-r</b></dt><dd><p>
+Remove duplicate reads.
+</dd><dt><b>-s</b></dt><dd><p>
+Print some basic stats. See STATISTICS.
+</dd><dt><b>-T </b><em>PREFIX</em></dt><dd><p>
+Write temporary files to
+<em>PREFIX</em><b>.</b><em>samtools</em><b>.</b><em>nnnn</em><b>.</b><em>mmmm</em><b>.</b><em>tmp</em>
+</dd><dt><b>-S</b></dt><dd><p>
+Mark supplementary reads of duplicates as duplicates.
+</dd><dt><b>-f </b><em>file</em></dt><dd><p>
+Write stats to named file.
+</dd><dt><b>-d </b><em>distance</em></dt><dd><p>
+The optical duplicate distance.  Suggested settings of 100 for HiSeq style
+platforms or about 2500 for NovaSeq ones.  Default is 0 to not look for
+optical duplicates.  When set, duplicate reads are tagged with <b>dt:Z:SQ</b> for
+optical duplicates and <b>dt:Z:LB</b> otherwise.  Calculation of distance depends
+on coordinate data embedded in the read names produced by the Illumina
+sequencing machines.  Optical duplicate detection will not work on non standard
+names without the use of <b>--read-coords</b>.
+</dd><dt><b>-c</b></dt><dd><p>
+Clear previous duplicate settings and tags.
+</dd><dt><b>-t</b></dt><dd><p>
+Mark duplicates with the name of the original in a <b>do</b> tag.
+</dd><dt><b>-m, --mode </b><em>TYPE</em></dt><dd><p>
+Duplicate decision method for paired reads.  Values are <b>t</b> or <b>s</b>.
+Mode <b>t</b> measures positions based on template start/end (default).
+Mode <b>s</b> measures positions based on sequence start.
+While the two methods identify mostly the same reads as duplicates, mode 
+<b>s</b> tends to return more results.  Unpaired reads are treated identically
+by both modes.
+</dd><dt><b>-u</b></dt><dd><p>
+Output uncompressed SAM, BAM or CRAM.
+</dd><dt><b>--include-fails</b></dt><dd><p>
+Include quality checked failed reads.
+</dd><dt><b>--no-multi-dup</b></dt><dd><p>
+Stop checking duplicates of duplicates for correctness.  While still marking
+reads as duplicates further checks to make sure all optical duplicates are found
+are not carried out.  Also operates on <b>-t</b> tagging where reads may tagged
+with a better quality read but not necessarily the best one.  Using this option
+can speed up duplicate marking when there are a great many duplicates for each
+original read. 
+</dd><dt><b>--read-coords </b><em>REGEX</em></dt><dd><p>
+This takes a POSIX regular expression for at least x and y to be used in
+optical duplicate marking It can also include another part of the read name
+to test for equality, eg lane:tile elements. Elements wanted are captured with
+parentheses.  Examples below.
+</dd><dt><b>--coords-order </b><em>ORDER</em></dt><dd><p>
+The order of the elements captured in the regular expression. Default is txy
+where t is a part of the read name selected for string comparison and x/y the
+coordinates used for optical duplicate detection.  Valid orders are: txy, tyx,
+xyt, yxt, xty, ytx, xy and yx.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a PG line to the output file.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<h1 id="STATISTICS"><a href="#STATISTICS">STATISTICS</a></h1>
+Entries are:
+<br>
+<b>COMMAND</b>: the command line.
+<br>
+<b>READ</b>: number of reads read in.
+<br>
+<b>WRITTEN</b>: reads written out.
+<br>
+<b>EXCLUDED</b>: reads ignored.  See below.
+<br>
+<b>EXAMINED</b>: reads examined for duplication.
+<br>
+<b>PAIRED</b>: reads that are part of a pair.
+<br>
+<b>SINGLE</b>: reads that are not part of a pair.
+<br>
+<b>DUPLICATE PAIR</b>: reads in a duplicate pair.
+<br>
+<b>DUPLICATE SINGLE</b>: single read duplicates.
+<br>
+<b>DUPLICATE PAIR OPTICAL</b>: optical duplicate paired reads.
+<br>
+<b>DUPLICATE SINGLE OPTICAL</b>: optical duplicate single reads.
+<br>
+<b>DUPLICATE NON PRIMARY</b>: supplementary/secondary duplicate reads.
+<br>
+<b>DUPLICATE NON PRIMARY OPTICAL</b>: supplementary/secondary optical
+duplicate reads.
+<br>
+<b>DUPLICATE PRIMARY TOTAL</b>: number of primary duplicate reads.
+<br>
+<b>DUPLICATE TOTAL</b>: total number of duplicate reads.
+<br>
+<b>ESTIMATED LIBRARY SIZE</b>: estimate of the number of unique fragments in the
+sequencing library.
+<p>
+<p>
+Estimated library size makes various assumptions e.g. the library consists of
+unique fragments that are randomly selected (with replacement) with equal
+probability.
+This is unlikely to be true in practice.
+However it can provide a useful guide into how many unique read pairs are likely 
+to be available.
+In particular it can be used to determine how much more data might be obtained
+by further sequencing of the library.
+<p>
+Excluded reads are those marked as secondary, supplementary or unmapped.
+By default QC failed reads are also excluded but can be included as an option.
+Excluded reads are not used for calculating duplicates.
+They can optionally be marked as duplicates if they have a primary that is also
+a duplicate.    
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+This first collate command can be omitted if the file is already name ordered or collated:
+<pre>
+samtools collate -o namecollate.bam example.bam
+</pre>
+<p>
+Add ms and MC tags for markdup to use later:
+<pre>
+samtools fixmate -m namecollate.bam fixmate.bam
+</pre>
+<p>
+Markdup needs position order:
+<pre>
+samtools sort -o positionsort.bam fixmate.bam
+</pre>
+<p>
+Finally mark duplicates:
+<pre>
+samtools markdup positionsort.bam markdup.bam
+</pre>
+<p>
+Typically the fixmate step would be applied immediately after sequence
+alignment and the markdup step after sorting by chromosome and
+position.  Thus no <em>additional</em> sort steps are normally needed.
+<p>
+To use the regex to obtain coordinates from reads, two or three values have to
+be captured.  To mimic the normal behaviour and match a read name of the format
+<em>machine:run:flowcell:lane:tile:x:y</em> use:
+<pre>
+--read-coords '(\w+:[0-9]+:[0-9]+:[0-9]+:[0-9]+):([0-9]+):([0-9]+)'
+--coords-order txy
+</pre>
+<p>
+To match only the coordinates of <em>x:y:randomstuff</em> use:
+<pre>
+--read-coords '^([[:digit:]]):([[:digit:]])'
+--coords-order xy
+</pre>
+<p>
+It is possible that complex regular expressions may slow the running of the
+program.  It would be best to keep them simple. 
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Andrew Whitwham from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-sort.html"><em>samtools-sort</em></a> (1),
+<a href="samtools-collate.html"><em>samtools-collate</em></a> (1),
+<a href="samtools-fixmate.html"><em>samtools-fixmate</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

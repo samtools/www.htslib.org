@@ -2,8 +2,8 @@
 permalink: /doc/samtools-bedcov.html
 layout: manpage
 title: samtools-bedcov(1) manual page
-package: samtools-1.14
-date: 22 October 2021
+package: samtools-1.15
+date: 21 February 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-bedcov.1.html
 ---
@@ -24,8 +24,8 @@ are output as they appear in the BED file and are 0-based.
 Counts for each alignment file supplied are reported in separate columns.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
-<dl><dt><b>-Q </b><em>INT</em></dt><dd><p>
-Only count reads with mapping quality greater than <em>INT</em>
+<dl><dt><b>-Q, --min-MQ </b><em>INT</em></dt><dd><p>
+Only count reads with mapping quality greater than or equal to <em>INT</em>
 </dd><dt><b>-g </b><em>FLAGS</em></dt><dd><p>
 By default, reads that have any of the flags UNMAP, SECONDARY, QCFAIL,
 or DUP set are skipped. To include these reads back in the analysis, use

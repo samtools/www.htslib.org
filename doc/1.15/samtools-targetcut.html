@@ -1,0 +1,61 @@
+---
+permalink: /doc/1.15/samtools-targetcut.html
+layout: manpage
+title: samtools-targetcut(1) manual page
+package: samtools-1.15
+date: 21 February 2022
+section_text: Bioinformatics tools
+redirect_from: /doc/1.15/samtools-targetcut.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools targetcut &ndash; cut fosmid regions (for fosmid pool only)
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-targetcut.html">targetcut</a>
+[<b>-Q</b>
+<em>minBaseQ</em>]
+[<b>-i</b>
+<em>inPenalty</em>]
+[<b>-0</b>
+<em>em0</em>]
+[<b>-1</b>
+<em>em1</em>]
+[<b>-2</b>
+<em>em2</em>]
+[<b>-f</b>
+<em>ref</em>] <em>in.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+This command identifies target regions by examining the continuity of read depth, computes
+haploid consensus sequences of targets and outputs a SAM with each sequence corresponding
+to a target. When option
+<b>-f</b>
+is in use, BAQ will be applied. This command is
+<b>only</b>
+designed for cutting fosmid clones from fosmid pool sequencing [Ref. Kitzman et al. (2010)].
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-Q</b><em> minBaseQ</em></dt><dd><p>
+Ignore bases with quality less than <em>minBaseQ</em>.
+<p>
+</dd><dt><b>-i</b><em> inPenalty</em></dt><dd><p>
+Penalty for in state transition.
+</dd><dt><b>-0</b><em> em0</em></dt><dd><p>
+Emission score 0.
+</dd><dt><b>-1</b><em> em1</em></dt><dd><p>
+Emission score 1.
+</dd><dt><b>-2</b><em> em2</em></dt><dd><p>
+Emission score 2.
+</dd><dt><b>-f </b><em>ref</em></dt><dd><p>
+Reference FASTA file.
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

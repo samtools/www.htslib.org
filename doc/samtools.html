@@ -2,8 +2,8 @@
 permalink: /doc/samtools.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.14
-date: 22 October 2021
+package: samtools-1.15
+date: 21 February 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools.1.html
 ---
@@ -11,73 +11,77 @@ redirect_from: /doc/samtools.1.html
 samtools &ndash; Utilities for the Sequence Alignment/Map (SAM) format
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 <p>
-samtools <a href="samtools-view.html">view</a> -bt ref_list.txt -o aln.bam aln.sam.gz
-<p>
-samtools <a href="samtools-tview.html">tview</a> aln.sorted.bam ref.fasta
-<p>
-samtools <a href="samtools-quickcheck.html">quickcheck</a> in1.bam in2.cram
-<p>
-samtools <a href="samtools-index.html">index</a> aln.sorted.bam
-<p>
-samtools <a href="samtools-sort.html">sort</a> -T /tmp/aln.sorted -o aln.sorted.bam aln.bam
-<p>
-samtools <a href="samtools-collate.html">collate</a> -o aln.name_collated.bam aln.sorted.bam
-<p>
-samtools <a href="samtools-idxstats.html">idxstats</a> aln.sorted.bam
-<p>
-samtools <a href="samtools-flagstat.html">flagstat</a> aln.sorted.bam
-<p>
-samtools <a href="samtools-flags.html">flags</a> PAIRED,UNMAP,MUNMAP
-<p>
-samtools <a href="samtools-stats.html">stats</a> aln.sorted.bam
-<p>
-samtools <a href="samtools-bedcov.html">bedcov</a> aln.sorted.bam
-<p>
-samtools <a href="samtools-depth.html">depth</a> aln.sorted.bam
-<p>
-samtools <a href="samtools-ampliconstats.html">ampliconstats</a> primers.bed in.bam
-<p>
-samtools <a href="samtools-mpileup.html">mpileup</a> -C50 -f ref.fasta -r chr3:1,000-2,000 in1.bam in2.bam
-<p>
-samtools <a href="samtools-coverage.html">coverage</a> aln.sorted.bam
-<p>
-samtools <a href="samtools-merge.html">merge</a> out.bam in1.bam in2.bam in3.bam
-<p>
-samtools <a href="samtools-split.html">split</a> merged.bam
-<p>
-samtools <a href="samtools-cat.html">cat</a> out.bam in1.bam in2.bam in3.bam
-<p>
-samtools <a href="samtools-import.html">import</a> input.fastq &gt; output.bam
-<p>
-samtools <a href="samtools-fastq.html">fastq</a> input.bam &gt; output.fastq
-<p>
-samtools <a href="samtools-fasta.html">fasta</a> input.bam &gt; output.fasta
-<p>
-samtools <a href="samtools-faidx.html">faidx</a> ref.fasta
-<p>
-samtools <a href="samtools-fqidx.html">fqidx</a> ref.fastq
-<p>
-samtools <a href="samtools-dict.html">dict</a> -a GRCh38 -s "Homo sapiens" ref.fasta
-<p>
-samtools <a href="samtools-calmd.html">calmd</a> in.sorted.bam ref.fasta
-<p>
-samtools <a href="samtools-fixmate.html">fixmate</a> in.namesorted.sam out.bam
-<p>
-samtools <a href="samtools-markdup.html">markdup</a> in.algnsorted.bam out.bam
-<p>
 samtools <a href="samtools-addreplacerg.html">addreplacerg</a> -r 'ID:fish' -r 'LB:1334' -r 'SM:alpha' -o output.bam input.bam
-<p>
-samtools <a href="samtools-reheader.html">reheader</a> in.header.sam in.bam &gt; out.bam
-<p>
-samtools <a href="samtools-targetcut.html">targetcut</a> input.bam
-<p>
-samtools <a href="samtools-phase.html">phase</a> input.bam
-<p>
-samtools <a href="samtools-depad.html">depad</a> input.bam
 <p>
 samtools <a href="samtools-ampliconclip.html">ampliconclip</a> -b bed.file input.bam
 <p>
+samtools <a href="samtools-ampliconstats.html">ampliconstats</a> primers.bed in.bam
+<p>
+samtools <a href="samtools-bedcov.html">bedcov</a> aln.sorted.bam
+<p>
+samtools <a href="samtools-calmd.html">calmd</a> in.sorted.bam ref.fasta
+<p>
+samtools <a href="samtools-cat.html">cat</a> out.bam in1.bam in2.bam in3.bam
+<p>
+samtools <a href="samtools-collate.html">collate</a> -o aln.name_collated.bam aln.sorted.bam
+<p>
+samtools <a href="samtools-consensus.html">consensus</a> -o out.fasta in.bam
+<p>
+samtools <a href="samtools-coverage.html">coverage</a> aln.sorted.bam
+<p>
+samtools <a href="samtools-depad.html">depad</a> input.bam
+<p>
+samtools <a href="samtools-depth.html">depth</a> aln.sorted.bam
+<p>
+samtools <a href="samtools-dict.html">dict</a> -a GRCh38 -s "Homo sapiens" ref.fasta
+<p>
+samtools <a href="samtools-faidx.html">faidx</a> ref.fasta
+<p>
+samtools <a href="samtools-fasta.html">fasta</a> input.bam &gt; output.fasta
+<p>
+samtools <a href="samtools-fastq.html">fastq</a> input.bam &gt; output.fastq
+<p>
+samtools <a href="samtools-fixmate.html">fixmate</a> in.namesorted.sam out.bam
+<p>
+samtools <a href="samtools-flags.html">flags</a> PAIRED,UNMAP,MUNMAP
+<p>
+samtools <a href="samtools-flagstat.html">flagstat</a> aln.sorted.bam
+<p>
+samtools <a href="samtools-fqidx.html">fqidx</a> ref.fastq
+<p>
+samtools <a href="samtools-head.html">head</a> in.bam
+<p>
+samtools <a href="samtools-idxstats.html">idxstats</a> aln.sorted.bam
+<p>
+samtools <a href="samtools-import.html">import</a> input.fastq &gt; output.bam
+<p>
+samtools <a href="samtools-index.html">index</a> aln.sorted.bam
+<p>
+samtools <a href="samtools-markdup.html">markdup</a> in.algnsorted.bam out.bam
+<p>
+samtools <a href="samtools-merge.html">merge</a> out.bam in1.bam in2.bam in3.bam
+<p>
+samtools <a href="samtools-mpileup.html">mpileup</a> -C50 -f ref.fasta -r chr3:1,000-2,000 in1.bam in2.bam
+<p>
+samtools <a href="samtools-phase.html">phase</a> input.bam
+<p>
+samtools <a href="samtools-quickcheck.html">quickcheck</a> in1.bam in2.cram
+<p>
+samtools <a href="samtools-reheader.html">reheader</a> in.header.sam in.bam &gt; out.bam
+<p>
 samtools <a href="samtools-samples.html">samples</a> input.bam
+<p>
+samtools <a href="samtools-sort.html">sort</a> -T /tmp/aln.sorted -o aln.sorted.bam aln.bam
+<p>
+samtools <a href="samtools-split.html">split</a> merged.bam
+<p>
+samtools <a href="samtools-stats.html">stats</a> aln.sorted.bam
+<p>
+samtools <a href="samtools-targetcut.html">targetcut</a> input.bam
+<p>
+samtools <a href="samtools-tview.html">tview</a> aln.sorted.bam ref.fasta
+<p>
+samtools <a href="samtools-view.html">view</a> -bt ref_list.txt -o aln.bam aln.sam.gz
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
@@ -170,6 +174,15 @@ intensive tasks on them.
 This command will exit with a non-zero exit code if any input files don't have a
 valid header or are missing an EOF block. Otherwise it will exit successfully
 (with a zero exit code).
+<p>
+</dd><dt><b>head</b></dt><dd><p>
+samtools head
+[<em>options</em>]
+<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>
+<p>
+Prints the input file's headers and optionally also its first few alignment
+records. This command always displays the headers as they are in the file,
+never adding an extra @PG header itself.
 <p>
 </dd><dt><b>index</b></dt><dd><p>
 samtools index
@@ -376,6 +389,26 @@ Alignment records are grouped by sample (SM) identifiers in @RG header lines.
 If sample identifiers are absent, each input file is regarded as one sample.
 <p>
 See the samtools-mpileup man page for a description of the pileup format and options.
+<p>
+</dd><dt><b>consensus</b></dt><dd><p>
+samtools consensus
+[<b>options</b>]
+<em>in.bam</em>
+<p>
+Generate consensus from a SAM, BAM or CRAM file based on the contents
+of the alignment records.  The consensus is written either as FASTA, 
+FASTQ, or a pileup oriented format.
+<p>
+The default output for FASTA and FASTQ formats include one base per
+non-gap consensus.  Hence insertions with respect to the aligned
+reference will be included and deletions removed.  This behaviour can
+be adjusted.
+<p>
+Two consensus calling algorithms are offered.  The default computes a
+heterozygous consensus in a Bayesian manner, derived from the "Gap5"
+consensus algorithm.  A simpler base frequency counting method is also
+available.
+<p>
 <p>
 </dd><dt><b>coverage</b></dt><dd><p>
 samtools coverage
@@ -1097,6 +1130,7 @@ for further authorship.
 <a href="samtools-calmd.html"><em>samtools-calmd</em></a> (1),
 <a href="samtools-cat.html"><em>samtools-cat</em></a> (1),
 <a href="samtools-collate.html"><em>samtools-collate</em></a> (1),
+<a href="samtools-consensus.html"><em>samtools-consensus</em></a> (1),
 <a href="samtools-coverage.html"><em>samtools-coverage</em></a> (1),
 <a href="samtools-depad.html"><em>samtools-depad</em></a> (1),
 <a href="samtools-depth.html"><em>samtools-depth</em></a> (1),
@@ -1108,6 +1142,7 @@ for further authorship.
 <a href="samtools-flags.html"><em>samtools-flags</em></a> (1),
 <a href="samtools-flagstat.html"><em>samtools-flagstat</em></a> (1),
 <a href="samtools-fqidx.html"><em>samtools-fqidx</em></a> (1),
+<a href="samtools-head.html"><em>samtools-head</em></a> (1),
 <a href="samtools-idxstats.html"><em>samtools-idxstats</em></a> (1),
 <a href="samtools-import.html"><em>samtools-import</em></a> (1),
 <a href="samtools-index.html"><em>samtools-index</em></a> (1),

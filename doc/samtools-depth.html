@@ -2,8 +2,8 @@
 permalink: /doc/samtools-depth.html
 layout: manpage
 title: samtools-depth(1) manual page
-package: samtools-1.14
-date: 22 October 2021
+package: samtools-1.15
+date: 21 February 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-depth.1.html
 ---
@@ -56,9 +56,9 @@ is identical to
 </dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
 Write output to <em>FILE</em>.  Using &ldquo;-&rdquo; for <em>FILE</em>
 will send the output to stdout (also the default if this option is not used).
-</dd><dt><b>-q </b><em>INT</em></dt><dd><p>
+</dd><dt><b>-q, --min-BQ </b><em>INT</em></dt><dd><p>
 Only count reads with base quality greater than or equal to <em>INT</em>
-</dd><dt><b>-Q </b><em>INT</em></dt><dd><p>
+</dd><dt><b>-Q, --min-MQ </b><em>INT</em></dt><dd><p>
 Only count reads with mapping quality greater than or equal to <em>INT</em>
 </dd><dt><b>-r </b><em>CHR</em><b>:</b><em>FROM</em><b>-</b><em>TO</em></dt><dd><p>
 Only report depth in specified region.
@@ -97,9 +97,9 @@ were just this.  However both then and now there are subtle
 differences in parameters which make the two not entirely comparable.
 Differences, other than the obvious speed benefits, include:
 <p>
-<ul><li>Deletions (CIGAR element "D") are counted by default in "depth".  This
-can be turned off with the <b>-J</b> option.  "Mpileup" always ignores
-these bases, and has no option to count them.
+<ul><li>Deletions (CIGAR element "D") are ignored by default in "depth".  These
+may be counted by adding the <b>-J</b> option.  "Mpileup" always counts
+the deleted bases, and has no option to toggle this.
 <p>
 </li>
 <li>Beware there are idiosyncrasies in option naming.  Specifically

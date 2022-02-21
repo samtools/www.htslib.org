@@ -19,6 +19,8 @@ Older manual pages are available for releases: [0.1.19](0.1.19), [1.0](1.0), [1.
 
 ## HowTos
 
+* Options for [viewing files with & without headers](../howtos/headers.html)
+
 ### [BCFtools](http://samtools.github.io/bcftools/)
 
 - Installation

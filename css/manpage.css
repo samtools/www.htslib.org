@@ -1,9 +1,10 @@
 .release { float: right; text-align: right; color: gray; font-size: 90% }
-.manpage p { clear: both; }
+
 .manpage dl { clear: both; margin-left: 8em; }
+.manpage dl::after { content: ""; display: block; clear: both; }
 .manpage dt { float: left; clear: both; min-width: 8em; margin-left: -8em;
               font-weight: normal; }
-.manpage dd { /* padding-left: 7em; */ float: left; width: 100%; clear: right; }
+.manpage dd { float: left; width: 100%; clear: right; }
 
 .manpage table { border-collapse: collapse }
 .manpage th { padding-right: 2em }

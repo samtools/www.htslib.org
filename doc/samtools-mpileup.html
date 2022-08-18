@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -206,9 +206,9 @@ Minimum mapping quality for an alignment to be used [0]
 Minimum base quality for a base to be considered. [13]
 <p>
 Note base-quality 0 is used as a filtering mechanism for overlap
-removal.  Hence using <b>--min-BQ 0</b> will disable the overlap
-removal code and act as if the <b>--ignore-overlaps</b> option has
-been set.
+removal which marks bases as having quality zero and lets the base
+quality filter remove them.  Hence using <b>--min-BQ 0</b> will make
+the overlapping bases reappear, albeit with quality zero.
 </dd><dt><b>-r, --region</b><em> STR</em></dt><dd><p>
 Only generate pileup in region. Requires the BAM files to be indexed.
 If used in conjunction with -l then considers the intersection of the
@@ -222,8 +222,19 @@ Required flags: include reads with any of the mask bits set [null]
 </dd><dt><b>--ff, --excl-flags</b><em> STR|INT</em></dt><dd><p>
 Filter flags: skip reads with any of the mask bits set
 [UNMAP,SECONDARY,QCFAIL,DUP]
-</dd><dt><b>-x, --ignore-overlaps</b></dt><dd><p>
-Disable read-pair overlap detection.
+</dd><dt><b>-x, --ignore-overlaps-removal, --disable-overlap-removal</b></dt><dd><p>
+Overlap detection and removal is enabled by default.  This option
+turns it off.
+<p>
+When enabled, where the ends of a read-pair overlap the overlapping
+region will have one base selected and the duplicate base nullified by
+setting its phred score to zero.  It will then be discarded by the
+<b>--min-BQ</b> option unless this is zero.
+<p>
+The quality values of the retained base within an overlap will be the
+summation of the two bases if they agree, or 0.8 times the higher of
+the two bases if they disagree, with the base nucleotide also being
+the higher confident call.
 </dd><dt><b>-X</b></dt><dd><p>
 Include customized index file as a part of arguments. See
 <b>EXAMPLES</b>

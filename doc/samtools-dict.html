@@ -2,8 +2,8 @@
 permalink: /doc/samtools-dict.html
 layout: manpage
 title: samtools-dict(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-dict.1.html
 ---
@@ -29,6 +29,15 @@ For mitochondria (i.e., when SN is &ldquo;M&rdquo; or &ldquo;MT&rdquo;, with or 
 to the AN tag.
 </dd><dt><b>-H, --no-header</b></dt><dd><p>
 Do not print the @HD header line.
+</dd><dt><b>-l, --alt </b><em>FILE</em></dt><dd><p>
+Add an AH tag to each sequence listed in the specified
+<em>bwa</em>(1)-style
+<b>.alt</b>
+file.
+These files use SAM records to represent alternate locus sequences
+(as named in the
+<b>QNAME</b>
+field) and their mappings to the primary assembly.
 </dd><dt><b>-o, --output</b><em> FILE</em></dt><dd><p>
 Output to
 <em>FILE</em>
@@ -49,6 +58,7 @@ Written by Shane McCarthy from the Sanger Institute.
 <h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
 <a href="samtools.html"><em>samtools</em></a> (1),
 <a href="bcftools.html"><em>bcftools</em></a> (1),
+<em>bwa</em>(1),
 <a href="sam.html"><em>sam</em></a> (5),
 <a href="tabix.html"><em>tabix</em></a> (1)
 <p>

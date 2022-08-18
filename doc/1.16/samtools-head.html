@@ -1,0 +1,50 @@
+---
+permalink: /doc/1.16/samtools-head.html
+layout: manpage
+title: samtools-head(1) manual page
+package: samtools-1.16
+date: 18 August 2022
+section_text: Bioinformatics tools
+redirect_from: /doc/1.16/samtools-head.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools head &ndash; view SAM/BAM/CRAM file headers
+<p>
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<b>samtools head</b>
+[<b>-h</b>
+<em>INT</em>]
+[<b>-n</b>
+<em>INT</em>]
+[<em>FILE</em>]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+By default, prints all headers from the specified input file to standard output
+in SAM format.
+The input alignment file may be in SAM, BAM, or CRAM format; if no <em>FILE</em>
+is specified, standard input will be read.
+With appropriate options, only some of the headers and/or additionally some
+of the alignment records will be printed.
+<p>
+The <b>samtools head</b> command outputs SAM headers exactly as they appear
+in the input file; in particular, it never adds an @PG header itself.
+(Other <b>samtools</b> commands add such @PG headers to facilitate provenance
+tracking in analysis pipelines, but because <b>samtools head</b> never outputs
+more than a handful of alignment records it is unsuitable for use in such
+contexts anyway.)
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-h, --headers </b><em>INT</em></dt><dd><p>
+Display only the first <em>INT</em> header lines.
+By default, all header lines are displayed.
+</dd><dt><b>-n, --records </b><em>INT</em></dt><dd><p>
+Also display the first <em>INT</em> alignment records.
+By default, no alignment records are displayed.
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+Written by John Marshall from the University of Glasgow.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-view.html"><em>samtools-view</em></a> (1)

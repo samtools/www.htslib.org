@@ -1,0 +1,66 @@
+---
+permalink: /doc/1.16/samtools-depad.html
+layout: manpage
+title: samtools-depad(1) manual page
+package: samtools-1.16
+date: 18 August 2022
+section_text: Bioinformatics tools
+redirect_from: /doc/1.16/samtools-depad.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools depad &ndash; convert padded BAM to unpadded BAM
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-depad.html">depad</a>
+[<b>-SsCu1</b>]
+[<b>-T</b>
+<em>ref.fa</em>]
+[<b>-o</b>
+<em>output</em>] <em>in.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Converts a BAM aligned against a padded reference to a BAM aligned
+against the depadded reference.  The padded reference may contain
+verbatim "*" bases in it, but "*" bases are also counted in the
+reference numbering.  This means that a sequence base-call aligned
+against a reference "*" is considered to be a cigar match ("M" or "X")
+operator (if the base-call is "A", "C", "G" or "T").  After depadding
+the reference "*" bases are deleted and such aligned sequence
+base-calls become insertions.  Similarly transformations apply for
+deletions and padding cigar operations.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-S</b></dt><dd><p>
+Ignored for compatibility with previous samtools versions.
+Previously this option was required if input was in SAM format, but now the
+correct format is automatically detected by examining the first few characters
+of input.
+</dd><dt><b>-s</b></dt><dd><p>
+Output in SAM format.  The default is BAM.
+</dd><dt><b>-C</b></dt><dd><p>
+Output in CRAM format.  The default is BAM.
+</dd><dt><b>-u</b></dt><dd><p>
+Do not compress the output.  Applies to either BAM or CRAM output
+format.
+</dd><dt><b>-1</b></dt><dd><p>
+Enable fastest compression level.  Only works for BAM or CRAM output.
+</dd><dt><b>-T </b><em>FILE</em></dt><dd><p>
+Provides the padded reference file.  Note that without this the @SQ
+line lengths will be incorrect, so for most use cases this option will
+be considered as mandatory.
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Specifies the output filename.  By default output is sent to stdout.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute with extensions by Peter
+Cock from the James Hutton Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

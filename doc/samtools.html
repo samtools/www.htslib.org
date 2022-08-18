@@ -2,8 +2,8 @@
 permalink: /doc/samtools.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools.1.html
 ---
@@ -66,6 +66,8 @@ samtools <a href="samtools-mpileup.html">mpileup</a> -C50 -f ref.fasta -r chr3:1
 samtools <a href="samtools-phase.html">phase</a> input.bam
 <p>
 samtools <a href="samtools-quickcheck.html">quickcheck</a> in1.bam in2.cram
+<p>
+samtools <a href="samtools-reference.html">reference</a> -o ref.fa in.cram
 <p>
 samtools <a href="samtools-reheader.html">reheader</a> in.header.sam in.bam &gt; out.bam
 <p>
@@ -194,6 +196,8 @@ samtools index
 <p>
 Index a coordinate-sorted SAM, BAM or CRAM file for fast random access.
 Note for SAM this only works if the file has been BGZF compressed first.
+(Starting from Samtools 1.16, this command can also be given several
+alignment filenames, which are indexed individually.)
 <p>
 This index is needed when
 <em>region</em>
@@ -256,6 +260,16 @@ option).
 Consider using
 <b>samtools collate</b>
 instead if you need name collated data without a full lexicographical sort.
+<p>
+Note that if the sorted output file is to be indexed with
+<b>samtools index</b>,
+the default coordinate sort must be used.
+Thus the
+<b>-n</b>
+and
+<b>-t</b>
+options are incompatible with
+<b>samtools index</b>.
 <p>
 </dd><dt><b>collate</b></dt><dd><p>
 samtools collate
@@ -409,6 +423,16 @@ heterozygous consensus in a Bayesian manner, derived from the "Gap5"
 consensus algorithm.  A simpler base frequency counting method is also
 available.
 <p>
+<p>
+</dd><dt><b>reference</b></dt><dd><p>
+samtools reference
+[<b>options</b>]
+<em>in.bam</em>
+<p>
+Generate a reference from a SAM, BAM or CRAM file based on the
+contents of the SEQuence field and the MD:Z: auxiliary tags, or from
+the embedded reference blocks within a CRAM file (provided it was
+constructed using the <b>embed_ref=1</b> option).
 <p>
 </dd><dt><b>coverage</b></dt><dd><p>
 samtools coverage
@@ -837,11 +861,43 @@ block compression.
 </dd><dt><b>use_lzma=</b><em>0|1</em></dt><dd><p>
 CRAM output only; defaults to 0 (off).  Permits use of lzma in CRAM
 block compression.
+</dd><dt><b>use_fqz=</b><em>0|1</em></dt><dd><p>
+CRAM &ge; 3.1 output only; enables and disables the fqzcomp quality
+compression method.  This is on by default for version 3.1 and above
+only when the small and archive profiles are in use.
+</dd><dt><b>use_tok=</b><em>0|1</em></dt><dd><p>
+CRAM &ge; 3.1 output only; enables and disables the namne tokeniser
+compression method.  This is on by default for version 3.1 and above.
 </dd><dt><b>lossy_names=</b><em>0|1</em></dt><dd><p>
 CRAM output only; defaults to 0 (off).  If 1, templates with all
 members within the same CRAM slice will have their read names
 removed.  New names will be automatically generated during decoding.
 Also see the <b>name_prefix</b> option.
+</dd><dt><b>fast, normal, small, archive</b></dt><dd><p>
+CRAM output only.  Set the CRAM compression profile.  This is a
+simplified way of setting many output options at once.  It changes the
+following options according to the profile in use.  The "normal"
+profile is the default.
+<p>
+<table>
+<tr><td><b>Option</b></td><td><b>fast</b></td><td><b>normal</b></td><td><b>small</b></td><td><b>archive</b></td></tr>
+<tr><td><b>level</b></td><td>1</td><td>5</td><td>6</td><td>7</td></tr>
+<tr><td><b>use_bzip2</b></td><td>off</td><td>off</td><td>on</td><td>on</td></tr>
+<tr><td><b>use_lzma</b></td><td>off</td><td>off</td><td>off</td><td>on if level&gt;7</td></tr>
+<tr><td><b>use_tok(*)</b></td><td>off</td><td>on</td><td>on</td><td>on</td></tr>
+<tr><td><b>use_fqz(*)</b></td><td>off</td><td>off</td><td>on</td><td>on</td></tr>
+<tr><td><b>use_arith(*)</b></td><td>off</td><td>off</td><td>off</td><td>on</td></tr>
+<tr><td><b>seqs_per_slice</b></td><td>10000</td><td>10000</td><td>25000</td><td>100000</td></tr>
+</table>
+<p>
+(*) <b>use_tok</b>, <b>use_fqz</b> and <b>use_arith</b> are only
+enabled for CRAM version 3.1 and above.
+<p>
+The <b>level</b> listed is only the default value, and will not be set
+if it has been explicitly changed already.  Additionally
+<b>bases_per_slice</b> is set to <b>500*seqs_per_slice</b> unless previously
+explicitly set.
+<p>
 </dd></dl>
 <p>
 For example:
@@ -849,6 +905,8 @@ For example:
 samtools view --input-fmt-option decode_md=0
     --output-fmt cram,version=3.0 --output-fmt-option embed_ref
     --output-fmt-option seqs_per_slice=2000 -o foo.cram foo.bam
+<p>
+samtools view -O cram,small -o bar.cram bar.bam
 </pre>
 <p>
 The <b>--write-index</b> option enables automatic index creation while
@@ -941,7 +999,8 @@ Similarly a double backslash is used to get a literal backslash.  For
 example <b>ab\\"c\\\\d</b> is the string <b>ab"c\\d</b>.
 <p>
 Comparison operators are evaluated as a match being 1 and a mismatch
-being 0, thus "(2 &gt; 1) + (3 &lt; 5)" evaluates as 2.
+being 0, thus "(2 &gt; 1) + (3 &lt; 5)" evaluates as 2.  All comparisons
+involving undefined (null) values are deemed to be false.
 <p>
 The variables are where the file format specifics are accessed from
 the expression.  The variables correspond to SAM fields, for example
@@ -979,6 +1038,7 @@ Valid variable names and their data types are:
 <tr><td><b>rlen</b></td><td>int</td><td>Alignment length: no. reference bases</td></tr>
 <tr><td><b>rname</b></td><td>string</td><td>Reference name</td></tr>
 <tr><td><b>rnext</b></td><td>string</td><td>Mate's reference name</td></tr>
+<tr><td><b>sclen</b></td><td>int</td><td>Number of soft-clipped bases</td></tr>
 <tr><td><b>seq</b></td><td>string</td><td>Sequence</td></tr>
 <tr><td><b>tlen</b></td><td>int</td><td>Template length (insert size)</td></tr>
 <tr><td><b>[XX]</b></td><td>int / string</td><td>XX tag value</td></tr>
@@ -991,7 +1051,10 @@ equivalent to <b>flag &amp; 1024</b>.
 "qlen" and "rlen" are measured using the CIGAR string to count the
 number of query (sequence) and reference bases consumed.  Note "qlen"
 may not exactly match the length of the "seq" field if the sequence is
-"*".
+"*".  "sclen" is the number of soft-clipped bases.  When combined in
+"qlen-sclen" it can give the number of sequence bases used in the
+alignment, distinguishing between global alignment and local alignment
+length.
 <p>
 "endpos" is the (1-based inclusive) position of the rightmost mapped base
 of the read, as measured using the CIGAR string, and for mapped reads
@@ -1009,28 +1072,54 @@ for alignments with many mismatches and <b>[RG]=~"grp[ABC]-"</b> will
 match the read-group string.
 <p>
 If no comparison is used with an auxiliary tag it is taken simply to
-be a test for the existence of that tag.  So "[NM]" will return any
+be a test for the existence of that tag.  So <b>[NM]</b> will return any
 record containing an NM tag, even if that tag is zero (<b>NM:i:0</b>).
+In htslib &lt;= 1.15 negating this with <b>![NM]</b> gave misleading
+results as it was true if the tag did not exist or did exist but was
+zero.  Now this is strictly does-not-exist.  An explicit
+<b>exists([NM])</b> and <b>!exists([NM])</b> function has also been added
+to make this intention clear.
 <p>
-If you need to check specifically for a non-zero value then use <b>[NM]
-&amp;&amp; [NM]!=0</b>.
+Similarly in htslib &lt;= 1.15 using <b>[NM]!=0</b> was true both when the
+tag existed and was not zero as well as when the tag did not exist.
+From 1.16 onwards all comparison operators are only true for tags that
+exist, so <b>[NM]!=0</b> works as expected.
 <p>
 Some simple functions are available to operate on strings.  These
 treat the strings as arrays of bytes, permitting their length,
-minimum, maximum and average values to be computed.
+minimum, maximum and average values to be computed.  These are useful
+for processing Quality Scores.
 <p>
 <table>
-<tr><td><b>length</b></td><td>Length of the string (excluding nul char)</td></tr>
-<tr><td><b>min</b></td><td>Minimum byte value in the string</td></tr>
-<tr><td><b>max</b></td><td>Maximum byte value in the string</td></tr>
-<tr><td><b>avg</b></td><td>Average byte value in the string</td></tr>
+<tr><td><b>length(x)</b></td><td>Length of the string (excluding nul char)</td></tr>
+<tr><td><b>min(x)</b></td><td>Minimum byte value in the string</td></tr>
+<tr><td><b>max(x)</b></td><td>Maximum byte value in the string</td></tr>
+<tr><td><b>avg(x)</b></td><td>Average byte value in the string</td></tr>
 </table>
 <p>
 Note that "avg" is a floating point value and it may be NAN for empty
 strings.  This means that "avg(qual)" does not produce an error for
-records that have both seq and qual of "*".  This value will fail any
+records that have both seq and qual of "*".  NAN values will fail any
 conditional checks, so e.g. "avg(qual) &gt; 20" works and will not report
-these records.
+these records.  NAN also fails all equality, &lt; and &gt; comparisons, and
+returns zero when given as an argument to the <b>exists</b> function.
+It can be negated with <b>!x</b> in which case it becomes true.
+<p>
+Functions that operate on both strings and numerics:
+<p>
+<table>
+<tr><td><b>exists(x)</b></td><td>True if the value exists (or is explicitly true).</td></tr>
+<tr><td><b>default(x,d)</b></td><td>Value <b>x</b> if it exists or <b>d</b> if not.</td></tr>
+</table>
+<p>
+Functions that apply only to numeric values:
+<p>
+<table>
+<tr><td><b>sqrt(x)</b></td><td>Square root of <b>x</b></td></tr>
+<tr><td><b>log(x)</b></td><td>Natural logarithm of <b>x</b></td></tr>
+<tr><td><b>pow(x, y)</b></td><td>Power function, <b>x</b> to the power of <b>y</b></td></tr>
+<tr><td><b>exp(x)</b></td><td>Base-e exponential, equivalent to <b>pow(e,x)</b></td></tr>
+</table>
 <p>
 <p>
 <h1 id="ENVIRONMENT_VARIABLES"><a href="#ENVIRONMENT_VARIABLES">ENVIRONMENT VARIABLES</a></h1>
@@ -1151,6 +1240,7 @@ for further authorship.
 <a href="samtools-mpileup.html"><em>samtools-mpileup</em></a> (1),
 <a href="samtools-phase.html"><em>samtools-phase</em></a> (1),
 <a href="samtools-quickcheck.html"><em>samtools-quickcheck</em></a> (1),
+<a href="samtools-reference.html"><em>samtools-reference</em></a> (1),
 <a href="samtools-reheader.html"><em>samtools-reheader</em></a> (1),
 <a href="samtools-rmdup.html"><em>samtools-rmdup</em></a> (1),
 <a href="samtools-sort.html"><em>samtools-sort</em></a> (1),

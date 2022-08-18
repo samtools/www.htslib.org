@@ -2,8 +2,8 @@
 permalink: /doc/samtools-stats.html
 layout: manpage
 title: samtools-stats(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-stats.1.html
 ---
@@ -91,7 +91,7 @@ but more comprehensive.
 <b>raw total sequences</b>
 - total number of reads in a file, excluding supplementary and secondary reads.
 Same number reported by
-<b>samtools view -c</b>.
+<b>samtools view -c -F 0x900</b>.
 <p>
 <b>filtered sequences</b>
 - number of discarded reads when using -f or -F option.

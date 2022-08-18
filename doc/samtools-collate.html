@@ -2,8 +2,8 @@
 permalink: /doc/samtools-collate.html
 layout: manpage
 title: samtools-collate(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-collate.1.html
 ---
@@ -27,15 +27,15 @@ The output from this command should be suitable for any operation that
 requires all reads from the same template to be grouped together.
 <p>
 If present, &lt;prefix&gt; is used to name the temporary files that collate
-uses when sorting the data.  If neither the '-O' nor '-o' options are used,
+uses when sorting the data.  If neither the <b>-O</b> nor <b>-o</b> options are used,
 &lt;prefix&gt; must be present and collate will use it to make an output file name
 by appending a suffix depending on the format written (.bam by default).
 <p>
-If either the -O or -o option is used, &lt;prefix&gt; is optional.  If &lt;prefix&gt;
+If either the <b>-O</b> or <b>-o</b> option is used, &lt;prefix&gt; is optional.  If &lt;prefix&gt;
 is absent, collate will write the temporary files to a system-dependent
 location (/tmp on UNIX).
 <p>
-Using -f for fast mode will output <b>only</b> primary alignments that have
+Using <b>-f</b> for fast mode will output <b>only</b> primary alignments that have
 either the READ1 <b>or</b> READ2 flags set (but not both).
 Any other alignment records will be filtered out.
 The collation will only work correctly if there are no more than two reads
@@ -46,7 +46,7 @@ most pairs as soon as they are found instead of storing them in temporary
 files.
 This allows collate to avoid some work and so finish more quickly compared
 to the standard mode.
-The number of alignments held can be changed using -r, storing more alignments
+The number of alignments held can be changed using <b>-r</b>, storing more alignments
 uses more memory but increases the number of pairs that can be written early.
 <p>
 While collate normally randomises the ordering of read pairs, fast mode

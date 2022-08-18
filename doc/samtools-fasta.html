@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fasta.html
 layout: manpage
 title: samtools-fasta(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fasta.1.html
 ---
@@ -103,6 +103,9 @@ Copy RG, BC and QT tags to the FASTQ header line, if they exist.
 </dd><dt><b>-T TAGLIST</b></dt><dd><p>
 Specify a comma-separated list of tags to copy to the FASTQ header line, if
 they exist.
+<b>TAGLIST</b> can be blank or <b>*</b> to indicate all tags should be copied to
+the output.
+If using <b>*</b>, be careful to quote it to avoid unwanted shell expansion.
 </dd><dt><b>-1 FILE</b></dt><dd><p>
 Write reads with the READ1 FLAG set (and READ2 not set) to FILE instead of
 outputting them.

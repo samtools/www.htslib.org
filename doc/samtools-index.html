@@ -2,8 +2,8 @@
 permalink: /doc/samtools-index.html
 layout: manpage
 title: samtools-index(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-index.1.html
 ---
@@ -11,7 +11,14 @@ redirect_from: /doc/samtools-index.1.html
 samtools index &ndash; indexes SAM/BAM/CRAM files
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 <p>
-samtools <a href="samtools-index.html">index</a>
+<b>samtools index -M</b>
+[<b>-bc</b>]
+[<b>-m</b>
+<em>INT</em>]
+<em>FILE FILE</em>
+[<em>FILE</em>...]
+<p>
+<b>samtools index</b>
 [<b>-bc</b>]
 [<b>-m</b>
 <em>INT</em>]
@@ -20,9 +27,12 @@ samtools <a href="samtools-index.html">index</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Index a coordinate-sorted BGZIP-compressed SAM, BAM or CRAM file for fast
+Index coordinate-sorted BGZIP-compressed SAM, BAM or CRAM files for fast
 random access.
 Note for SAM this only works if the file has been BGZF compressed first.
+(The first synopsis with multiple input
+<em>FILE</em>s
+is only available with Samtools 1.16 or later.)
 <p>
 This index is needed when
 <em>region</em>
@@ -30,9 +40,12 @@ arguments are used to limit
 <b>samtools view</b>
 and similar commands to particular regions of interest.
 <p>
-If an output filename is given, the index file will be written to
-<em>out.index</em>.
-Otherwise, for a CRAM file
+When only one alignment file is being indexed, the output index filename
+can be specified via
+<b>-o</b>
+or as shown in the second synopsis.
+<p>
+When no output filename is specified, for a CRAM file
 <em>aln.cram</em>,
 index file
 <em>aln.cram</em><b>.crai</b>
@@ -65,6 +78,15 @@ By default, the minimum interval size for the index is 2^14, which is the same
 as the fixed value used by the BAI format.
 </dd><dt><b>-m </b><em>INT</em></dt><dd><p>
 Create a CSI index, with a minimum interval size of 2^INT.
+</dd><dt><b>-M</b></dt><dd><p>
+Interpret all filename arguments as alignment files to be indexed individually.
+(Without
+<b>-M</b>,
+filename arguments are interpreted solely as per the second synopsis.)
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Write the output index to
+<em>FILE</em>.
+(Currently may only be used when exactly one alignment file is being indexed.)
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of input/output compression threads to use in addition to main thread [0].
 <p>

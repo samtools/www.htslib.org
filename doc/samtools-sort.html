@@ -2,8 +2,8 @@
 permalink: /doc/samtools-sort.html
 layout: manpage
 title: samtools-sort(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-sort.1.html
 ---
@@ -146,6 +146,13 @@ Set number of sorting and compression threads.
 By default, operation is single-threaded.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file.
+</dd><dt><b>--template-coordinate</b></dt><dd><p>
+Sorts by template-coordinate, whereby the sort order (@HD SO) is
+<b>unsorted</b>,
+the group order (GO) is
+<b>query</b>,
+and the sub-sort (SS) is
+<b>template-coordinate</b>.
 </dd></dl><p>
 <b>Ordering Rules</b>
 <p>
@@ -184,9 +191,31 @@ Records with the same name will be ordered according to the values of
 the READ1 and READ2 flags (see
 <b>flags</b>).
 <p>
-When the <b>-n</b> option is
-<b>not</b>
-present, reads are sorted by reference (according to the order of the @SQ
+When the 
+<b>--template-coordinate</b>
+option is in use, the reads are sorted by:
+<p>
+<p>
+The earlier unclipped 5' coordinate of the template.
+<p>
+<p>
+The higher unclipped 5' coordinate of the template.
+<p>
+<p>
+The library (from the read group).
+<p>
+<p>
+The molecular identifier (MI tag if present).
+<p>
+<p>
+The read name.
+<p>
+<p>
+If unpaired, or if R1 has the lower coordinates of the pair.
+<p>
+<p>
+When none of the above options are in use,
+reads are sorted by reference (according to the order of the @SQ
 header records), then by position in the reference, and then by the REVERSE
 flag.
 <p>

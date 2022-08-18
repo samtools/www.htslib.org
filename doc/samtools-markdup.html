@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -32,6 +32,9 @@ samtools <a href="samtools-markdup.html">markdup</a>
 [<b>--no-multi-dup</b>]
 [<b>--read-coords</b>]
 [<b>--coords-order</b>]
+[<b>--barcode-tag</b>]
+[<b>--barcode-name</b>]
+[<b>--barcode-rgx</b>]
 <em>in.algsort.bam out.bam</em>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
@@ -95,6 +98,12 @@ The order of the elements captured in the regular expression. Default is txy
 where t is a part of the read name selected for string comparison and x/y the
 coordinates used for optical duplicate detection.  Valid orders are: txy, tyx,
 xyt, yxt, xty, ytx, xy and yx.
+</dd><dt><b>--barcode-tag </b><em>TAG</em></dt><dd><p>
+Duplicates must now also match the barcode tag.
+</dd><dt><b>--barcode-name</b></dt><dd><p>
+Use the UMI/barcode embedded in the read name (eigth colon delimited part).
+</dd><dt><b>--barcode-rgx </b><em>REGEX</em></dt><dd><p>
+Regex for barcode in the readname (alternative to --barcode-name).
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a PG line to the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
@@ -182,13 +191,13 @@ To use the regex to obtain coordinates from reads, two or three values have to
 be captured.  To mimic the normal behaviour and match a read name of the format
 <em>machine:run:flowcell:lane:tile:x:y</em> use:
 <pre>
---read-coords '(\w+:[0-9]+:[0-9]+:[0-9]+:[0-9]+):([0-9]+):([0-9]+)'
+--read-coords '([!-9;-?A-~]+:[0-9]+:[0-9]+:[0-9]+:[0-9]+):([0-9]+):([0-9]+)'
 --coords-order txy
 </pre>
 <p>
 To match only the coordinates of <em>x:y:randomstuff</em> use:
 <pre>
---read-coords '^([[:digit:]]):([[:digit:]])'
+--read-coords '^([[:digit:]]+):([[:digit:]]+)'
 --coords-order xy
 </pre>
 <p>

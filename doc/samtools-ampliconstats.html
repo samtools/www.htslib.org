@@ -2,8 +2,8 @@
 permalink: /doc/samtools-ampliconstats.html
 layout: manpage
 title: samtools-ampliconstats(1) manual page
-package: samtools-1.15
-date: 21 February 2022
+package: samtools-1.16
+date: 18 August 2022
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-ampliconstats.1.html
 ---
@@ -45,31 +45,51 @@ primer choices, only the innermost primer locations are used.
 A summary of output sections is listed below, followed by more
 detailed descriptions.
 <p>
-<table>
-<tr><td><b>SS</b></td><td>Amplicon and file counts.  Always comes first</td></tr>
-<tr><td><b>AMPLICON</b></td><td>Amplicon primer locations</td></tr>
-<tr><td><b>FSS</b></td><td>File specific: summary stats</td></tr>
-<tr><td><b>FRPERC</b></td><td>File specific: read percentage distribution between amplicons</td></tr>
-<tr><td><b>FDEPTH</b></td><td>File specific: average read depth per amplicon</td></tr>
-<tr><td><b>FVDEPTH</b></td><td>File specific: average read depth per amplicon, full length only</td></tr>
-<tr><td><b>FREADS</b></td><td>File specific: numbers of reads per amplicon</td></tr>
-<tr><td><b>FPCOV</b></td><td>File specific: percent coverage per amplicon</td></tr>
-<tr><td><b>FTCOORD</b></td><td>File specific: template start,end coordinate frequencies per amplicon</td></tr>
-<tr><td><b>FAMP</b></td><td>File specific: amplicon correct / double / treble length counts</td></tr>
-<tr><td><b>FDP_ALL</b></td><td>File specific: template depth per reference base, all templates</td></tr>
-<tr><td><b>FDP_VALID</b></td><td>File specific: template depth per reference base, valid templates only</td></tr>
-<tr><td><b>CSS</b></td><td>Combined  summary stats</td></tr>
-<tr><td><b>CRPERC</b></td><td>Combined: read percentage distribution between amplicons</td></tr>
-<tr><td><b>CDEPTH</b></td><td>Combined: average read depth per amplicon</td></tr>
-<tr><td><b>CVDEPTH</b></td><td>Combined: average read depth per amplicon, full length only</td></tr>
-<tr><td><b>CREADS</b></td><td>Combined: numbers of reads per amplicon</td></tr>
-<tr><td><b>CPCOV</b></td><td>Combined: percent coverage per amplicon</td></tr>
-<tr><td><b>CTCOORD</b></td><td>Combined: template coordinates per amplicon</td></tr>
-<tr><td><b>CAMP</b></td><td>Combined: amplicon correct / double / treble length counts</td></tr>
-<tr><td><b>CDP_ALL</b></td><td>Combined: template depth per reference base, all templates</td></tr>
-<tr><td><b>CDP_VALID</b></td><td>Combined: template depth per reference base, valid templates only</td></tr>
-</table>
-<p>
+<dl><dt><b>SS</b></dt><dd><p>
+Amplicon and file counts.  Always comes first
+</dd><dt><b>AMPLICON</b></dt><dd><p>
+Amplicon primer locations
+</dd><dt><b>FSS</b></dt><dd><p>
+File specific: summary stats
+</dd><dt><b>FRPERC</b></dt><dd><p>
+File specific: read percentage distribution between amplicons
+</dd><dt><b>FDEPTH</b></dt><dd><p>
+File specific: average read depth per amplicon
+</dd><dt><b>FVDEPTH</b></dt><dd><p>
+File specific: average read depth per amplicon, full length only
+</dd><dt><b>FREADS</b></dt><dd><p>
+File specific: numbers of reads per amplicon
+</dd><dt><b>FPCOV</b></dt><dd><p>
+File specific: percent coverage per amplicon
+</dd><dt><b>FTCOORD</b></dt><dd><p>
+File specific: template start,end coordinate frequencies per amplicon
+</dd><dt><b>FAMP</b></dt><dd><p>
+File specific: amplicon correct / double / treble length counts
+</dd><dt><b>FDP_ALL</b></dt><dd><p>
+File specific: template depth per reference base, all templates
+</dd><dt><b>FDP_VALID</b></dt><dd><p>
+File specific: template depth per reference base, valid templates only
+</dd><dt><b>CSS</b></dt><dd><p>
+Combined  summary stats
+</dd><dt><b>CRPERC</b></dt><dd><p>
+Combined: read percentage distribution between amplicons
+</dd><dt><b>CDEPTH</b></dt><dd><p>
+Combined: average read depth per amplicon
+</dd><dt><b>CVDEPTH</b></dt><dd><p>
+Combined: average read depth per amplicon, full length only
+</dd><dt><b>CREADS</b></dt><dd><p>
+Combined: numbers of reads per amplicon
+</dd><dt><b>CPCOV</b></dt><dd><p>
+Combined: percent coverage per amplicon
+</dd><dt><b>CTCOORD</b></dt><dd><p>
+Combined: template coordinates per amplicon
+</dd><dt><b>CAMP</b></dt><dd><p>
+Combined: amplicon correct / double / treble length counts
+</dd><dt><b>CDP_ALL</b></dt><dd><p>
+Combined: template depth per reference base, all templates
+</dd><dt><b>CDP_VALID</b></dt><dd><p>
+Combined: template depth per reference base, valid templates only
+</dd></dl><p>
 File specific sections start with both the section key and the
 filename basename (minus directory and .sam, .bam or .cram suffix).
 <p>

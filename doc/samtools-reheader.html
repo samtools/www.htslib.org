@@ -2,8 +2,8 @@
 permalink: /doc/samtools-reheader.html
 layout: manpage
 title: samtools-reheader(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-reheader.1.html
 ---
@@ -71,12 +71,12 @@ samtools reheader -c 'grep -v ^@CO' in.bam
 <li>Add &ldquo;Chr&rdquo; prefix to chromosome names.  Note extra backslashes before
 dollar signs to prevent unwanted shell variable expansion.
 <pre>
-samtools reheader -c 'perl -pe "s/^(@SQ.*)(\tSN:)(\d+|X|Y|MT)(\s|\$)/\$1Chr\$2\$3/"' in.bam
+samtools reheader -c 'perl -pe "s/^(@SQ.*)(&bsol;tSN:)(&bsol;d+|X|Y|MT)(&bsol;s|&bsol;$)/&bsol;$1Chr&bsol;$2&bsol;$3/"' in.bam
 </pre>
 </li>
 <li>Remove &ldquo;Chr&rdquo; prefix
 <pre>
-samtools reheader -c 'perl -pe "s/^(@SQ.*)(\tSN:)Chr/\$1\$2/"' in.bam
+samtools reheader -c 'perl -pe "s/^(@SQ.*)(&bsol;tSN:)Chr/&bsol;$1&bsol;$2/"' in.bam
 </pre>
 <p>
 </li></ul>

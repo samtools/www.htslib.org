@@ -2,8 +2,8 @@
 permalink: /doc/samtools-import.html
 layout: manpage
 title: samtools-import(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-import.1.html
 ---
@@ -148,8 +148,8 @@ samtools import -i in_[12].fastq &gt; out.bam
 Specify the read group. These commands are equivalent
 <p>
 <pre>
-samtools import -r "$(echo -e 'ID:xyz\\tPL:ILLUMINA')" in.fq
-samtools import -r "$(echo -e '@RG\\tID:xyz\\tPL:ILLUMINA')" in.fq
+samtools import -r "$(echo -e 'ID:xyz\tPL:ILLUMINA')" in.fq
+samtools import -r "$(echo -e '@RG\tID:xyz\tPL:ILLUMINA')" in.fq
 samtools import -r ID:xyz -r PL:ILLUMINA in.fq
 </pre>
 <p>
@@ -167,10 +167,10 @@ reduce file space.  The reversal process is also shown using samtools
 sort and samtools fastq.
 <p>
 <pre>
-samtools import -i in_1.fq in_2.fq --order ro -O bam,level=0 | \\
+samtools import -i in_1.fq in_2.fq --order ro -O bam,level=0 | \
     samtools sort -@4 -M -o out.srt.cram -
 <p>
-samtools sort -@4 -O bam -u -t ro out.srt.cram | \\
+samtools sort -@4 -O bam -u -t ro out.srt.cram | \
     samtools fastq -1 out_1.fq -2 out_2.fq -i --index-format "i*i*"
 </pre>
 <p>

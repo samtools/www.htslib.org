@@ -1,0 +1,52 @@
+---
+permalink: /doc/1.17/samtools-rmdup.html
+layout: manpage
+title: samtools-rmdup(1) manual page
+package: samtools-1.17
+date: 21 February 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.17/samtools-rmdup.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools rmdup &ndash; removes duplicate reads (obsolete)
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-rmdup.html">rmdup</a>
+[<b>-sS</b>]
+<em>input.srt.bam out.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+<b>This command is obsolete. Use markdup instead.</b>
+<p>
+Remove potential PCR duplicates: if multiple read pairs have identical
+external coordinates, only retain the pair with highest mapping quality.
+In the paired-end mode, this command
+<b>ONLY</b>
+works with FR orientation and requires ISIZE is correctly set. It does
+not work for unpaired reads (e.g. two ends mapped to different
+chromosomes or orphan reads).
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-s</b></dt><dd><p>
+Remove duplicates for single-end reads. By default, the command works for
+paired-end reads only.
+</dd><dt><b>-S</b></dt><dd><p>
+Treat paired-end reads and single-end reads.
+<p>
+</dd></dl>
+<h1 id="LIMITATIONS"><a href="#LIMITATIONS">LIMITATIONS</a></h1>
+<ul><li>Samtools paired-end rmdup does not work for unpaired reads (e.g. orphan
+reads or ends mapped to different chromosomes). If this is a concern,
+please use Picard's MarkDuplicates which correctly handles these cases,
+although a little slower.
+<p>
+</li></ul>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

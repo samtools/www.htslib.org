@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fixmate.html
 layout: manpage
 title: samtools-fixmate(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fixmate.1.html
 ---
@@ -48,6 +48,12 @@ is selected.
 Do not add a @PG line to the header of the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of input/output compression threads to use in addition to main thread [0].
+</dd><dt><b>-z </b><em>FLAGs</em><b>, --sanitize </b><em>FLAGs</em></dt><dd><p>
+Perform basic sanitizing of records.  <em>FLAGs</em> is a comma-separated
+list of keywords, defined in the
+<em>samtools-view</em>(1)
+man page.  By default all FLAGs are enabled.  Use <b>-z off</b> to
+disable this.
 <p>
 </dd></dl>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>

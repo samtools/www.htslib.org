@@ -2,8 +2,8 @@
 permalink: /doc/samtools-samples.html
 layout: manpage
 title: samtools-samples(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-samples.1.html
 ---
@@ -94,7 +94,7 @@ S2	S2.bam	Y
 <li>read a tab delimited input &lt;file&gt;(tab)&lt;bai&gt; and print whether the files are
 indexed using custom bai files.
 <pre>
-$ find . -type f \( -name "S*.bam" -o -name "S*.bai" \) | sort | paste - - | samtools samples -i -h -X
+$ find . -type f &bsol;( -name "S*.bam" -o -name "S*.bai" &bsol;) | sort | paste - - | samtools samples -i -h -X
 #SM	PATH	INDEX
 S1	./S1.bam	Y
 S2	./S2.bam	Y
@@ -118,7 +118,7 @@ S5Lib2	S5.bam
 </li>
 <li>pipe a list of BAM/CRAM files , pipe it into  samtools samples.
 <pre>
-$ find . -type f \( -name "S*.bam" -o -name "*.cram" \) | samtools  samples -h
+$ find . -type f &bsol;( -name "S*.bam" -o -name "*.cram" &bsol;) | samtools  samples -h
 #SM	PATH
 S5	./S5.bam
 S2	./S2.bam

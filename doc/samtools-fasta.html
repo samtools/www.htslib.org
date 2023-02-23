@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fasta.html
 layout: manpage
 title: samtools-fasta(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fasta.1.html
 ---
@@ -24,6 +24,13 @@ samtools <a href="samtools-fasta.html">fasta</a>
 Converts a BAM or CRAM into either FASTQ or FASTA format depending on the
 command invoked. The files will be automatically compressed if the
 file names have a .gz or .bgzf extension.
+<p>
+Note this command is attempting to reverse the alignment process, so
+if the aligner took a single input FASTQ and produced multiple SAM
+records via supplementary and/or secondary alignments, then converting
+back to FASTQ again should produce the original single FASTA / FASTQ
+record.  By default it will not attempt to records for supplementary
+and secondary alignments, but see the <b>-F</b> option for more details.
 <p>
 If the input contains read-pairs which are to be interleaved or
 written to separate files in the same order, then the input should
@@ -82,6 +89,12 @@ The
 option only affects category 1 and 2 records.
 The output for category 0 will be the same irrespective of the use of this
 option.
+<p>
+The sequence generated will be for the entire sequence recorded in the
+SAM record (and quality if appropriate).  This means if it has
+soft-clipped CIGAR records then the soft-clipped data will be in the
+output FASTA/FASTQ.  Hard-clipped data is, by definition, absent from
+the SAM record and hence will be absent in any FASTA/FASTQ produced.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-n</b></dt><dd><p>
@@ -184,7 +197,7 @@ The resulting files can be used with, for example, the
 <b>bwa</b>
 aligner.
 <pre>
-samtools collate -u -O in_pos.bam | \\
+samtools collate -u -O in_pos.bam | \
 samtools fastq -1 paired1.fq -2 paired2.fq -0 /dev/null -s /dev/null -n
 </pre>
 <p>

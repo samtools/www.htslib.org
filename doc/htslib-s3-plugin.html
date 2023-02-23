@@ -2,8 +2,8 @@
 permalink: /doc/htslib-s3-plugin.html
 layout: manpage
 title: htslib-s3-plugin(7) manual page
-package: htslib-1.16
-date: 18 August 2022
+package: htslib-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/htslib-s3-plugin.7.html
 ---
@@ -123,18 +123,18 @@ instance='http://169.254.169.254'
 tok_url="$instance/latest/api/token"
 ttl_hdr='X-aws-ec2-metadata-token-ttl-seconds: 10'
 creds_url="$instance/latest/meta-data/iam/security-credentials"
-key1='aws_access_key_id = \(.AccessKeyId)\n'
-key2='aws_secret_access_key = \(.SecretAccessKey)\n'
-key3='aws_session_token = \(.Token)\n'
-key4='expiry_time = \(.Expiration)\n'
+key1='aws_access_key_id = &bsol;(.AccessKeyId)&bsol;n'
+key2='aws_secret_access_key = &bsol;(.SecretAccessKey)&bsol;n'
+key3='aws_session_token = &bsol;(.Token)&bsol;n'
+key4='expiry_time = &bsol;(.Expiration)&bsol;n'
 while true; do
     token=`curl -X PUT -H "$ttl_hdr" "$tok_url"`
     tok_hdr="X-aws-ec2-metadata-token: $token"
     role=`curl -H "$tok_hdr" "$creds_url/"`
     expires='now'
-    ( curl -H "$tok_hdr" "$creds_url/$role" \
-      | jq -r "\"${key1}${key2}${key3}${key4}\"" &gt; credentials.new ) \
-      &amp;&amp; mv -f credentials.new credentials \
+    ( curl -H "$tok_hdr" "$creds_url/$role" &bsol;
+      | jq -r "&bsol;"${key1}${key2}${key3}${key4}&bsol;"" &gt; credentials.new ) &bsol;
+      &amp;&amp; mv -f credentials.new credentials &bsol;
       &amp;&amp; expires=`grep expiry_time credentials | cut -d ' ' -f 3-`
     if test $? -ne 0 ; then break ; fi
     expiry=`date -d "$expires - 3 minutes" '+%s'`

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -15,11 +15,12 @@ samtools <a href="samtools-markdup.html">markdup</a>
 [<b>-l</b>
 <em>length</em>]
 [<b>-r</b>]
-[<b>-s</b>]
 [<b>-T</b>]
 [<b>-S</b>]
+[<b>-s</b>]
 [<b>-f</b>
 <em>file</em>]
+[<b>--json</b>]
 [<b>-d</b>
 <em>distance</em>]
 [<b>-c</b>]
@@ -35,6 +36,7 @@ samtools <a href="samtools-markdup.html">markdup</a>
 [<b>--barcode-tag</b>]
 [<b>--barcode-name</b>]
 [<b>--barcode-rgx</b>]
+[<b>--use-read-groups</b>]
 <em>in.algsort.bam out.bam</em>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
@@ -49,15 +51,17 @@ Expected maximum read length of <em>INT</em> bases.
 [300]
 </dd><dt><b>-r</b></dt><dd><p>
 Remove duplicate reads.
-</dd><dt><b>-s</b></dt><dd><p>
-Print some basic stats. See STATISTICS.
 </dd><dt><b>-T </b><em>PREFIX</em></dt><dd><p>
 Write temporary files to
 <em>PREFIX</em><b>.</b><em>samtools</em><b>.</b><em>nnnn</em><b>.</b><em>mmmm</em><b>.</b><em>tmp</em>
 </dd><dt><b>-S</b></dt><dd><p>
 Mark supplementary reads of duplicates as duplicates.
+</dd><dt><b>-s</b></dt><dd><p>
+Print some basic stats. See STATISTICS.
 </dd><dt><b>-f </b><em>file</em></dt><dd><p>
 Write stats to named file.
+</dd><dt><b>--json</b></dt><dd><p>
+Output stats in JSON format.
 </dd><dt><b>-d </b><em>distance</em></dt><dd><p>
 The optical duplicate distance.  Suggested settings of 100 for HiSeq style
 platforms or about 2500 for NovaSeq ones.  Default is 0 to not look for
@@ -104,6 +108,8 @@ Duplicates must now also match the barcode tag.
 Use the UMI/barcode embedded in the read name (eigth colon delimited part).
 </dd><dt><b>--barcode-rgx </b><em>REGEX</em></dt><dd><p>
 Regex for barcode in the readname (alternative to --barcode-name).
+</dd><dt><b>--use-read-groups</b></dt><dd><p>
+The @RG tags must now also match to be a duplicate.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a PG line to the output file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
@@ -199,6 +205,13 @@ To match only the coordinates of <em>x:y:randomstuff</em> use:
 <pre>
 --read-coords '^([[:digit:]]+):([[:digit:]]+)'
 --coords-order xy
+</pre>
+<p>
+To use a barcode from the read name matching the Illumina example of
+<em>NDX550136:7:H2MTNBDXX:1:13302:3141:10799:AAGGATG+TCGGAGA</em> use:
+<p>
+<pre>
+--barcode-rgx '[0-9A-Za-z]+:[0-9]+:[0-9A-Za-z]+:[0-9]+:[0-9]+:[0-9]+:[0-9]+:([!-?A-~]+)'
 </pre>
 <p>
 It is possible that complex regular expressions may slow the running of the

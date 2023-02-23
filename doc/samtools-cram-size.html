@@ -1,0 +1,178 @@
+---
+permalink: /doc/samtools-cram-size.html
+layout: manpage
+title: samtools-cram-size(1) manual page
+package: samtools-1.17
+date: 21 February 2023
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools cram-size &ndash; list a break down of data types in a CRAM file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-cram-size.html">cram-size</a>
+[<b>-ve</b>]
+[<b>-o</b>
+<em>file</em>]
+<em>in.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Produces a summary of CRAM block Content ID numbers and their
+associated Data Series stored within them.  Optionally a more detailed
+breakdown of how each data series is encoded per container may also be
+listed using the <b>-e</b> or <b>--encodings</b> option.
+<p>
+CRAM permits mixing multiple Data Series into a single block.  In this
+case it is not possible to tell the relative proportion that the Data
+Series consume within that block.  CRAM also permits different
+encodings and block Content ID assignment per container, although this
+would be highly unusual.  Htslib will always assign the same Data
+Series to a block with a consistent Content ID, although the CRAM
+Encoding may change.
+<p>
+Each CRAM block has a compression method.  These may not be consistent
+between successive blocks with the same Content ID.  Htslib learns
+which compression methods work, so a single Content ID may have
+multiple compression methods associated with it.  The methods utilised
+are listed per line with a single character code, although the size
+breakdown per method and a more verbose description can be shown using
+the <b>-v</b> option.  The compression codecs used in CRAM may have a
+variety of parameters, such as compression levels, inbuilt
+transformations, and choices of entropy encoding.  An attempt is made
+to distinguish between these different method parameterisations.
+<p>
+The compression methods and their short and long (verbose) name are below:
+<p>
+<table align="center">
+<tr><th>Short</th><th>Long</th><th>Description</th></tr>
+<tr><td>_</td></tr>
+<tr><td>g</td><td>gzip</td><td>Gzip</td></tr>
+<tr><td>_</td><td>gzip-min</td><td>Gzip -1</td></tr>
+<tr><td>G</td><td>gzip-max</td><td>Gzip -9</td></tr>
+<tr><td>b</td><td>bzip2</td><td>Bzip2</td></tr>
+<tr><td>b</td><td>bzip2-1 to bzip2-8</td><td>Explicit bzip2 compression levels</td></tr>
+<tr><td>B</td><td>bzip2-9</td><td>Bzip2 -9</td></tr>
+<tr><td>l</td><td>lzma</td><td>LZMA</td></tr>
+<tr><td>r</td><td>r4x8-o0</td><td>rANS 4x8 Order-0</td></tr>
+<tr><td>R</td><td>r4x8-o1</td><td>rANS 4x8 Order-1</td></tr>
+<tr><td>0</td><td>r4x16-o0</td><td>rANS 4x16 Order-0</td></tr>
+<tr><td>0</td><td>r4x16-o0R</td><td>rANS 4x16 Order-0 with RLE</td></tr>
+<tr><td>0</td><td>r4x16-o0P</td><td>rANS 4x16 Order-0 with PACK</td></tr>
+<tr><td>0</td><td>r4x16-o0PR</td><td>rANS 4x16 Order-0 with PACK and RLE</td></tr>
+<tr><td>1</td><td>r4x16-o1</td><td>rANS 4x16 Order-1</td></tr>
+<tr><td>1</td><td>r4x16-o1R</td><td>rANS 4x16 Order-1 with RLE</td></tr>
+<tr><td>1</td><td>r4x16-o1P</td><td>rANS 4x16 Order-1 with PACK</td></tr>
+<tr><td>1</td><td>r4x16-o1PR</td><td>rANS 4x16 Order-1 with PACK and RLE</td></tr>
+<tr><td>4</td><td>r32x16-o0</td><td>rANS 32x16 Order-0</td></tr>
+<tr><td>4</td><td>r32x16-o0R</td><td>rANS 32x16 Order-0 with RLE</td></tr>
+<tr><td>4</td><td>r32x16-o0P</td><td>rANS 32x16 Order-0 with PACK</td></tr>
+<tr><td>4</td><td>r32x16-o0PR</td><td>rANS 32x16 Order-0 with PACK and RLE</td></tr>
+<tr><td>5</td><td>r32x16-o1</td><td>rANS 32x16 Order-1</td></tr>
+<tr><td>5</td><td>r32x16-o1R</td><td>rANS 32x16 Order-1 with RLE</td></tr>
+<tr><td>5</td><td>r32x16-o1P</td><td>rANS 32x16 Order-1 with PACK</td></tr>
+<tr><td>5</td><td>r32x16-o1PR</td><td>rANS 32x16 Order-1 with PACK and RLE</td></tr>
+<tr><td>8</td><td>rNx16-xo0</td><td>rANS Nx16 STRIPED mode</td></tr>
+<tr><td>2</td><td>rNx16-cat</td><td>rANS Nx16 CAT mode</td></tr>
+<tr><td>a</td><td>arith-o0</td><td>Arithmetic coding Order-0</td></tr>
+<tr><td>a</td><td>arith-o0R</td><td>Arithmetic coding Order-0 with RLE</td></tr>
+<tr><td>a</td><td>arith-o0P</td><td>Arithmetic coding Order-0 with PACK</td></tr>
+<tr><td>a</td><td>arith-o0PR</td><td>Arithmetic coding Order-0 with PACK and RLE</td></tr>
+<tr><td>A</td><td>arith-o1</td><td>Arithmetic coding Order-1</td></tr>
+<tr><td>A</td><td>arith-o1R</td><td>Arithmetic coding Order-1 with RLE</td></tr>
+<tr><td>A</td><td>arith-o1P</td><td>Arithmetic coding Order-1 with PACK</td></tr>
+<tr><td>A</td><td>arith-o1PR</td><td>Arithmetic coding Order-1 with PACK and RLE</td></tr>
+<tr><td>a</td><td>arith-xo0</td><td>Arithmetic coding STRIPED mode</td></tr>
+<tr><td>a</td><td>arith-cat</td><td>Arithmetic coding CAT mode</td></tr>
+<tr><td>f</td><td>fqzcomp</td><td>FQZComp quality codec</td></tr>
+<tr><td>n</td><td>tok3-rans</td><td>Name tokeniser with rANS encoding</td></tr>
+<tr><td>n</td><td>tok3-arith</td><td>Name tokeniser with Arithmetic encoding</td></tr>
+</table>
+<p>
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<p>
+<dl><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Output size information to <em>FILE</em>.
+<p>
+</dd><dt><b>-v</b></dt><dd><p>
+Verbose mode.  This shows one line per combination of Content ID and
+compression method.
+<p>
+</dd><dt><b>-e, --encodings</b></dt><dd><p>
+CRAM uses an Encoding, which describes how the data is serialised into
+a data block.  This is distinct from the CRAM compression method,
+which is then applied to the block post-encoding.  The encoding
+methods are stored per CRAM Container.
+<p>
+This option list CRAM record encoding map and tag encoding map.  This
+shows the data series, the associated CRAM encoding method, such as
+HUFFMAN, BETA or EXTERNAL, and any parameters associated with that
+encoding.  The output may be large as this is information per
+container rather than a single set of summary statistics at the end of
+processing.
+<p>
+</dd></dl>
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+<p>
+The basic summary of block Content ID sizes for a CRAM file:
+<pre>
+$ samtools cram-size in.cram
+#   Content_ID  Uncomp.size    Comp.size   Ratio Method  Data_series
+BLOCK     CORE            0            0 100.00% .      
+BLOCK       11    394734019     51023626  12.93% g       RN
+BLOCK       12   1504781763     99158495   6.59% R       QS
+BLOCK       13       330065        84195  25.51% _r.g    IN
+BLOCK       14     26625602      6803930  25.55% Rrg     SC
+...
+</pre>
+<p>
+<p>
+Show the same file above with verbose mode.  Here we see the distinct
+compression methods which have been used per block Content ID.
+<pre>
+$ samtools cram-size -v in.cram
+#   Content_ID  Uncomp.size    Comp.size   Ratio Method      Data_series
+BLOCK     CORE            0            0 100.00% raw        
+BLOCK       11    394734019     51023626  12.93% gzip        RN
+BLOCK       12   1504781763     99158495   6.59% r4x8-o1     QS
+BLOCK       13       275033        64343  23.39% gzip-min    IN
+BLOCK       13        43327        15412  35.57% r4x8-o0     IN
+BLOCK       13         2452         2452 100.00% raw         IN
+BLOCK       13         9253         1988  21.49% gzip        IN
+BLOCK       14     23106404      5903351  25.55% r4x8-o1     SC
+BLOCK       14      1951616       513722  26.32% r4x8-o0     SC
+BLOCK       14      1567582       386857  24.68% gzip        SC
+...
+</pre>
+<p>
+<p>
+List encoding methods per CRAM Data Series.  The two letter series are
+the standard CRAM Data Series and the three letter ones are the
+optional auxiliary tags with the tag name and type combined.
+<p>
+<pre>
+$ samtools cram-size -e in.cram
+Container encodings
+    RN      BYTE_ARRAY_STOP(stop=0,id=11)
+    QS      EXTERNAL(id=12)
+    IN      BYTE_ARRAY_STOP(stop=0,id=13)
+    SC      BYTE_ARRAY_STOP(stop=0,id=14)
+    BB      BYTE_ARRAY_LEN(len_codec={EXTERNAL(id=42)}, \
+                           val_codec={EXTERNAL(id=37)}
+    ...
+    XAZ     BYTE_ARRAY_STOP(stop=9,id=5783898)
+    MDZ     BYTE_ARRAY_STOP(stop=9,id=5063770)
+    ASC     BYTE_ARRAY_LEN(len_codec={HUFFMAN(codes={1},lengths={0})}, \
+                           val_codec={EXTERNAL(id=4281155)}
+    ...
+</pre>
+<p>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by James Bonfield from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

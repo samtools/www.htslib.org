@@ -1,0 +1,76 @@
+---
+permalink: /doc/1.17/samtools-reference.html
+layout: manpage
+title: samtools-reference(1) manual page
+package: samtools-1.17
+date: 21 February 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.17/samtools-reference.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools reference &ndash; extracts an embedded reference from a CRAM file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-reference.html">reference</a>
+[<b>-q</b>]
+[<b>-r</b>
+<em>region</em>]
+[<b>-o</b>
+<em>out.fa</em>] <em>in.cram</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Creates the reference from aligned data using either the MD:Z
+auxiliary tags or an embedded reference in a CRAM file.  The output
+is a FASTA file.
+<p>
+For the embedded reference mode (<b>-e</b>) this operation is fast, but
+only works on CRAMs produced using <b>--output-fmt-option embed_ref=1</b>.
+Note this may not be the complete reference used.  Each CRAM slice
+will hold the entire reference that spans the slice coordinates, but
+gaps in coverage can lead to gaps between slices.  However this
+reference should be suitable for passing into a CRAM decode
+(<b>samtools view -T ref.fa</b>).
+<p>
+For SAM/BAM files or CRAMs without reference, using the MD:Z tag may
+also produce an incomplete reference.  Unlike embedded reference, this
+reference may not be sufficient for decoding a CRAM file as the CRAM
+slice headers store the MD5sum of the portion of reference than spans
+that slice, but the slice may not have 100% coverage leading to Ns in
+the computed reference.  However it should still be possible to decode
+such CRAMs by ignoring the md5 mismatches using e.g. <b>samtools view
+--input-fmt-option ignore_md5=1</b>.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-e</b></dt><dd><p>
+Enable CRAM embedded reference mode.
+<p>
+</dd><dt><b>-q</b></dt><dd><p>
+Enables quiet mode and will produce no output.  By default a line per
+reference is reporting describing the percentage with non-N bases.
+<p>
+</dd><dt><b>-r </b><em>region</em></dt><dd><p>
+Specifies a single region to produce the reference from.  If
+specified, an index file must be present.
+<p>
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Write the FASTA records to <em>FILE</em>.  By default this is sent to stdout.
+<p>
+</dd><dt><b>-@ </b><em>INT</em></dt><dd><p>
+The number of BAM/CRAM decompression threads to use in addition to the
+main thread [0].
+<p>
+Note this does not multi-thread the main reference generation steps,
+so scaling may be capped by 2 or 3 threads, depending on the data.  It
+will also not affect the <b>-e</b> option for CRAM embedded reference,
+although this is already the fastest method.
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by James Bonfield from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

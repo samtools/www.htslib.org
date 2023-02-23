@@ -1,0 +1,60 @@
+---
+permalink: /doc/1.17/samtools-phase.html
+layout: manpage
+title: samtools-phase(1) manual page
+package: samtools-1.17
+date: 21 February 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.17/samtools-phase.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools phase &ndash; call and phase heterozygous SNPs
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-phase.html">phase</a>
+[<b>-AF</b>]
+[<b>-k</b>
+<em>len</em>]
+[<b>-b</b>
+<em>prefix</em>]
+[<b>-q</b>
+<em>minLOD</em>]
+[<b>-Q</b>
+<em>minBaseQ</em>] <em>in.bam</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Call and phase heterozygous SNPs.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-A</b></dt><dd><p>
+Drop reads with ambiguous phase.
+</dd><dt><b>-b</b><em> STR</em></dt><dd><p>
+Prefix of BAM output. When this option is in use, phase-0 reads will be saved in file
+<b>STR</b>.0.bam
+and phase-1 reads in
+<b>STR</b>.1.bam.
+Phase unknown reads will be randomly allocated to one of the two files. Chimeric reads
+with switch errors will be saved in
+<b>STR</b>.chimeric.bam.
+[null]
+</dd><dt><b>-F</b></dt><dd><p>
+Do not attempt to fix chimeric reads.
+</dd><dt><b>-k</b><em> INT</em></dt><dd><p>
+Maximum length for local phasing. [13]
+</dd><dt><b>-q</b><em> INT</em></dt><dd><p>
+Minimum Phred-scaled LOD to call a heterozygote. [40]
+</dd><dt><b>-Q, --min-BQ </b><em>INT</em></dt><dd><p>
+Minimum base quality to be used in het calling. [13]
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

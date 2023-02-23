@@ -1,0 +1,114 @@
+---
+permalink: /doc/1.17/samtools-ampliconclip.html
+layout: manpage
+title: samtools-ampliconclip(1) manual page
+package: samtools-1.17
+date: 21 February 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.17/samtools-ampliconclip.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools ampliconclip &ndash; clip reads using a BED file
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-ampliconclip.html">ampliconclip</a>
+[<b>-o</b>
+<em>out.file</em>]
+[<b>-f</b>
+<em>stat.file</em>]
+[<b>--soft-clip</b>]
+[<b>--hard-clip</b>]
+[<b>--both-ends</b>]
+[<b>--strand</b>]
+[<b>--clipped</b>]
+[<b>--fail</b>]
+[<b>--filter-len</b>
+<em>INT</em>]
+[<b>--fail-len</b>
+<em>INT</em>]
+[<b>--no-excluded</b>]
+[<b>--rejects-file</b>
+<em>rejects.file</em>]
+[<b>--original</b>]
+[<b>--keep-tag</b>]
+[<b>--tolerance</b>]
+[<b>--no-PG</b>]
+[<b>-u</b>]
+<b>-b</b>
+<em>bed.file in.file</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Clips the ends of read alignments if they intersect with regions defined in a
+BED file.  While this tool was originally written for clipping read alignment
+positions which correspond to amplicon primer locations it can also be used in
+other contexts.
+<p>
+BED file entries used are chrom, chromStart, chromEnd and, optionally, strand. 
+There is a default tolerance of 5 bases when matching chromStart and chromEnd
+to alignments.
+<p>
+By default the reads are soft clipped and clip is only done from the 5' end.
+<p>
+Some things to be aware of.  While ordering is not significant, adjustments to
+the left most mapping position (<em>POS</em>) will mean that coordinate sorted
+files will need resorting.  In such cases the sorting order in the header is set
+to unknown. Clipping of reads results in template length (<em>TLEN</em>) being
+incorrect. This can be corrected by <b>samtools fixmates</b>.  Any <em>MD</em> and
+<em>NM</em> aux tags will also be incorrect, which can be fixed by <b>samtools
+calmd</b>.  By default <em>MD</em> and <em>NM</em> tags are removed though if the
+output is in CRAM format these tags will be automatically regenerated.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-b </b><em>FILE</em></dt><dd><p>
+BED file of regions (e.g. amplicon primers) to be removed.
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Output file name (defaults to stdout).
+</dd><dt><b>-f </b><em>FILE</em></dt><dd><p>
+File to write stats to (defaults to stderr).
+</dd><dt><b>-u</b></dt><dd><p>
+Output uncompressed SAM, BAM or CRAM.
+</dd><dt><b>--soft-clip</b></dt><dd><p>
+Soft clip reads (default).
+</dd><dt><b>--hard-clip</b></dt><dd><p>
+Hard clip reads.
+</dd><dt><b>--both-ends</b></dt><dd><p>
+Clip at both the 5' and the 3' ends where regions match.
+</dd><dt><b>--strand</b></dt><dd><p>
+Use strand entry from the BED file to clip on the matching forward or reverse
+alignment. 
+</dd><dt><b>--clipped</b></dt><dd><p>
+Only output clipped reads.  Filter all others.
+</dd><dt><b>--fail</b></dt><dd><p>
+Mark unclipped reads as QC fail.
+</dd><dt><b>--filter-len </b><em>INT</em></dt><dd><p>
+Filter out reads of INT size or shorter.  In this case soft clips are not counted
+toward read length.  An INT of 0 will filter out reads with no matching bases.
+</dd><dt><b>--fail-len </b><em>INT</em></dt><dd><p>
+As <b>--filter-len</b> but mark as QC fail rather then filter out.
+</dd><dt><b>--no-excluded</b></dt><dd><p>
+Filter out any reads that are marked as QCFAIL or are unmapped.  This works on
+the state of the reads before clipping takes place.
+</dd><dt><b>--rejects-file </b><em>FILE</em></dt><dd><p>
+Write any filtered reads out to a file.
+</dd><dt><b>--original</b></dt><dd><p>
+Add an OA tag with the original data for clipped files.
+</dd><dt><b>--keep-tag</b></dt><dd><p>
+In clipped reads, keep the possibly invalid NM and MD tags.  By default these tags are deleted.  
+</dd><dt><b>--tolerance </b><em>INT</em></dt><dd><p>
+The amount of latitude given in matching regions to alignments.  Default 5 bases.
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not at a PG line to the header.
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Andrew Whitwham and Rob Davies, both from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-sort.html"><em>samtools-sort</em></a> (1),
+<a href="samtools-fixmate.html"><em>samtools-fixmate</em></a> (1),
+<a href="samtools-calmd.html"><em>samtools-calmd</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-merge.html
 layout: manpage
 title: samtools-merge(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-merge.1.html
 ---
@@ -55,6 +55,18 @@ The ordering of the records in the input files must match the usage of the
 order will be undefined.  See
 <b>sort</b>
 for information about record ordering.
+<p>
+Problems may arise when attempting to merge thousands of files
+together.  The operating system may impose a limit on the maximum
+number of simultaneously open files.  See <b>ulimit -n</b> for more
+information.  Additionally many files being read from simultaneously
+may cause a certain amount of "disk thrashing".  To partially
+alleviate this the merge command will load 1MB of data at a time from
+each file, but this in turn adds to the overal merge program memory
+usage.  Please take this into account when setting memory limits.
+<p>
+In extreme cases, it may be necessary to reduce the problem to fewer
+files by successively merging subsets before a second round of merging.
 <p>
 <dl><dt><b>-1</b></dt><dd><p>
 Use Deflate compression level 1 to compress the output.
@@ -127,7 +139,7 @@ Number of input/output compression threads to use in addition to main thread [0]
 <b>RG</b>
 tag while merging sorted alignments:
 <pre>
-perl -e 'print "@RG\\tID:ga\\tSM:hs\\tLB:ga\\tPL:Illumina\\n@RG\\tID:454\\tSM:hs\\tLB:454\\tPL:454\\n"' &gt; rg.txt
+perl -e 'print "@RG\tID:ga\tSM:hs\tLB:ga\tPL:Illumina\n@RG\tID:454\tSM:hs\tLB:454\tPL:454\n"' &gt; rg.txt
 samtools merge -rh rg.txt merged.bam ga.bam 454.bam
 </pre>
 The value in a

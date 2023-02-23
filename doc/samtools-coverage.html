@@ -2,8 +2,8 @@
 permalink: /doc/samtools-coverage.html
 layout: manpage
 title: samtools-coverage(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-coverage.1.html
 ---
@@ -17,8 +17,11 @@ samtools <a href="samtools-coverage.html">coverage</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Computes the depth at each position or region and draws an ASCII-art
-histogram or tabulated text.
+Computes the coverage at each position or region and draws an
+ASCII-art histogram or tabulated text.
+<p>
+Coverage is defined as the percentage of positions within each bin with at
+least one base aligned against it.
 <p>
 The tabulated form uses the following headings.
 <p>

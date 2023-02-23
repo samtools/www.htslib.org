@@ -2,8 +2,8 @@
 permalink: /doc/bgzip.html
 layout: manpage
 title: bgzip(1) manual page
-package: htslib-1.16
-date: 18 August 2022
+package: htslib-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/bgzip.1.html
 ---
@@ -43,7 +43,17 @@ have a .gz suffix, which will be removed to make the output name.  Again
 after decompression completes the input file will be removed.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
-<dl><dt><b>-b, --offset </b><em>INT</em></dt><dd><p>
+<dl><dt><b>--binary</b></dt><dd><p>
+Bgzip will attempt to ensure BGZF blocks end on a newline when the
+input is a text file.  The exception to this is where a single line is
+larger than a BGZF block (64Kb).  This can aid tools that use the
+index to perform random access on the compressed stream, as the start
+of a block is likely to also be the start of a text record.
+<p>
+This option processes text files as if they were binary content,
+ignoring the location of newlines.  This also restores the behaviour
+for text files to bgzip version 1.15 and earlier.
+</dd><dt><b>-b, --offset </b><em>INT</em></dt><dd><p>
 Decompress to standard output from virtual file position (0-based uncompressed
 offset).
 Implies -c and -d.
@@ -57,7 +67,8 @@ compression filename extension (e.g., <em>.gz</em>) without asking.
 Use <b>--force</b> twice to do both without asking.
 </dd><dt><b>-g, --rebgzip</b></dt><dd><p>
 Try to use an existing index to create a compressed file with matching
-block offsets.
+block offsets.  The index must be specified using the <b>-I
+</b><em>file.gzi</em> option.
 Note that this assumes that the same compression library and level are in use
 as when making the original file.
 Don't use it unless you know what you're doing.

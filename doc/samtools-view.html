@@ -2,8 +2,8 @@
 permalink: /doc/samtools-view.html
 layout: manpage
 title: samtools-view(1) manual page
-package: samtools-1.16
-date: 18 August 2022
+package: samtools-1.17
+date: 21 February 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-view.1.html
 ---
@@ -405,6 +405,45 @@ of input.
 Include customized index file as a part of arguments. See
 <b>EXAMPLES</b>
 section for sample of usage.
+</dd><dt><b>-z </b><em>FLAGs</em><b>, --sanitize </b><em>FLAGs</em></dt><dd><p>
+Perform some sanity checks on the state of SAM record fields, fixing
+up common mistakes made by aligners.  These include soft-clipping
+alignments when they extend beyond the end of the reference, marking
+records as unmapped when they have reference * or position 0, and
+ensuring unmapped alignments have no CIGAR or mapping quality for
+unmapped alignments and no MD, NM, CG or SM tags.
+<p>
+<em>FLAGs</em> is a comma-separated list of keywords chosen from the
+following list.
+<p>
+<dl><dt>unmap</dt><dd><p>
+The UNMAPPED BAM flag. This is set for reads with position &lt;= 0,
+reference name "*" or reads starting beyond the end of the
+reference. Note CIGAR "*" is permitted for mapped data so does not
+trigger this.
+</dd><dt>pos</dt><dd><p>
+Position and reference name fields.  These may be cleared when a
+sequence is unmapped due to the coordinates being beyond the end of
+the reference.  Selecting this may change the sort order of the file,
+so it is not a part of the <b>on</b> compound argument.
+</dd><dt>mqual</dt><dd><p>
+Mapping quality.  This is set to zero for unmapped reads.
+</dd><dt>cigar</dt><dd><p>
+Modifies CIGAR fields, either by adding soft-clips for reads that
+overlap the end of the reference or by clearing it for unmapped
+reads.
+</dd><dt>aux</dt><dd><p>
+For unmapped data, some auxiliary fields are meaningless and will be
+removed.  These include NM, MD, CG and SM.
+</dd><dt>off</dt><dd><p>
+Perform no sanity fixing.  This is the default
+</dd><dt>on</dt><dd><p>
+Sanitize data in a way that guarantees the same sort order.  This is
+everything except for <b>pos</b>.
+</dd><dt>all</dt><dd><p>
+All sanitizing options, including <b>pos</b>.
+</dd></dl>
+<p>
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file.
 <p>

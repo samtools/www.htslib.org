@@ -55,7 +55,7 @@ sub add_samtools_link_synopsis {
     my ($in, $out) = @_;
 
     while (my $l = <$in>) {
-        if ($l =~ /^samtools\s+([a-z]+)(.*)/) {
+        if ($l =~ /^samtools\s+([a-z-]+)(.*)/) {
             my $extra = $2 || '';
             print $out qq[samtools <a href="samtools-$1.html">$1</a>$extra\n];
         } elsif ($l =~ /^<h1/) {
@@ -77,7 +77,7 @@ sub add_link_see_also {
         | htsfile
         | htslib-s3-plugin
         | sam
-        | samtools-?[a-z]*
+        | samtools-?[a-z-]*
         | tabix
         | vcf
         /x;

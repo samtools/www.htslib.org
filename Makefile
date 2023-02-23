@@ -25,11 +25,13 @@ all:	samtools-doc htslib-doc bcftools-doc update_doc.md
 samtools-doc: | $(SAMTOOLS_VERSIONED_DOC)
 	@ for i in $(SAMTOOLS)/doc/*.1; do \
 	    base=`echo $$i | sed 's:.*/::;s:\.[1-9]$$::'`; \
+	    if [ "$$base" = "samtools-fastq" ] ; then continue ; fi ; \
 	    echo Processing $$i;\
 	    $(MAN2FHTML) --mode jekyll --location /$(SAMTOOLS_VERSIONED_DOC)/$$base.html --output $(SAMTOOLS_VERSIONED_DOC)/$$base.html < $$i;\
 	    $(ADD_MANPAGE_LINKS) $(SAMTOOLS_VERSIONED_DOC)/$$base.html;\
 	    sed -E '/^(permalink|redirect_from):/s#doc/$(SAMTOOLS_VERSION)/#doc/#' $(SAMTOOLS_VERSIONED_DOC)/$$base.html > doc/$$base.html ; \
-	done
+	done && \
+	cp doc/samtools-fastq.html $(SAMTOOLS_VERSIONED_DOC)/samtools-fastq.html
 
 BCFTOOLS_DOC_DATE = $(shell git --git-dir=$(BCFTOOLS)/.git log -n 1 0.1.0.. --date=short --pretty=format:%cd -- doc/bcftools.txt)
 
@@ -72,7 +74,14 @@ $(HTSLIB_VERSIONED_DOC) $(filter-out $(HTSLIB_VERSIONED_DOC),$(SAMTOOLS_VERSIONE
         fi )
 
 update_doc.md:
-	vers="";for v in `$(VERS_SORT) doc/[0-9]*|sed 's#doc/##g'`;do vers="$$vers$${vers:+, }[$$v]($$v)";done; \
+	vers=""; \
+	for v in `$(VERS_SORT) doc/[0-9]*|sed 's#doc/##g'`; do \
+	    if [ "doc/$$v" != "$(HTSLIB_VERSIONED_DOC)" ]   || \
+	       [ "doc/$$v" != "$(SAMTOOLS_VERSIONED_DOC)" ] || \
+	       [ "doc/$$v" != "$(BCFTOOLS_VERSIONED_DOC)" ] ; then \
+	        vers="$$vers$${vers:+, }[$$v]($$v)"; \
+	    fi ; \
+	done; \
 	mv doc.md doc.md~ && sed "s#for releases:.*#for releases: $$vers#" doc.md~ > doc.md
 	rm doc.md~
 

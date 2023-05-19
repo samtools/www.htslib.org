@@ -5,6 +5,7 @@ title: Samtools - Duplicate Marking
 highlighting: yes
 ---
 
+# Duplicate Marking
 
 ## Introduction
 
@@ -110,10 +111,14 @@ The tables below show how markdup interprets the read information.  R (or R1/R2)
 
 This is the more complex of the two.  While both modes treat the FR (and RF) orientations identically, template mode takes into account whether it is looking at the first (R1) or last (R2) read in the template (as defined in the SAMtools flags).  This can lead to it being a bit more selective than sequence mode in deciding what is a duplicate.
 
+![Duplicate example](../images/duplicate_template.png)
+
 
 **Sequence**
 
 This is the more straightforward of the two modes.  Coordinates are taken from the 5' ends of the reads and no distinction is made between first and second in the template.
+
+![Duplicate example](../images/duplicate_sample.png)
 
 
 ## Other Options

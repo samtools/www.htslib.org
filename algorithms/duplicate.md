@@ -13,7 +13,7 @@ highlighting: yes
 Duplicate reads lead to an over-representation of sequence data at the location of those reads.  Essentially this is repeatedly using the evidence from the same source molecule and can bias results.  Duplicate marking indicates that the duplicate reads should not be used for analysis.  As an alternative, duplicates can be removed.
 
 
-Two of the major types of artificial duplication are PCR and optical.  PCR duplication is often caused by the over amplification of the source material; too many copies of a too small sample.  In addition, anything that promotes amplification of only certain areas would also lead to this kind of duplication.  Optical duplication is something seen on certain Illumina sequencers.  Large local clusters on the flow cells (or a reclustering) can lead to single molecules being counted more than once.  Typically these are close together.
+Two of the major types of artificial duplication are PCR and optical.  PCR duplication is often caused by the over amplification of the source material; too many copies of a too small sample.  In addition, anything that promotes amplification of only certain areas would also lead to this kind of duplication.  With optical duplication, large local clusters on the flow cells (or a reclustering) can lead to single molecules being counted more than once.  Typically these are close together.
 
 
 Duplicate marking is not always useful.  For example, some amplicon based approaches mean that sequencing starts at the same sites which would mistakenly look like duplication.  

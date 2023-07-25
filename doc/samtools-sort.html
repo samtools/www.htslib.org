@@ -2,8 +2,8 @@
 permalink: /doc/samtools-sort.html
 layout: manpage
 title: samtools-sort(1) manual page
-package: samtools-1.17
-date: 21 February 2023
+package: samtools-1.18
+date: 25 July 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-sort.1.html
 ---
@@ -11,32 +11,14 @@ redirect_from: /doc/samtools-sort.1.html
 samtools sort &ndash; sorts SAM/BAM/CRAM files
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 samtools <a href="samtools-sort.html">sort</a>
-[<b>-l</b>
-<em>level</em>]
-[<b>-u</b>]
-[<b>-m</b>
-<em>maxMem</em>]
-[<b>-o</b>
-<em>out.bam</em>]
-[<b>-O</b>
-<em>format</em>]
-[<b>-M</b>]
-[<b>-K</b>
-<em>kmerLen</em>]
-[<b>-n</b>]
-[<b>-t</b>
-<em>tag</em>]
-[<b>-T</b>
-<em>tmpprefix</em>]
-[<b>-@</b>
-<em>threads</em>] [<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>]
+[<em>options</em>]
+[<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>]
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Sort alignments by leftmost coordinates, or by read name when
-<b>-n</b>
-is used.
-An appropriate
+Sort alignments by leftmost coordinates, by read name when <b>-n</b>
+is used, by tag contents with <b>-t</b>, or a minimiser-based collation
+order with <b>-M</b>.  An appropriate
 <b>@HD-SO</b>
 sort order header tag will be added or an existing one updated if necessary.
 <p>
@@ -60,18 +42,19 @@ instead if you need name collated data without a full lexicographical sort.
 Note that if the sorted output file is to be indexed with
 <b>samtools index</b>,
 the default coordinate sort must be used.
-Thus the
-<b>-n</b>
-and
-<b>-t</b>
-options are incompatible with
+Thus the <b>-n</b>, <b>-t</b> and <b>-M</b> options are incompatible with
 <b>samtools index</b>.
+<p>
+When sorting by minimisier (<b>-M</b>), the sort order is defined by
+the whole-read minimiser value and the offset into the read that this
+minimiser was observed.  This produces small clusters (contig-like,
+but unaligned) and helps to improve compression with LZ algorithms.
+This can be improved by supplying a known reference to build a
+minimiser index (<b>-I</b> and <b>-w</b> options).
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <p>
-<dl><dt><b>-K </b><em>INT</em></dt><dd><p>
-Sets the kmer size to be used in the <b>-M</b> option. [20]
-</dd><dt><b>-l </b><em>INT</em></dt><dd><p>
+<dl><dt><b>-l </b><em>INT</em></dt><dd><p>
 Set the desired compression level for the final output file, ranging from 0
 (uncompressed) or 1 (fastest but minimal compression) to 9 (best compression
 but slowest to write), similarly to
@@ -93,6 +76,13 @@ suffix.
 <p>
 To prevent sort from creating a huge number of temporary files, it enforces a
 minimum value of 1M for this setting.
+</dd><dt><b>-n</b></dt><dd><p>
+Sort by read names (i.e., the
+<b>QNAME</b>
+field) rather than by chromosomal coordinates.
+</dd><dt><b>-t </b><em>TAG</em></dt><dd><p>
+Sort first by the value in the alignment tag TAG, then by position or name (if
+also using <b>-n</b>).
 </dd><dt><b>-M </b></dt><dd><p>
 Sort unmapped reads (those in chromosome "*") by their sequence
 minimiser (Schleimer et al., 2003; Roberts et al., 2004), also reverse
@@ -103,13 +93,27 @@ option.  Note data compressed in this manner may need to be name
 collated prior to conversion back to fastq.
 <p>
 Mapped sequences are sorted by chromosome and position.
-</dd><dt><b>-n</b></dt><dd><p>
-Sort by read names (i.e., the
-<b>QNAME</b>
-field) rather than by chromosomal coordinates.
-</dd><dt><b>-t </b><em>TAG</em></dt><dd><p>
-Sort first by the value in the alignment tag TAG, then by position or name (if
-also using <b>-n</b>).
+</dd><dt><b>-R </b></dt><dd><p>
+Do not use reverse strand with minimiser sort (only compatible with -M).
+</dd><dt><b>-K </b><em>INT</em></dt><dd><p>
+Sets the kmer size to be used in the <b>-M</b> option. [20]
+</dd><dt><b>-I </b><em>FILE</em></dt><dd><p>
+Build a minimiser index over <em>FILE</em>.  The per-read minimisers
+produced by <b>-M</b> are no longer sorted by their numeric value, but
+by the reference coordinate this minimiser was found to come from (if
+found in the index).  This further improves compression due to
+improved sequence similarity between sequences, albeit with a small
+CPU cost of building and querying the index.  Specifying <b>-I</b>
+automatically implies <b>-M</b>.
+</dd><dt><b>-w </b><em>INT</em></dt><dd><p>
+Specifies the window size for building the minimiser index on the file
+specified in <b>-I</b>.  This defaults to 100.  It may be better to set
+this closer to 50 for short-read data sets (at a higher CPU and
+memory cost), or for more speed up to 1000 for long-read data sets.
+</dd><dt><b>-H</b></dt><dd><p>
+Squashes base homopolymers down to a single base pair before
+constructing the minimiser.  This is useful for instruments where the
+primary source of error is in the length of homopolymer.
 </dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
 Write the final sorted output to
 <em>FILE</em>,

@@ -2,13 +2,13 @@
 permalink: /doc/samtools-consensus.html
 layout: manpage
 title: samtools-consensus(1) manual page
-package: samtools-1.17
-date: 21 February 2023
+package: samtools-1.18
+date: 25 July 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-consensus.1.html
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
-samtools consensus &ndash; produces produce a consensus FASTA/FASTQ/PILEUP
+samtools consensus &ndash; produces a consensus FASTA/FASTQ/PILEUP
 <h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
 <p>
 samtools <a href="samtools-consensus.html">consensus</a>
@@ -125,6 +125,10 @@ selected to replicate this.
 Outputs all bases, from start to end of reference, even when the
 aligned data does not extend to the ends.  This is most useful for
 construction of a full length reference sequence.
+<p>
+</dd><dt><b>-a -a, -aa</b></dt><dd><p>
+Output absolutely all positions, including references with no data
+aligned against them.
 <p>
 </dd><dt><b>--rf</b>, <b>--incl-flags</b> <em>STR</em>|<em>INT</em></dt><dd><p>
 Only include reads with at least one FLAG bit set.  Defaults to zero,
@@ -283,6 +287,30 @@ due to an additional likelihood of sequence specific errors.  The
 quality values are multiplied by <em>FLOAT</em>.  This defaults to 0.5,
 but is not used if <b>-p</b> was not specified.  Adjusting this score
 also automatically enables <b>-p</b>.
+<p>
+</dd><dt><b>-t</b>, <b>--qual-calibration</b> <em>FILE</em></dt><dd><p>
+Loads a quality calibration table from <em>FILE</em>.  The format of
+this is a series of lines with the following fields, each starting with the
+literal text "QUAL":
+<p>
+    <b>QUAL</b> <em>value</em> <em>substitution</em> <em>undercall</em> <em>overcall</em>
+<p>
+Lines starting with a "#" are ignored.  Each line maps a recorded
+quality value to the Phred equivalent score for substitution,
+undercall and overcall errors.  Quality <em>value</em>s are expected to
+be sorted in increasing numerical order, but may skip values.  This
+allows the consensus algorithm to know the most likely cause of an
+error, and whether the instrument is more likely to have indel errors
+(more common in some long read technologies) or substitution errors
+(more common in clocked short-read instruments).
+<p>
+Some pre-defined calibration tables are built in.  These are specified
+with a fake filename starting with a colon.  See the <b>-X</b> option
+for more details.
+<p>
+Note due to the additional heuristics applied by the consensus
+algorithm, these recalibration tables are not a true reflection of the
+instrument error rates and are a work in progress.
 <p>
 </dd><dt><b>-X</b>, <b>--config </b><em>STR</em></dt><dd><p>
 Specifies predefined sets of configuration parameters.  Acceptable

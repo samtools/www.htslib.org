@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.17
-date: 21 February 2023
+package: samtools-1.18
+date: 25 July 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -25,6 +25,7 @@ samtools <a href="samtools-markdup.html">markdup</a>
 <em>distance</em>]
 [<b>-c</b>]
 [<b>-t</b>]
+[<b>---duplicate-count</b>]
 [<b>-m</b>]
 [<b>--mode</b>]
 [<b>--include-fails</b>]
@@ -74,6 +75,8 @@ names without the use of <b>--read-coords</b>.
 Clear previous duplicate settings and tags.
 </dd><dt><b>-t</b></dt><dd><p>
 Mark duplicates with the name of the original in a <b>do</b> tag.
+</dd><dt><b>--duplicate-count</b></dt><dd><p>
+Record the original primary read duplication count(include itself) in a <b>dc</b> tag.
 </dd><dt><b>-m, --mode </b><em>TYPE</em></dt><dd><p>
 Duplicate decision method for paired reads.  Values are <b>t</b> or <b>s</b>.
 Mode <b>t</b> measures positions based on template start/end (default).

@@ -1,0 +1,74 @@
+---
+permalink: /doc/1.18/htsfile.html
+layout: manpage
+title: htsfile(1) manual page
+package: htslib-1.18
+date: 25 July 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.18/htsfile.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+htsfile &ndash; identify high-throughput sequencing data files
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<b>htsfile</b>
+[<b>-chHv</b>]
+<em>FILE</em>...
+<br>
+<b>htsfile --copy</b>
+[<b>-v</b>]
+<em>FILE DESTFILE</em>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+The <b>htsfile</b> utility attempts to identify what kind of high-throughput
+sequencing data files the specified files are, and provides minimal viewing
+capabilities for some kinds of data file.
+<p>
+It can identify sequencing data files such as SAM, BAM, and CRAM;
+variant calling data files such as VCF and BCF;
+index files used to index these data files;
+and compressed versions of many of them.
+<p>
+For each <em>FILE</em> given, <b>htsfile</b> prints a description of the file
+format determined, using similar keyword conventions to <b>file</b>(1):
+"text" indicates a textual file that can probably be viewed on a terminal;
+"data" indicates binary data;
+"sequence", "variant calling", and "index" indicate different categories of
+data file.
+When it can be identified, the name of the particular file format (such as
+"BAM" or "VCF") is printed at the start of the description.
+<p>
+When used to view file contents as text, <b>htsfile</b> can optionally show
+only headers or only data records, but has no other filtering capabilities.
+Use <b>samtools</b> or <b>bcftools</b> if you need more extensive viewing or
+filtering capabilities.
+<p>
+Alternatively, when <b>--copy</b> is used, <b>htsfile</b> takes exactly two
+arguments and performs a byte-for-byte copy from <em>FILE</em> to <em>DESTFILE</em>.
+This is similar to <b>cp</b>(1), but HTSlib's remote file access facilities
+are available for both source and destination.
+<p>
+The following options are accepted:
+<dl><dt><b>-c</b>, <b>--view</b></dt><dd><p>
+Instead of identifying the specified files, display a textual representation
+of their contents on standard output.
+<p>
+By default, <b>--view</b> refuses to display files in unknown formats.
+When <b>--verbose</b> is also given, the raw contents of such files are
+displayed, with non-printable characters shown via C-style "\x" hexadecimal
+escape sequences.
+</dd><dt><b>-C</b>, <b>--copy</b></dt><dd><p>
+Instead of identifying or displaying the specified files, copy the source
+<em>FILE</em> to the destination <em>DESTFILE</em>.
+Only <b>--verbose</b> may be used in conjunction with <b>--copy</b>.
+</dd><dt><b>-h</b>, <b>--header-only</b></dt><dd><p>
+Display data file headers only.
+Implies <b>--view</b>.
+</dd><dt><b>-H</b>, <b>--no-header</b></dt><dd><p>
+When viewing files, display data records only.
+</dd><dt><b>-v</b>, <b>--verbose</b></dt><dd><p>
+Display additional warnings and diagnostic messages.
+Using <b>--verbose</b> repeatedly further raises the verbosity.
+</dd></dl><p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="bcftools.html"><em>bcftools</em></a> (1),
+<em>file</em>(1),
+<a href="samtools.html"><em>samtools</em></a> (1)

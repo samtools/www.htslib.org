@@ -9,13 +9,14 @@ by using <code>man <em>command</em></code> on the command line.
 The manual pages for several releases are also included below --- be sure
 to consult the documentation for the release you are using.
 
+* [annot-tsv](annot-tsv.html)
 * [bcftools](bcftools.html)
 * [bgzip](bgzip.html)
 * [htsfile](htsfile.html)
 * [samtools](samtools.html)
 * [tabix](tabix.html)
 
-Older manual pages are available for releases: [0.1.19](0.1.19), [1.0](1.0), [1.1](1.1), [1.2](1.2), [1.3](1.3), [1.3.1](1.3.1), [1.4](1.4), [1.4.1](1.4.1), [1.5](1.5), [1.6](1.6), [1.7](1.7), [1.8](1.8), [1.9](1.9), [1.10](1.10), [1.11](1.11), [1.12](1.12), [1.13](1.13), [1.14](1.14), [1.15](1.15), [1.16](1.16), [1.17](1.17)
+Older manual pages are available for releases: [0.1.19](0.1.19), [1.0](1.0), [1.1](1.1), [1.2](1.2), [1.3](1.3), [1.3.1](1.3.1), [1.4](1.4), [1.4.1](1.4.1), [1.5](1.5), [1.6](1.6), [1.7](1.7), [1.8](1.8), [1.9](1.9), [1.10](1.10), [1.11](1.11), [1.12](1.12), [1.13](1.13), [1.14](1.14), [1.15](1.15), [1.16](1.16), [1.17](1.17), [1.18](1.18)
 
 ## HowTos
 

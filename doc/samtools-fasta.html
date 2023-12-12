@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fasta.html
 layout: manpage
 title: samtools-fasta(1) manual page
-package: samtools-1.18
-date: 25 July 2023
+package: samtools-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fasta.1.html
 ---
@@ -96,6 +96,8 @@ soft-clipped CIGAR records then the soft-clipped data will be in the
 output FASTA/FASTQ.  Hard-clipped data is, by definition, absent from
 the SAM record and hence will be absent in any FASTA/FASTQ produced.
 <p>
+The filter options order of precedence is -d, -f, -F, --rf and -G.
+<p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-n</b></dt><dd><p>
 By default, either '/1' or '/2' is added to the end of read names
@@ -145,7 +147,7 @@ present in the FLAG field.
 <em>INT</em>
 can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/)
 or in octal by beginning with `0' (i.e. /^0[0-7]+/) [0].
-</dd><dt><b>-F </b><em>INT</em><b>, --excl-flags </b><em>INT</em><b>, --exclude-flags </b><em>INT</em></dt><dd><p>
+</dd><dt><b>-F </b><em>INT</em><b>, </b><em>,</em><b>--excl-flags</b><em> INT </em><b>,</b><em>--exclude-flags</em><b> INT </b></dt><dd><p>
 Do not output alignments with any bits set in
 <em>INT</em>
 present in the FLAG field.
@@ -154,7 +156,7 @@ can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/)
 or in octal by beginning with `0' (i.e. /^0[0-7]+/) [0x900].
 This defaults to 0x900 representing filtering of secondary and
 supplementary alignments.
-</dd><dt><b>--rf </b><em>INT</em><b>, --incl-flags </b><em>INT</em><b>, --include-flags </b><em>INT</em></dt><dd><p>
+</dd><dt><b>--rf </b><em>INT</em><b> , --incl-flags </b><em>INT</em><b>, --include-flags </b><em>INT</em></dt><dd><p>
 Only output alignments with any bits set in
 <em>INT</em>
 present in the FLAG field.

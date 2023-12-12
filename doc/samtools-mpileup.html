@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.18
-date: 25 July 2023
+package: samtools-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -44,6 +44,7 @@ could be specified using <b>-r 20 -l chr20.bed</b>, meaning that the
 index is used to find chromosome 20 and then it is filtered for the
 regions listed in the bed file.
 <p>
+Unmapped reads are not considered and are always discarded.
 By default secondary alignments, QC failures and duplicate reads will
 be omitted, along with low quality bases and some reads in high depth
 regions.  See the <b>--ff</b>, <b>-Q</b> and <b>-d</b> options for
@@ -229,8 +230,8 @@ none of the mask bits set.  Hence this does not override the
 <b>--excl-flags</b> option.
 </dd><dt><b>--ff, --excl-flags</b><em> STR|INT</em></dt><dd><p>
 Filter flags: skip reads with any of the mask bits set.  This defaults
-to UNMAP,SECONDARY,QCFAIL,DUP.  The option is not accumulative, so
-specifying e.g. <b>--ff UNMAP,QCFAIL</b> will reenable output of
+to SECONDARY,QCFAIL,DUP.  The option is not accumulative, so
+specifying e.g. <b>--ff QCFAIL</b> will reenable output of
 secondary and duplicate alignments.  Note this does not override the
 <b>--incl-flags</b> option.
 </dd><dt><b>-x, --ignore-overlaps-removal, --disable-overlap-removal</b></dt><dd><p>
@@ -411,6 +412,41 @@ The
 option can be used to make it ignore the contents of the BQ:Z tag and
 force it to recalculate the BAQ scores by making a new alignment.
 <p>
+<h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
+Using range:
+With implicit index files in1.bam.&lt;ext&gt; and in2.sam.gz.&lt;ext&gt;,
+<pre>
+samtools mpileup in1.bam in2.sam.gz -r chr10:100000-200000
+</pre>
+With explicit index files,
+<pre>
+samtools mpileup in1.bam in2.sam.gz idx/in1.csi idx/in2.csi -X -r chr10:100000-200000
+</pre>
+With fofn being a file of input file names, and implicit index files present with inputs,
+<pre>
+samtools mpileup -b fofn -r chr10:100000-200000
+</pre>
+Using flags:
+To get reads with flags READ2 or REVERSE and not having any of SECONDARY,QCFAIL,DUP,
+<pre>
+samtools mpileup --rf READ2,REVERSE in.sam
+</pre>
+or
+<pre>
+samtools mpileup --rf 144 in.sam
+</pre>
+To get reads with flag SECONDARY,
+<pre>
+samtools mpileup --rf SECONDARY --ff QCFAIL,DUP in.sam
+</pre>
+Using all possible alignmentes:
+To show all possible alignments, either of below two equivalent commands may be used,
+<pre>
+samtools mpileup --count-orphans --no-BAQ --max-depth 0 --fasta-ref ref_file.fa \
+--min-BQ 0 --excl-flags 0 --disable-overlap-removal in.sam
+<p>
+samtools mpileup -A -B -d 0 -f ref_file.fa -Q 0 --ff 0 -x in.sam
+</pre>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

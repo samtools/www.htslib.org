@@ -1,0 +1,49 @@
+---
+permalink: /doc/1.19/sam.html
+layout: manpage
+title: sam(5) manual page
+package: htslib
+date: August 2013
+section_text: Bioinformatics formats
+redirect_from: /doc/1.19/sam.5.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+sam &ndash; Sequence Alignment/Map file format
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+Sequence Alignment/Map (SAM) format is TAB-delimited. Apart from the header lines, which are started
+with the `@' symbol, each alignment line consists of:
+<table>
+<tr><td>1</td><td><b>QNAME</b></td><td>Query template/pair NAME</td></tr>
+<tr><td>2</td><td><b>FLAG</b></td><td>bitwise FLAG</td></tr>
+<tr><td>3</td><td><b>RNAME</b></td><td>Reference sequence NAME</td></tr>
+<tr><td>4</td><td><b>POS</b></td><td>1-based leftmost POSition/coordinate of clipped sequence</td></tr>
+<tr><td>5</td><td><b>MAPQ</b></td><td>MAPping Quality (Phred-scaled)</td></tr>
+<tr><td>6</td><td><b>CIGAR</b></td><td>extended CIGAR string</td></tr>
+<tr><td>7</td><td><b>MRNM</b></td><td>Mate Reference sequence NaMe (`=' if same as RNAME)</td></tr>
+<tr><td>8</td><td><b>MPOS</b></td><td>1-based Mate POSition</td></tr>
+<tr><td>9</td><td><b>TLEN</b></td><td>inferred Template LENgth (insert size)</td></tr>
+<tr><td>10</td><td><b>SEQ</b></td><td>query SEQuence on the same strand as the reference</td></tr>
+<tr><td>11</td><td><b>QUAL</b></td><td>query QUALity (ASCII-33 gives the Phred base quality)</td></tr>
+<tr><td>12+</td><td><b>OPT</b></td><td>variable OPTional fields in the format TAG:VTYPE:VALUE</td></tr>
+</table>
+<p>
+Each bit in the FLAG field is defined as:
+<table>
+<tr><td>0x0001</td><td><b>p</b></td><td>the read is paired in sequencing</td></tr>
+<tr><td>0x0002</td><td><b>P</b></td><td>the read is mapped in a proper pair</td></tr>
+<tr><td>0x0004</td><td><b>u</b></td><td>the query sequence itself is unmapped</td></tr>
+<tr><td>0x0008</td><td><b>U</b></td><td>the mate is unmapped</td></tr>
+<tr><td>0x0010</td><td><b>r</b></td><td>strand of the query (1 for reverse)</td></tr>
+<tr><td>0x0020</td><td><b>R</b></td><td>strand of the mate</td></tr>
+<tr><td>0x0040</td><td><b>1</b></td><td>the read is the first read in a pair</td></tr>
+<tr><td>0x0080</td><td><b>2</b></td><td>the read is the second read in a pair</td></tr>
+<tr><td>0x0100</td><td><b>s</b></td><td>the alignment is not primary</td></tr>
+<tr><td>0x0200</td><td><b>f</b></td><td>the read fails platform/vendor quality checks</td></tr>
+<tr><td>0x0400</td><td><b>d</b></td><td>the read is either a PCR or an optical duplicate</td></tr>
+<tr><td>0x0800</td><td><b>S</b></td><td>the alignment is supplementary</td></tr>
+</table>
+<p>
+where the second column gives the string representation of the FLAG field.
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<dl><dt><a href="https://github.com/samtools/hts-specs">https://github.com/samtools/hts-specs</a></dt><dd><p>
+The full SAM/BAM file format specification

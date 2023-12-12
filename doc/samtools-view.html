@@ -2,8 +2,8 @@
 permalink: /doc/samtools-view.html
 layout: manpage
 title: samtools-view(1) manual page
-package: samtools-1.18
-date: 25 July 2023
+package: samtools-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-view.1.html
 ---
@@ -236,6 +236,10 @@ or
 </dd><dt><b>-N </b><em>FILE</em><b>, --qname-file </b><em>FILE</em></dt><dd><p>
 Output only alignments with read names listed in
 <em>FILE</em>.
+If <em>FILE</em> starts with <b>^</b> then the operation is negated and
+only outputs alignment with read groups not listed in <em>FILE</em>.
+It is not permissible to mix both the filter-in and filter-out style
+syntax in the same command.
 </dd><dt><b>-r </b><em>STR</em><b>, --read-group </b><em>STR</em></dt><dd><p>
 Output alignments in read group
 <em>STR</em>
@@ -248,6 +252,10 @@ This behaviour may change in a future release.
 Output alignments in read groups listed in
 <em>FILE</em>
 [null].
+If <em>FILE</em> starts with <b>^</b> then the operation is negated and
+only outputs alignment with read names not listed in <em>FILE</em>.
+It is not permissible to mix both the filter-in and filter-out style
+syntax in the same command.
 Note that records with no
 <b>RG</b>
 tag will also be output when using this option.

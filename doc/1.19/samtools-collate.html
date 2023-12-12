@@ -1,0 +1,101 @@
+---
+permalink: /doc/1.19/samtools-collate.html
+layout: manpage
+title: samtools-collate(1) manual page
+package: samtools-1.19
+date: 12 December 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.19/samtools-collate.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools collate &ndash; shuffles and groups reads together by their names
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-collate.html">collate</a>
+[<em>options</em>]
+<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em> [<em>&lt;prefix&gt;</em>]
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Shuffles and groups reads together by their names.
+A faster alternative to a full query name sort,
+<b>collate</b>
+ensures that reads of the same name are grouped together in contiguous groups,
+but doesn't make any guarantees about the order of read names between groups.
+<p>
+The output from this command should be suitable for any operation that
+requires all reads from the same template to be grouped together.
+<p>
+Temporary files are written to &lt;prefix&gt;, specified either as the last
+argument or with the <b>-T</b> option.  If prefix is unspecified then
+one will be derived from the output filename (<b>&ndash;o</b> option).
+If no output file was given then the <b>TMPDIR</b> environment variable will be
+used, and finally if that is unset then "/tmp" is used.
+<p>
+Conversely, if prefix is specified but no output filename has been
+given then the output will be written to &lt;prefix&gt;.&lt;fmt&gt; where &lt;fmt&gt;
+is appropriate to the file format is use (e.g. "bam" or "cram").
+<p>
+Using <b>-f</b> for fast mode will output <b>only</b> primary alignments that have
+either the READ1 <b>or</b> READ2 flags set (but not both).
+Any other alignment records will be filtered out.
+The collation will only work correctly if there are no more than two reads
+for any given QNAME after filtering.
+<p>
+Fast mode keeps a buffer of alignments in memory so that it can write out
+most pairs as soon as they are found instead of storing them in temporary
+files.
+This allows collate to avoid some work and so finish more quickly compared
+to the standard mode.
+The number of alignments held can be changed using <b>-r</b>, storing more alignments
+uses more memory but increases the number of pairs that can be written early.
+<p>
+While collate normally randomises the ordering of read pairs, fast mode
+does not.
+Position-dependent biases that would normally be broken up can remain in the
+fast collate output.
+It is therefore not a good idea to use fast mode when preparing data for
+programs that expect randomly ordered paired reads.
+For example using fast collate instead of the standard mode may lead to
+significantly different results from aligners that estimate library insert
+sizes on batches of reads.
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-O</b></dt><dd><p>
+Output to stdout.  This option cannot be used with <b>-o</b>.
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Write output to FILE.  This option cannot be used with <b>-O</b>.  If
+unspecified and <b>-O</b> is not set, the temporary file &lt;prefix&gt; is
+used, appended by the the appropriate file-format suffix.
+</dd><dt><b>-T </b><em>PREFIX</em></dt><dd><p>
+Use <em>PREFIX</em> for temporary files.  This is the same as specifying
+<em>PREFIX</em> as the last argument on the command line.  This option
+is included for consistency with <b>samtools sort</b>.
+</dd><dt><b>-u</b></dt><dd><p>
+Write uncompressed BAM output
+</dd><dt><b>-l </b><em>INT</em></dt><dd><p>
+Compression level.
+[1]
+</dd><dt><b>-n </b><em>INT</em></dt><dd><p>
+Number of temporary files to use.
+[64]
+</dd><dt><b>-f</b></dt><dd><p>
+Fast mode (primary alignments only).
+</dd><dt><b>-r </b><em>INT</em></dt><dd><p>
+Number of reads to store in memory (for use with -f).
+[10000]
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Heng Li from the Sanger Institute and extended by Andrew Whitwham.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-sort.html"><em>samtools-sort</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

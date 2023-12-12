@@ -2,8 +2,8 @@
 permalink: /doc/bgzip.html
 layout: manpage
 title: bgzip(1) manual page
-package: htslib-1.18
-date: 25 July 2023
+package: htslib-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/bgzip.1.html
 ---
@@ -24,7 +24,7 @@ bgzip &ndash; Block compression/decompression utility
 <em>size</em>]
 [<b>-@</b>
 <em>threads</em>]
-[<em>file</em>]
+[<em>file</em> ...]
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
@@ -40,7 +40,8 @@ If the -c option is used, the result will be written to standard output,
 otherwise when compressing bgzip will write to a new file with a .gz
 suffix and remove the original.  When decompressing the input file must
 have a .gz suffix, which will be removed to make the output name.  Again
-after decompression completes the input file will be removed.
+after decompression completes the input file will be removed. When multiple
+files are given as input, the operation is performed on all of them.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>--binary</b></dt><dd><p>

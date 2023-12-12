@@ -2,8 +2,8 @@
 permalink: /doc/samtools-coverage.html
 layout: manpage
 title: samtools-coverage(1) manual page
-package: samtools-1.18
-date: 25 July 2023
+package: samtools-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-coverage.1.html
 ---
@@ -63,6 +63,9 @@ Output options:
 <p>
 <dl><dt><b>-m, --histogram</b></dt><dd><p>
 Show histogram instead of tabular output.
+</dd><dt><b>-D, --plot-depth</b></dt><dd><p>
+As above but displays the depth of coverage instead of the percent of coverage.
+This option can be used to visualize copy number variations in the terminal.
 </dd><dt><b>-A, --ascii</b></dt><dd><p>
 Show only ASCII characters in histogram using colon and fullstop for
 full and half height characters.
@@ -108,6 +111,24 @@ chr1 (249.25Mbp)
 &gt;   2.69% |::::: :::     :::  ::: :::::::::| Histo bin width: 343.8Kbp
 &gt;   0.00% |:::::::::::. :::::::::::::::::::| Histo max bin:   26.873%
         1.00M     4.44M     7.87M       12.00M 
+</pre>
+<p>
+<pre>
+samtools coverage  -m -r 'chr1:24500000-25600000' --plot-depth -w 32 -A input.bam
+<p>
+chr1 (249.25Mbp)
+&gt;    38.8 |            .:::::::            | Number of reads: 283218
+&gt;    34.5 |            ::::::::            |     (3327 filtered)
+&gt;    30.2 |           :::::::::.           | Covered bases:   1.10Mbp
+&gt;    25.9 |.:::::.:.::::::::::::::::::::::.| Percent covered: 99.83%
+&gt;    21.6 |::::::::::::::::::::::::::::::::| Mean coverage:   33.2x
+&gt;    17.2 |::::::::::::::::::::::::::::::::| Mean baseQ:      37.2
+&gt;    12.9 |::::::::::::::::::::::::::::::::| Mean mapQ:       59.3
+&gt;     8.6 |::::::::::::::::::::::::::::::::|
+&gt;     4.3 |::::::::::::::::::::::::::::::::| Histo bin width: 34.5Kbp
+&gt;     0.0 |::::::::::::::::::::::::::::::::| Histo max cov:   43.117
+        24.50M    24.84M    25.19M      25.60M
+<p>
 </pre>
 <p>
 <p>

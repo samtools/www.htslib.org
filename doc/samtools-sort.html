@@ -2,8 +2,8 @@
 permalink: /doc/samtools-sort.html
 layout: manpage
 title: samtools-sort(1) manual page
-package: samtools-1.18
-date: 25 July 2023
+package: samtools-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-sort.1.html
 ---
@@ -16,11 +16,12 @@ samtools <a href="samtools-sort.html">sort</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Sort alignments by leftmost coordinates, by read name when <b>-n</b>
-is used, by tag contents with <b>-t</b>, or a minimiser-based collation
-order with <b>-M</b>.  An appropriate
-<b>@HD-SO</b>
-sort order header tag will be added or an existing one updated if necessary.
+Sort alignments by leftmost coordinates, by read name when <b>-n</b> or
+<b>-N</b> are used, by tag contents with <b>-t</b>, or a minimiser-based
+collation order with <b>-M</b>.  An appropriate <b>@HD SO</b>
+sort order header tag will be added or an existing one updated if
+necessary, along with the <b>@HD SS</b> sub-sort header tag where
+appropriate.
 <p>
 The sorted output is written to standard output by default, or to the
 specified file
@@ -42,7 +43,8 @@ instead if you need name collated data without a full lexicographical sort.
 Note that if the sorted output file is to be indexed with
 <b>samtools index</b>,
 the default coordinate sort must be used.
-Thus the <b>-n</b>, <b>-t</b> and <b>-M</b> options are incompatible with
+Thus the <b>-n</b>, <b>-N</b>, <b>-t</b> and <b>-M</b> options are
+incompatible with
 <b>samtools index</b>.
 <p>
 When sorting by minimisier (<b>-M</b>), the sort order is defined by
@@ -79,10 +81,24 @@ minimum value of 1M for this setting.
 </dd><dt><b>-n</b></dt><dd><p>
 Sort by read names (i.e., the
 <b>QNAME</b>
-field) rather than by chromosomal coordinates.
+field) using an alpha-numeric ordering, rather than by chromosomal coordinates.
+The alpha-numeric or &ldquo;natural&rdquo; sort order detects runs of digits in the
+strings and sorts these numerically.  Hence "a7b" appears before "a12b".
+Note this is not suitable where hexadecimal values are in use.
+Sets the header sub-sort (<b>@HD SS</b>) tag to <b>queryname:natural</b>.
+</dd><dt><b>-N</b></dt><dd><p>
+Sort by read names (i.e., the
+<b>QNAME</b>
+field) using the lexicographical ordering, rather than by chromosomal
+coordinates.  Unlike <b>-n</b> no detection of numeric components is
+used, instead relying purely on the ASCII value of each character.
+Hence "x12" comes before "x7" as "1" is before "7" in ASCII.  This is
+a more appropriate name sort order where all digits in names are
+already zero-padded and/or hexadecimal values are being used.
+Sets the header sub-sort (<b>@HD SS</b>) tag to <b>queryname:lexicographical</b>.
 </dd><dt><b>-t </b><em>TAG</em></dt><dd><p>
 Sort first by the value in the alignment tag TAG, then by position or name (if
-also using <b>-n</b>).
+also using <b>-n</b> or <b>-N</b>).
 </dd><dt><b>-M </b></dt><dd><p>
 Sort unmapped reads (those in chromosome "*") by their sequence
 minimiser (Schleimer et al., 2003; Roberts et al., 2004), also reverse
@@ -163,7 +179,8 @@ and the sub-sort (SS) is
 The following rules are used for ordering records.
 <p>
 If option <b>-t</b> is in use, records are first sorted by the value of
-the given alignment tag, and then by position or name (if using <b>-n</b>).
+the given alignment tag, and then by position or name (if using <b>-n</b>
+or <b>-N</b>).
 For example, &ldquo;-t RG&rdquo; will make read group the primary sort key.  The
 rules for ordering by tag are:
 <p>
@@ -186,11 +203,17 @@ function.
 <li>No attempt is made to compare tags of other types &mdash; notably type B
 array values will not be compared.
 </li></ul><p>
-When the <b>-n</b> option is present, records are sorted by name.  Names are
-compared so as to give a &ldquo;natural&rdquo; ordering &mdash; i.e. sections
-consisting of digits are compared numerically while all other sections are
-compared based on their binary representation.  This means &ldquo;a1&rdquo; will
-come before &ldquo;b1&rdquo; and &ldquo;a9&rdquo; will come before &ldquo;a10&rdquo;.
+When the <b>-n</b> or <b>-N</b> option is present, records are sorted by
+name.  Historically samtools has used a &ldquo;natural&rdquo; ordering
+&mdash; i.e. sections consisting of digits are compared numerically while
+all other sections are compared based on their binary representation.
+This means &ldquo;a1&rdquo; will come before &ldquo;b1&rdquo; and &ldquo;a9&rdquo;
+will come before &ldquo;a10&rdquo;.  However this alpha-numeric sort can
+be confused by runs of hexadecimal digits.  The newer <b>-N</b>
+option adds a simpler lexicographical based name collation which does not
+attempt any numeric comparisons and may be more appropriate for some
+data sets.  Note care must be taken when using <b>samtools merge</b> to
+ensure all files are using the same collation order.
 Records with the same name will be ordered according to the values of
 the READ1 and READ2 flags (see
 <b>flags</b>).

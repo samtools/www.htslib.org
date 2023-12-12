@@ -1,0 +1,168 @@
+---
+permalink: /doc/1.19/htslib-s3-plugin.html
+layout: manpage
+title: htslib-s3-plugin(7) manual page
+package: htslib-1.19
+date: 12 December 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.19/htslib-s3-plugin.7.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+htslib-s3-plugin &ndash; htslib AWS S3 plugin
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+The S3 plugin allows htslib file functions to communicate with servers that use
+the AWS S3 protocol.  Files are identified by their bucket and object key in a
+URL format e.g.
+<p>
+<b>s3://mybucket/path/to/file</b>
+<p>
+With <em>path/to/file</em> being the object key.
+<p>
+Necessary security information can be provided in as part of the URL, in
+environment variables or from configuration files.
+<p>
+The full URL format is:
+<p>
+<b>s3[+SCHEME]://[ID[:SECRET[:TOKEN]]@]BUCKET/PATH</b>
+<p>
+The elements are:
+<dl><dt><em>SCHEME</em></dt><dd><p>
+The protocol used.  Defaults to <em>https</em>.
+</dd><dt><em>ID</em></dt><dd><p>
+The user AWS access key.
+</dd><dt><em>SECRET</em></dt><dd><p>
+The secret key for use with the access key.
+</dd><dt><em>TOKEN</em></dt><dd><p>
+Token used for temporary security credentials.
+</dd><dt><em>BUCKET</em></dt><dd><p>
+AWS S3 bucket.
+</dd><dt><em>PATH</em></dt><dd><p>
+Path to the object under the bucket.
+</dd></dl><p>
+<p>
+The environment variables below will be used if the user ID is not set.
+<dl><dt><b>AWS_ACCESS_KEY_ID</b></dt><dd><p>
+The user AWS access key.
+</dd><dt><b>AWS_SECRET_ACCESS_KEY</b></dt><dd><p>
+The secret key for use with the access key.
+</dd><dt><b>AWS_DEFAULT_REGION</b></dt><dd><p>
+The region to use. Defaults to
+<em>us-east-1</em>.
+</dd><dt><b>AWS_SESSION_TOKEN</b></dt><dd><p>
+Token used for temporary security credentials.
+</dd><dt><b>AWS_DEFAULT_PROFILE</b></dt><dd><p>
+The profile to use in <em>credentials</em>, <em>config</em> or <em>s3cfg</em> files.
+Defaults to
+<em>default</em>.
+</dd><dt><b>AWS_PROFILE</b></dt><dd><p>
+Same as above.
+</dd><dt><b>AWS_SHARED_CREDENTIALS_FILE</b></dt><dd><p>
+Location of the credentials file.  Defaults to
+<em>~/.aws/credentials</em>.
+</dd><dt><b>HTS_S3_S3CFG</b></dt><dd><p>
+Location of the s3cfg file.  Defaults to
+<em>~/.s3cfg</em>.
+</dd><dt><b>HTS_S3_HOST</b></dt><dd><p>
+Sets the host.  Defaults to
+<em>s3.amazonaws.com</em>.
+</dd><dt><b>HTS_S3_V2</b></dt><dd><p>
+If set use signature v2 rather the default v4.  This will limit the plugin to
+reading only.
+</dd><dt><b>HTS_S3_PART_SIZE</b></dt><dd><p>
+Sets the upload part size in Mb, the minimum being 5Mb.
+By default the part size starts at 5Mb and expands at regular intervals to
+accommodate bigger files (up to 2.5 Tbytes with the current rate).
+Using this setting disables the automatic part size expansion.
+</dd><dt><b>HTS_S3_ADDRESS_STYLE</b></dt><dd><p>
+Sets the URL style.  Options are auto (default), virtual or path.  
+</dd></dl><p>
+In the absence of an ID from the previous two methods the credential/config
+files will be used.  The default file locations are either
+<em>~/.aws/credentials</em> or <em>~/.s3cfg</em> (in that order).
+<p>
+Entries used in aws style credentials file are aws_access_key_id, 
+aws_secret_access_key, aws_session_token, region, addressing_style and
+expiry_time (unofficial, see SHORT-LIVED CREDENTIALS below).
+Only the first two are usually needed.
+<p>
+Entries used in s3cmd style config files are access_key, secret_key,
+access_token, host_base, bucket_location and host_bucket. Again only the first
+two are usually needed. The host_bucket option is only used to set a path-style
+URL, see below.
+<p>
+<h1 id="SHORT-LIVED_CREDENTIALS"><a href="#SHORT-LIVED_CREDENTIALS">SHORT-LIVED CREDENTIALS</a></h1>
+<p>
+Some cloud identity and access management (IAM) systems can make short-lived
+credentials that allow access to resources.
+These credentials will expire after a time and need to be renewed to
+give continued access.
+To enable this, the S3 plugin allows an <em>expiry_time</em> entry to be set in the
+<em>.aws/credentials</em> file.
+The value for this entry should be the time when the token expires,
+following the format in RFC3339 section 5.6, which takes the form:
+<p>
+   2012-04-29T05:20:48Z
+<p>
+That is, year - month - day, the letter "T", hour : minute : second.
+The time can be followed by the letter "Z", indicating the UTC timezone,
+or an offset from UTC which is a "+" or "-" sign followed by two digits for
+the hours offset, ":", and two digits for the minutes.
+<p>
+The S3 plugin will attempt to re-read the credentials file up to 1 minute
+before the given expiry time, which means the file needs to be updated with
+new credentials before then.
+As the exact way of doing this can vary between services and IAM providers,
+the S3 plugin expects this to be done by an external user-supplied process.
+This may be achieved by running a program that replaces the file as new
+credentials become available.
+The following script shows how it might be done for AWS instance credentials:
+<pre>
+#!/bin/sh
+instance='http://169.254.169.254'
+tok_url="$instance/latest/api/token"
+ttl_hdr='X-aws-ec2-metadata-token-ttl-seconds: 10'
+creds_url="$instance/latest/meta-data/iam/security-credentials"
+key1='aws_access_key_id = \(.AccessKeyId)\n'
+key2='aws_secret_access_key = \(.SecretAccessKey)\n'
+key3='aws_session_token = \(.Token)\n'
+key4='expiry_time = \(.Expiration)\n'
+while true; do
+    token=`curl -X PUT -H "$ttl_hdr" "$tok_url"`
+    tok_hdr="X-aws-ec2-metadata-token: $token"
+    role=`curl -H "$tok_hdr" "$creds_url/"`
+    expires='now'
+    ( curl -H "$tok_hdr" "$creds_url/$role" \
+      | jq -r "\"${key1}${key2}${key3}${key4}\"" &gt; credentials.new ) \
+      &amp;&amp; mv -f credentials.new credentials \
+      &amp;&amp; expires=`grep expiry_time credentials | cut -d ' ' -f 3-`
+    if test $? -ne 0 ; then break ; fi
+    expiry=`date -d "$expires - 3 minutes" '+%s'`
+    now=`date '+%s'`
+    test "$expiry" -gt "$now" &amp;&amp; sleep $((($expiry - $now) / 2))
+    sleep 30
+done
+</pre>
+<p>
+Note that the <em>expiry_time</em> key is currently only supported for the
+<em>.aws/credentials</em> file (or the file referred to in the
+<b>AWS_SHARED_CREDENTIALS_FILE</b>
+environment variable).
+<p>
+<h1 id="NOTES"><a href="#NOTES">NOTES</a></h1>
+In most cases this plugin transforms the given URL into a virtual host-style
+format e.g. <em><a href="https://bucket.host/path/to/file">https://bucket.host/path/to/file</a></em>.  A path-style format is used
+where the URL is not DNS compliant or the bucket name contains a dot e.g.
+<em>https://host/bu.cket/path/to/file</em>.
+<p>
+Path-style can be forced by setting one either HTS_S3_ADDRESS_STYLE,
+addressing_style or host_bucket.  The first two can be set to <b>path</b> while
+host_bucket must <b>not</b> include the <b>%(bucket).s</b> string.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="htsfile.html"><em>htsfile</em></a> (1)
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+RFC 3339: &lt;<a href="https://www.rfc-editor.org/rfc/rfc3339">https://www.rfc-editor.org/rfc/rfc3339</a>#section-5.6&gt;
+<p>
+htslib website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

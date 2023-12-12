@@ -1,0 +1,119 @@
+---
+permalink: /doc/1.19/samtools-split.html
+layout: manpage
+title: samtools-split(1) manual page
+package: samtools-1.19
+date: 12 December 2023
+section_text: Bioinformatics tools
+redirect_from: /doc/1.19/samtools-split.1.html
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+samtools split &ndash; splits a file by read group.
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<p>
+samtools <a href="samtools-split.html">split</a>
+[<em>options</em>]
+<em>merged.sam</em>|<em>merged.bam</em>|<em>merged.cram</em>
+<p>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<p>
+Splits a file by read group, or a specified tag,
+producing one or more output files
+matching a common prefix (by default based on the input filename).
+<p>
+Unless the <b>-d</b> option is used, the file will be split according to the
+<b>@RG</b>
+tags listed in the header.
+Records without an RG tag or with an RG tag undefined in the header will cause
+the program to exit with an error unless the <b>-u</b> option is used.
+<p>
+RG values defined in the header but with no records will produce an output file
+only containing a header.
+<p>
+If the
+<b>-d </b><em>TAG</em>
+option is used, the file will be split on the value in the given aux tag.
+Note that only string tags (type <b>Z</b>) are currently supported.
+Unless the <b>-u</b> option is used, the program will exit with an error if
+it finds a record without the given tag.
+<p>
+Note that attempting to split on a tag with high cardinality may result
+in the creation of a large number of output files.
+To prevent this, the <b>-M</b> option can be used to set a limit on the
+number of splits made.
+<p>
+Using
+<b>-d RG</b>
+behaves in a similar way to the default (without <b>-d</b>),
+opening an output file for each <b>@RG</b> line in the header.
+However, unlike the default,
+new output files will be opened for any RG tags found in the alignment records
+irrespective of if they have a matching header <b>@RG</b> line.
+<p>
+The <b>-u</b> option may be used to specify the output filename for any
+records with a missing or unrecognised tag.  This option will always write
+out a file even if there are no records.
+<p>
+Output format defaults to BAM.  For SAM or CRAM then either set the format with
+<b>--output-fmt</b> or use <b>-f</b> to set the file extension e.g.
+<b>-f %*_%#.sam</b>. 
+<p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-u </b><em>FILE1</em></dt><dd><p>
+Put reads with no tag or an unrecognised tag into <em>FILE1</em>
+</dd><dt><b>-h </b><em>FILE2</em></dt><dd><p>
+Use the header from <em>FILE2</em> when writing the file given in the <em>-u</em>
+option.
+This header completely replaces the one from the input file.
+It must be compatible with the input file header, which means it must
+have the same number of references listed in the @SQ lines and the
+references must be in the same order and have the same lengths.
+</dd><dt><b>-f </b><em>STRING</em></dt><dd><p>
+Output filename format string (see below)
+["%*_%#.%."]
+</dd><dt><b>-d </b><em>TAG</em></dt><dd><p>
+Split reads by TAG value into distinct files. Only the TAG key must be 
+supplied with the option. The value of the TAG has to be a string (i.e.
+<b>key:Z:value</b>
+)
+</dd><dt><b>-M,--max-split </b><em>NUM</em></dt><dd><p>
+Limit the number of files created by the <b>-d</b> option to <em>NUM</em> (default
+100).
+This prevents accidents where trying to split on a tag with high cardinality
+could result in the creation of a very large number of output files.
+Once the file limit is reached,
+any tag values not already seen will be treated as unmatched and the program
+will exit with an error unless the <b>-u</b> option is in use.
+<p>
+If desired, the limit can be removed using <b>-M -1</b>,
+although in practice the number of outputs will still be restricted by
+system limits on the number of files that can be open at once.
+<p>
+If splitting by read group, and the read group count in the header
+is higher than the requested limit then the limit will be raised to match.
+</dd><dt><b>-v</b></dt><dd><p>
+Verbose output
+</dd><dt><b>--no-PG</b></dt><dd><p>
+Do not add a @PG line to the header of the output file.
+</dd></dl><p>
+Format string expansions:
+<table align="center">
+<tr><td><b>%%</b></td><td>%</td></tr>
+<tr><td><b>%*</b></td><td>basename</td></tr>
+<tr><td><b>%#</b></td><td>index (of @RG in the header, or count of TAG values seen so far)</td></tr>
+<tr><td><b>%!</b></td><td>@RG ID or TAG value</td></tr>
+<tr><td><b>%.</b></td><td>output format filename extension</td></tr>
+</table>
+<dl><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Number of input/output compression threads to use in addition to main thread [0].
+<p>
+</dd></dl>
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+<p>
+Written by Martin Pollard from the Sanger Institute.
+<p>
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1),
+<a href="samtools-addreplacerg.html"><em>samtools-addreplacerg</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;

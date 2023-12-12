@@ -2,8 +2,8 @@
 permalink: /doc/samtools.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.18
-date: 25 July 2023
+package: samtools-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools.1.html
 ---
@@ -1056,6 +1056,7 @@ Valid variable names and their data types are:
 <tr><td><b>flag.qcfail</b></td><td>int</td><td>Single bit, 0 or 512</td></tr>
 <tr><td><b>flag.dup</b></td><td>int</td><td>Single bit, 0 or 1024</td></tr>
 <tr><td><b>flag.supplementary</b></td><td>int</td><td>Single bit, 0 or 2048</td></tr>
+<tr><td><b>hclen</b></td><td>int</td><td>Number of hard-clipped bases</td></tr>
 <tr><td><b>library</b></td><td>string</td><td>Library (LB header via RG)</td></tr>
 <tr><td><b>mapq</b></td><td>int</td><td>Mapping quality</td></tr>
 <tr><td><b>mpos</b></td><td>int</td><td>Synonym for pnext</td></tr>
@@ -1084,10 +1085,12 @@ equivalent to <b>flag &amp; 1024</b>.
 "qlen" and "rlen" are measured using the CIGAR string to count the
 number of query (sequence) and reference bases consumed.  Note "qlen"
 may not exactly match the length of the "seq" field if the sequence is
-"*".  "sclen" is the number of soft-clipped bases.  When combined in
-"qlen-sclen" it can give the number of sequence bases used in the
-alignment, distinguishing between global alignment and local alignment
-length.
+"*".
+<p>
+"sclen" and "hclen" are the number of soft and hard-clipped
+bases respectively.  The formula "qlen-sclen" gives the
+number of sequence bases used in the alignment, distinguishing between
+global alignment and local alignment length.
 <p>
 "endpos" is the (1-based inclusive) position of the rightmost mapped base
 of the read, as measured using the CIGAR string, and for mapped reads

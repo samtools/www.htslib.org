@@ -2,8 +2,8 @@
 permalink: /doc/samtools-merge.html
 layout: manpage
 title: samtools-merge(1) manual page
-package: samtools-1.18
-date: 25 July 2023
+package: samtools-1.19
+date: 12 December 2023
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-merge.1.html
 ---
@@ -51,8 +51,10 @@ of existing IDs in the output header will have a suffix appended to them to diff
 records from other files and the read records will be updated to reflect this.
 <p>
 The ordering of the records in the input files must match the usage of the
-<b>-n</b> and <b>-t</b> command-line options.  If they do not, the output
-order will be undefined.  See
+<b>-n</b>, <b>-N</b> and <b>-t</b> command-line options.  If they do not,
+the output order will be undefined.  Note this also extends to
+disallowing mixing of "queryname" files with a combination of natural
+and lexicographical sort orders.  See
 <b>sort</b>
 for information about record ordering.
 <p>
@@ -85,8 +87,19 @@ replacing any header lines that would otherwise be copied from
 is actually in SAM format, though any alignment records it may contain
 are ignored.)
 </dd><dt><b>-n</b></dt><dd><p>
-The input alignments are sorted by read names rather than by chromosomal
-coordinates
+The input alignments are sorted by read names using an alpha-numeric
+ordering, rather than by chromosomal coordinates.
+The alpha-numeric or &ldquo;natural&rdquo; sort order detects runs of digits in the
+strings and sorts these numerically.  Hence "a7b" appears before "a12b".
+Note this is not suitable where hexadecimal values are in use.
+</dd><dt><b>-N</b></dt><dd><p>
+The input alignments are sorted by read names using a lexicographical
+ordering, rather than by chromosomal coordinates.  Unlike <b>-n</b> no
+detection of numeric components is used, instead relying purely on the
+ASCII value of each character.  Hence "x12" comes before "x7" as "1"
+is before "7" in ASCII.  This is a more appropriate name sort order
+where all digits in names are already zero-padded and/or hexadecimal
+values are being used.
 </dd><dt><b>-o</b><em> FILE</em></dt><dd><p>
 Write merged output to
 <em>FILE</em>,
@@ -139,7 +152,7 @@ Number of input/output compression threads to use in addition to main thread [0]
 <b>RG</b>
 tag while merging sorted alignments:
 <pre>
-perl -e 'print "@RG\tID:ga\tSM:hs\tLB:ga\tPL:Illumina\n@RG\tID:454\tSM:hs\tLB:454\tPL:454\n"' &gt; rg.txt
+printf '@RG\tID:ga\tSM:hs\tLB:ga\tPL:ILLUMINA\n@RG\tID:454\tSM:hs\tLB:454\tPL:LS454\n' &gt; rg.txt
 samtools merge -rh rg.txt merged.bam ga.bam 454.bam
 </pre>
 The value in a

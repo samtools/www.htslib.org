@@ -19,7 +19,7 @@ samtools or bcftools source package.
 
 Download current source releases:
 &nbsp;
-<a class="btn btn-success" href="https://github.com/samtools/samtools/releases/download/1.19.1/samtools-1.19.1.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> samtools-1.19.1</a>
+<a class="btn btn-success" href="https://github.com/samtools/samtools/releases/download/1.19.2/samtools-1.19.2.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> samtools-1.19.2</a>
 &emsp;
 <a class="btn btn-success" href="https://github.com/samtools/bcftools/releases/download/1.19/bcftools-1.19.tar.bz2"><span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span> bcftools-1.19</a>
 &emsp;

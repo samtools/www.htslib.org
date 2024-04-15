@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fasta.html
 layout: manpage
 title: samtools-fasta(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fasta.1.html
 ---
@@ -96,7 +96,7 @@ soft-clipped CIGAR records then the soft-clipped data will be in the
 output FASTA/FASTQ.  Hard-clipped data is, by definition, absent from
 the SAM record and hence will be absent in any FASTA/FASTQ produced.
 <p>
-The filter options order of precedence is -d, -f, -F, --rf and -G.
+The filter options order of precedence is -d/-D, -f, -F, --rf and -G.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-n</b></dt><dd><p>
@@ -176,8 +176,13 @@ Only output alignments containing an auxiliary tag matching both
 <em>TAG</em> and <em>VAL</em>.  If <em>VAL</em> is omitted then any value is
 accepted.  The tag types supported are i, f, Z, A and H.  "B" arrays
 are not supported.  This is comparable to the method used in
-<b>samtools view -d</b>, but for single values only (i.e. there is no
-sibling <b>-D</b> option).
+<b>samtools view -d</b>.  The option may be specified multiple times
+and is equivalent to using the <b>-D</b> option.
+</dd><dt><b>-D </b><em>TAG:FILE</em></dt><dd><p>
+Only output alignments containing an auxiliary tag matching <em>TAG</em>
+and having a value listed in <em>FILE</em>.  The format of the file is
+one line per value.  This is equivalent to specifying <b>-d</b>
+multiple times.
 </dd><dt><b>-i</b></dt><dd><p>
 add Illumina Casava 1.8 format entry to header (eg 1:N:0:ATCACG)
 </dd><dt><b>-c [0..9]</b></dt><dd><p>

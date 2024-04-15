@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fixmate.html
 layout: manpage
 title: samtools-fixmate(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fixmate.1.html
 ---
@@ -33,6 +33,14 @@ Add template cigar ct tag.
 Add ms (mate score) tags.  These are used by
 <b>markdup</b>
 to select the best reads to keep.
+</dd><dt><b>-M</b></dt><dd><p>
+Fix any base modification tags (MM, ML and MN).  If we have secondary
+alignments with hard-clipping and the hard clipped reads do not have
+an MN tag then we use the base modification tags in the primary
+alignment to clip the secondary alignment modifications, adding MN
+tags in the process.
+<p>
+This also does other sanity checks on the consistency of these tags.
 </dd><dt><b>-u</b></dt><dd><p>
 Output uncompressed BAM or CRAM.
 </dd><dt><b>-O </b><em>FORMAT</em></dt><dd><p>

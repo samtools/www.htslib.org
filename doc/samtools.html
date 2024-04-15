@@ -2,8 +2,8 @@
 permalink: /doc/samtools.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools.1.html
 ---
@@ -871,7 +871,7 @@ container per reference sequence, except in the case of many small
 references (such as a fragmented assembly).
 </dd><dt><b>version=</b><em>major.minor</em></dt><dd><p>
 CRAM output only.  Specifies the CRAM version number.  Acceptable
-values are "2.1" and "3.0".
+values are "2.1", "3.0", and "3.1".
 </dd><dt><b>seqs_per_slice=</b><em>INT</em></dt><dd><p>
 CRAM output only; defaults to 10000.
 </dd><dt><b>slices_per_container=</b><em>INT</em></dt><dd><p>
@@ -894,6 +894,11 @@ block compression.
 </dd><dt><b>use_lzma=</b><em>0|1</em></dt><dd><p>
 CRAM output only; defaults to 0 (off).  Permits use of lzma in CRAM
 block compression.
+</dd><dt><b>use_arith=</b><em>0|1</em></dt><dd><p>
+CRAM &ge; 3.1 output only; enables use of arithmetic entropy coding in
+CRAM block compression.  This is off by default, but enabled for
+archive mode.  This is significantly slower but sometimes smaller than
+the standard rANS entropy encoder.
 </dd><dt><b>use_fqz=</b><em>0|1</em></dt><dd><p>
 CRAM &ge; 3.1 output only; enables and disables the fqzcomp quality
 compression method.  This is on by default for version 3.1 and above

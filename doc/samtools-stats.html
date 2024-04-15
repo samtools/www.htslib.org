@@ -2,8 +2,8 @@
 permalink: /doc/samtools-stats.html
 layout: manpage
 title: samtools-stats(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-stats.1.html
 ---
@@ -41,6 +41,7 @@ detailed descriptions.
 <tr><td><b>CRC</b></td><td>ACGT content per cycle for CR barcode</td></tr>
 <tr><td><b>OXC</b></td><td>ACGT content per cycle for OX barcode</td></tr>
 <tr><td><b>RXC</b></td><td>ACGT content per cycle for RX barcode</td></tr>
+<tr><td><b>MPC</b></td><td>Mismatch distribution per cycle</td></tr>
 <tr><td><b>QTQ</b></td><td>Quality distribution for BC barcode</td></tr>
 <tr><td><b>CYQ</b></td><td>Quality distribution for CR barcode</td></tr>
 <tr><td><b>BZQ</b></td><td>Quality distribution for OX barcode</td></tr>
@@ -55,6 +56,10 @@ detailed descriptions.
 <tr><td><b>COV</b></td><td>Coverage (depth) distribution</td></tr>
 <tr><td><b>GCD</b></td><td>GC-depth</td></tr>
 </table>
+<p>
+The "cycle" terminology used here originates from the Illumina
+instruments, but it is interpreted more generally as the Nth base
+reported in the original read orientation (starting from 1).
 <p>
 Not all sections will be reported as some depend on the data being
 coordinate sorted while others are only present when specific barcode
@@ -273,6 +278,17 @@ will be identical.
 FTC and LTC report the total numbers of nucleotides for first and last
 fragments, respectively. The columns are the raw counters for A, C, G,
 T and N bases.
+<p>
+MPC reports the number of mismatches per cycle and per quality value.
+The MPC statistics are only included when a reference is specified via
+the <b>-r</b> option.  There is one row per cycle number.  Each row
+includes the cycle number, the number of N bases (not counted in the
+per-qual columns), followed by one column per quality value (starting
+at zero and incrementing by one each time) listing the number of non-N
+mismatches with that quality.  A mismatch is defined as an ACGT
+sequence base mismatching an ACGT reference base.  Ambiguity codes are
+ignored (except for sequence N as mentioned above, which is counted
+even when the reference is also N).
 <p>
 BCC, CRC, OXC and RXC are the barcode equivalent of GCC, showing
 nucleotide content for the barcode tags BC, CR, OX and RX respectively.

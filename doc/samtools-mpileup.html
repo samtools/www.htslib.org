@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -129,7 +129,10 @@ The fields selected appear in the same order as in SAM:
 <b>MAPQ</b>
 (displayed numerically),
 <b>RNEXT</b>,
-<b>PNEXT</b>.
+<b>PNEXT</b>,
+followed by
+<b>RLEN</b>
+for unclipped read length.
 </li>
 <li>Comma-separated 1-based positions within the alignments, in 5' to 3'
 orientation.  E.g., 5 indicates that it is the fifth base of the
@@ -278,7 +281,7 @@ mpileup command in the same order as in the document (i.e.
 The names are case sensitive. Currently, only the following fields are
 supported:
 <p>
-<b>QNAME, FLAG, RNAME, POS, MAPQ, RNEXT, PNEXT</b>
+<b>QNAME, FLAG, RNAME, POS, MAPQ, RNEXT, PNEXT, RLEN</b>
 <p>
 Anything that is not on this list is treated as a potential tag, although only
 two character tags are accepted. In the mpileup output, tag columns are
@@ -398,6 +401,10 @@ BAQ is calculated using the probabilistic realignment method described
 in the paper &ldquo;Improving SNP discovery by base alignment quality&rdquo;,
 Heng Li, Bioinformatics, Volume 27, Issue 8
 &lt;<a href="https://doi.org/10.1093/bioinformatics/btr076">https://doi.org/10.1093/bioinformatics/btr076</a>&gt;
+<p>
+BAQ is applied to modify quality values before the <b>-Q</b> filtering
+happens and before the choice of which sequence to retain when
+removing overlaps.
 <p>
 BAQ is turned on when a reference file is supplied using the
 <b>-f</b>

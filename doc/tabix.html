@@ -2,8 +2,8 @@
 permalink: /doc/tabix.html
 layout: manpage
 title: tabix(1) manual page
-package: htslib-1.19
-date: 12 December 2023
+package: htslib-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/tabix.1.html
 ---
@@ -61,6 +61,8 @@ and BAI index formats can handle individual chromosomes up to 512 Mbp
 (2^29 bases) in length.
 If your input file might contain data lines with begin or end positions
 greater than that, you will need to use a CSI index.
+<p>
+Multiple threads can be used for operations except listing of sequence names.
 <p>
 <h1 id="INDEXING_OPTIONS"><a href="#INDEXING_OPTIONS">INDEXING OPTIONS</a></h1>
 <dl><dt><b>-0, --zero-based</b></dt><dd><p>
@@ -132,6 +134,9 @@ The default is 3, which turns on error and warning messages;
 2 reduces warning messages;
 1 prints only error messages and 0 is mostly silent.
 Values higher than 3 produce additional informational and debugging messages.
+</dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
+Set number of threads to use for the operation.
+The default is 0, where no extra threads are in use.
 </dd></dl><p>
 <h1 id="EXAMPLE"><a href="#EXAMPLE">EXAMPLE</a></h1>
 (grep "^#" in.gff; grep -v "^#" in.gff | sort -t"`printf '\t'`" -k1,1 -k4,4n) | bgzip &gt; sorted.gff.gz;

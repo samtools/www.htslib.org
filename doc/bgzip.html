@@ -2,8 +2,8 @@
 permalink: /doc/bgzip.html
 layout: manpage
 title: bgzip(1) manual page
-package: htslib-1.19
-date: 12 December 2023
+package: htslib-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/bgzip.1.html
 ---
@@ -20,6 +20,8 @@ bgzip &ndash; Block compression/decompression utility
 <em>index_name</em>]
 [<b>-l</b>
 <em>compression_level</em>]
+[<b>-o</b>
+<em>outfile</em>]
 [<b>-s</b>
 <em>size</em>]
 [<b>-@</b>
@@ -41,7 +43,9 @@ otherwise when compressing bgzip will write to a new file with a .gz
 suffix and remove the original.  When decompressing the input file must
 have a .gz suffix, which will be removed to make the output name.  Again
 after decompression completes the input file will be removed. When multiple
-files are given as input, the operation is performed on all of them.
+files are given as input, the operation is performed on all of them. Access
+and modification time of input file from filesystem is set to output file. 
+Note, access time may get updated by system when it deems appropriate.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>--binary</b></dt><dd><p>
@@ -86,13 +90,16 @@ Do not delete input file during operation.
 </dd><dt><b>-l, --compress-level </b><em>INT</em></dt><dd><p>
 Compression level to use when compressing.
 From 0 to 9, or -1 for the default level set by the compression library. [-1]
+</dd><dt><b>-o, --output </b><em>FILE</em></dt><dd><p>
+Write to a file, keep original files unchanged, will overwrite an existing
+file.
 </dd><dt><b>-r, --reindex</b></dt><dd><p>
 Rebuild the index on an existing compressed file.
 </dd><dt><b>-s, --size </b><em>INT</em></dt><dd><p>
 Decompress INT bytes (uncompressed size) to standard output.
 Implies -c.
 </dd><dt><b>-t, --test</b></dt><dd><p>
-Test the intregrity of the compressed file.
+Test the integrity of the compressed file.
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of threads to use [1].
 </dd></dl><p>

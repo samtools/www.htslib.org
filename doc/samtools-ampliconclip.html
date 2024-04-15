@@ -2,8 +2,8 @@
 permalink: /doc/samtools-ampliconclip.html
 layout: manpage
 title: samtools-ampliconclip(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-ampliconclip.1.html
 ---
@@ -46,7 +46,9 @@ BED file.  While this tool was originally written for clipping read alignment
 positions which correspond to amplicon primer locations it can also be used in
 other contexts.
 <p>
-BED file entries used are chrom, chromStart, chromEnd and, optionally, strand. 
+BED file entries used are chrom, chromStart, chromEnd and, optionally, strand.
+Standard BED file format must be used, so if strand is needed then the name and
+score fields must also be present (even though ampliconclip does not read them). 
 There is a default tolerance of 5 bases when matching chromStart and chromEnd
 to alignments.
 <p>
@@ -75,7 +77,8 @@ Soft clip reads (default).
 </dd><dt><b>--hard-clip</b></dt><dd><p>
 Hard clip reads.
 </dd><dt><b>--both-ends</b></dt><dd><p>
-Clip at both the 5' and the 3' ends where regions match.
+Clip at both the 5' and the 3' ends where regions match.  When using this option
+the <b>--strand</b> option is ignored.
 </dd><dt><b>--strand</b></dt><dd><p>
 Use strand entry from the BED file to clip on the matching forward or reverse
 alignment. 

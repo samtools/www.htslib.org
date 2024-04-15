@@ -2,8 +2,8 @@
 permalink: /doc/samtools-split.html
 layout: manpage
 title: samtools-split(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-split.1.html
 ---
@@ -33,7 +33,8 @@ only containing a header.
 If the
 <b>-d </b><em>TAG</em>
 option is used, the file will be split on the value in the given aux tag.
-Note that only string tags (type <b>Z</b>) are currently supported.
+Only string (type <b>Z</b>) and integer (type <b>i</b> in SAM,
+plus equivalents in BAM/CRAM) tags are currently supported.
 Unless the <b>-u</b> option is used, the program will exit with an error if
 it finds a record without the given tag.
 <p>
@@ -74,8 +75,17 @@ Output filename format string (see below)
 </dd><dt><b>-d </b><em>TAG</em></dt><dd><p>
 Split reads by TAG value into distinct files. Only the TAG key must be 
 supplied with the option. The value of the TAG has to be a string (i.e.
-<b>key:Z:value</b>
-)
+<b>key:Z:value</b>) or an integer (<b>key:i:value</b>).
+<p>
+Using this option changes the default filename format string to "%*_%!.%.",
+so that tag values appear in the output file names.
+This can be overridden by using the <b>-f</b> option.
+</dd><dt><b>-p </b><em>NUMBER</em></dt><dd><p>
+Pad numeric values in <b>%#</b> and <b>%!</b> format expansions to this many
+digits using leading zeros.
+For <b>%!</b>, only integer tag values will be padded.
+String tag values will be left unchanged,
+even if the value only includes digits.
 </dd><dt><b>-M,--max-split </b><em>NUM</em></dt><dd><p>
 Limit the number of files created by the <b>-d</b> option to <em>NUM</em> (default
 100).

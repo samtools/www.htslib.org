@@ -2,8 +2,8 @@
 permalink: /doc/samtools-flagstat.html
 layout: manpage
 title: samtools-flagstat(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-flagstat.1.html
 ---
@@ -40,31 +40,32 @@ quality controls"
 Following this, additional categories are given for reads which are:
 <p>
 <dl><dt>primary</dt><dd><p>
-neither 0x100 nor 0x800 bit set
+neither 0x100 (SECONDARY) nor 0x800 (SUPPLEMENTARY) bit set
 </dd><dt>secondary</dt><dd><p>
-0x100 bit set
+0x100 (SECONDARY) bit set
 </dd><dt>supplementary</dt><dd><p>
-0x800 bit set
+0x800 (SUPPLEMENTARY) bit set
 </dd><dt>duplicates</dt><dd><p>
-0x400 bit set
+0x400 (DUP) bit set
 </dd><dt>primary duplicates</dt><dd><p>
-0x400 bit set and neither 0x100 nor 0x800 bit set 
+0x400 (DUP) bit set and neither 0x100 (SECONDARY) nor 0x800 (SUPPLEMENTARY) bit
+set 
 </dd><dt>mapped</dt><dd><p>
-0x4 bit not set
+0x4 (UNMAP) bit not set
 </dd><dt>primary mapped</dt><dd><p>
-0x4, 0x100 and 0x800 bits not set
+0x4 (UNMAP), 0x100 (SECONDARY) and 0x800 (SUPPLEMENTARY) bits not set
 </dd><dt>paired in sequencing</dt><dd><p>
-0x1 bit set
+0x1 (PAIRED) bit set
 </dd><dt>read1</dt><dd><p>
-both 0x1 and 0x40 bits set
+both 0x1 (PAIRED) and 0x40 (READ1) bits set
 </dd><dt>read2</dt><dd><p>
-both 0x1 and 0x80 bits set
+both 0x1 (PAIRED) and 0x80 (READ2) bits set
 </dd><dt>properly paired</dt><dd><p>
-both 0x1 and 0x2 bits set and 0x4 bit not set
+both 0x1 (PAIRED) and 0x2 (PROPER_PAIR) bits set and 0x4 (UNMAP) bit not set
 </dd><dt>with itself and mate mapped</dt><dd><p>
-0x1 bit set and neither 0x4 nor 0x8 bits set
+0x1 (PAIRED) bit set and neither 0x4 (UNMAP) nor 0x8 (MUNMAP) bits set
 </dd><dt>singletons</dt><dd><p>
-both 0x1 and 0x8 bits set and bit 0x4 not set
+both 0x1 (PAIRED) and 0x8 (MUNMAP) bits set and bit 0x4 (UNMAP) not set
 </dd></dl>
 <p>
 <p>
@@ -72,9 +73,10 @@ And finally, two rows are given that additionally filter on the reference
 name (RNAME), mate reference name (MRNM), and mapping quality (MAPQ) fields:
 <p>
 <dl><dt>with mate mapped to a different chr</dt><dd><p>
-0x1 bit set and neither 0x4 nor 0x8 bits set and MRNM not equal to RNAME
+0x1 (PAIRED) bit set and neither 0x4 (UNMAP) nor 0x8 (MUNMAP) bits set and MRNM
+not equal to RNAME
 </dd><dt>with mate mapped to a different chr (mapQ&gt;=5)</dt><dd><p>
-0x1 bit set and neither 0x4 nor 0x8 bits set
+0x1 (PAIRED) bit set and neither 0x4 (UNMAP) nor 0x8 (MUNMAP) bits set
 and MRNM not equal to RNAME and MAPQ &gt;= 5
 </dd></dl>
 <p>

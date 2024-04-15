@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.19
-date: 12 December 2023
+package: samtools-1.20
+date: 15 April 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -43,8 +43,25 @@ samtools <a href="samtools-markdup.html">markdup</a>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
 Mark duplicate alignments from a coordinate sorted file that
-has been run through <b>samtools fixmate</b> with the <b>-m</b> option.  This program
-relies on the MC and ms tags that fixmate provides.
+has been run through <b>samtools fixmate</b> with the <b>-m</b> option.  This
+program relies on the MC and ms tags that fixmate provides.
+<p>
+Duplicates are found by using the alignment data for each read (and its mate for
+paired reads).  Position and orientation (which strand it aligns against and in
+what direction) are used to to compare the reads against one another. If two (or
+more) reads have the same values then the one with the highest base qualities is
+held to be the original and the others are the duplicates.
+<p>
+It should be noted that <b>samtools markdup</b> looks for duplication first and
+then classifies the type of duplication afterwards. If your process does not
+care whether duplication is PCR or optical then it is faster if you do not use
+the optical duplicate option.
+<p>
+Duplicates are marked by setting the alignment's DUP flag.
+<p>
+For more details please see:
+<p>
+&lt;<a href="http://www.htslib.org/algorithms/duplicate.html">http://www.htslib.org/algorithms/duplicate.html</a>&gt;
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-l </b><em>INT</em></dt><dd><p>
@@ -76,7 +93,8 @@ Clear previous duplicate settings and tags.
 </dd><dt><b>-t</b></dt><dd><p>
 Mark duplicates with the name of the original in a <b>do</b> tag.
 </dd><dt><b>--duplicate-count</b></dt><dd><p>
-Record the original primary read duplication count(include itself) in a <b>dc</b> tag.
+Record the original primary read duplication count (including itself) in a
+<b>dc</b> tag.
 </dd><dt><b>-m, --mode </b><em>TYPE</em></dt><dd><p>
 Duplicate decision method for paired reads.  Values are <b>t</b> or <b>s</b>.
 Mode <b>t</b> measures positions based on template start/end (default).

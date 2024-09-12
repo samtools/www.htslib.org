@@ -2,8 +2,8 @@
 permalink: /doc/samtools-idxstats.html
 layout: manpage
 title: samtools-idxstats(1) manual page
-package: samtools-1.20
-date: 15 April 2024
+package: samtools-1.21
+date: 12 September 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-idxstats.1.html
 ---
@@ -29,6 +29,15 @@ name, sequence length, # mapped read-segments and # unmapped
 read-segments. It is written to stdout.  Note this may count reads
 multiple times if they are mapped more than once or in multiple fragments.
 <p>
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-X</b></dt><dd><p>
+This option will allow the user to specify a customised index file
+location. e.g.
+<p>
+<b>samtools idxstat [options] -X /data_folder/data.bam /index_folder/index.bai</b>
+<p>
+<p>
+</dd></dl>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
 <p>
 Written by Heng Li from the Sanger Institute.

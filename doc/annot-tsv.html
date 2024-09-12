@@ -2,8 +2,8 @@
 permalink: /doc/annot-tsv.html
 layout: manpage
 title: annot-tsv(1) manual page
-package: htslib-1.20
-date: 15 April 2024
+package: htslib-1.21
+date: 12 September 2024
 section_text: Bioinformatics tools
 ---
 <h1 id="NAME"><a href="#NAME">NAME</a></h1>
@@ -63,6 +63,9 @@ Target file to be extend with annotations from
 <b>&ndash;&ndash;allow&ndash;dups</b>
 Add the same annotations multiple times if multiple overlaps are found
 <p>
+<b>&ndash;&ndash;help</b>
+This help message
+<p>
 <b>&ndash;&ndash;max&ndash;annots</b> INT
 Add at most INT annotations per column to save time when many overlaps are found with a single region
 <p>
@@ -81,15 +84,33 @@ fraction of the target region with an overlap
 <em>nbp</em>
 number of source base pairs in the overlap
 <p>
+<b>&ndash;d</b>, <b>&ndash;&ndash;delim</b> SRC:TGT
+Column delimiter in the source and the target file. For example, if both files are comma-delimited, run with
+"--delim ,:," or simply "--delim ,". If the source file is comma-delimited and the target file is tab-delimited,
+run with "-d $',:\t'".
+<p>
+<b>&ndash;h</b>, <b>&ndash;&ndash;headers</b> SRC:TGT
+Line number of the header row with column names. By default the first line is interpreted as header if it starts with the comment
+character ("#"), otherwise expects numeric indices. However, if the first line does not start with "#" but still
+contains the column names, use "--headers 1:1". To ignore existing header (skip comment lines) and use numeric indices,
+use "--headers 0:0" which is equivalent to "--ignore-headers". When negative value is given, it is interpreted as the number of
+lines from the end of the comment block. Specifically, "--headers -1" takes the column names from the last line of
+the comment block (e.g., the "#CHROM" line in the VCF format).
+<p>
 <b>&ndash;H</b>, <b>&ndash;&ndash;ignore&ndash;headers</b>
 Ignore the headers completely and use numeric indexes even when a header exists
 <p>
-<b>&ndash;O</b>, <b>&ndash;&ndash;overlap</b> FLOAT
-Minimum overlap as a fraction of region length in at least one of the overlapping regions. If also
+<b>&ndash;I</b>, <b>&ndash;&ndash;no&ndash;hdr&ndash;idx</b>
+Suppress index numbers in the printed header. If given twice, drop the entire header.
+<p>
+<b>&ndash;O</b>, <b>&ndash;&ndash;overlap</b> FLOAT,[FLOAT]
+Minimum overlap as a fraction of region length in SRC and TGT, respectively (with two numbers), or in
+at least one of the overlapping regions (with a single number). If also
 <b>&ndash;r</b>, <b>&ndash;&ndash;reciprocal</b>
 is given, require at least
 <em>FLOAT</em>
-overlap with respect to both regions
+overlap with respect to both regions. Two identical numbers are equivalent to running with
+<b>&ndash;r</b>, <b>&ndash;&ndash;reciprocal</b>
 <p>
 <b>&ndash;r</b>, <b>&ndash;&ndash;reciprocal</b>
 Require the

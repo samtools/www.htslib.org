@@ -2,8 +2,8 @@
 permalink: /doc/samtools-reset.html
 layout: manpage
 title: samtools-reset(1) manual page
-package: samtools-1.20
-date: 15 April 2024
+package: samtools-1.21
+date: 12 September 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-reset.1.html
 ---
@@ -20,17 +20,20 @@ samtools <a href="samtools-reset.html">reset</a>
 <em>STR</em>]
 [<b>--reject-PG</b>
 <em>pgid</em>]
-[<b>--no-RG</b>] [<b>--no-PG</b>] [...]
+[<b>--no-RG</b>] [<b>--no-PG</b>] 
+[<b>--dupflag</b>]
+[...]
 <p>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
 <p>
-Removes the alignment information added by the aligner. CIGAR and reference data are removed. Flags are updated as unmapped and as not a proper pair.
+Removes the alignment information added by the aligner. CIGAR and reference data are removed. Flags are updated as unmapped, non-duplicate and as not a proper pair.
 If the alignment was in reverse direction, data and its quality values are reversed and complemented and the reverse flag is reset.
-Supplimentary and secondary alignment data are discarded.
+Supplementary and secondary alignment data are discarded.
 <p>
-Aux tags that will be retained in output is controlled by keep-tag and remove-tag/x. These options take tags as comma separated lists.
+Aux tags that will be retained in output can be controlled by keep-tag and remove-tag/x. These options take tags as comma separated lists.
+Aux tags AS, CC, CG, CP, H1, H2, HI, H0, IH, MC, MD, MQ, NM, SA and TS are removed by default, this can be overridden using keep-tag.
 <p>
 PG and RG tags from input are written on the output by default.
 CO lines are not retained after this operation.
@@ -69,6 +72,9 @@ With this option, RG aux tags will also be discarded.
 </dd><dt><b>--no-PG</b></dt><dd><p>
 Do not add a @PG line to the header of the output file listing the <b>reset</b> command.
 By default the PG entry for reset will be present in the output.
+<p>
+</dd><dt><b>--dupflag</b></dt><dd><p>
+Keep the duplicate flag as it is. This option is absent by default and alignments are marked non-duplicates.
 <p>
 </dd><dt><b>-@,--thread </b><em>N</em></dt><dd><p>
 This gives the number of worker threads to be used.

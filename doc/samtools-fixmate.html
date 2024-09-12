@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fixmate.html
 layout: manpage
 title: samtools-fixmate(1) manual page
-package: samtools-1.20
-date: 15 April 2024
+package: samtools-1.21
+date: 12 September 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fixmate.1.html
 ---
@@ -24,7 +24,9 @@ name-sorted or name-collated alignment.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-r</b></dt><dd><p>
-Remove secondary and unmapped reads.
+Remove secondary and unmapped reads.  If one of a pair is removed, the PAIRED
+flag will not be unset on the remaining read.  This is a change from the older
+behaviour in samtools versions up to 1.20.
 </dd><dt><b>-p</b></dt><dd><p>
 Disable FR proper pair check.
 </dd><dt><b>-c</b></dt><dd><p>

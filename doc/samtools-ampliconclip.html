@@ -2,8 +2,8 @@
 permalink: /doc/samtools-ampliconclip.html
 layout: manpage
 title: samtools-ampliconclip(1) manual page
-package: samtools-1.20
-date: 15 April 2024
+package: samtools-1.21
+date: 12 September 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-ampliconclip.1.html
 ---
@@ -98,6 +98,8 @@ Filter out any reads that are marked as QCFAIL or are unmapped.  This works on
 the state of the reads before clipping takes place.
 </dd><dt><b>--rejects-file </b><em>FILE</em></dt><dd><p>
 Write any filtered reads out to a file.
+</dd><dt><b>--primer-counts </b><em>FILE</em></dt><dd><p>
+File to write with read counts per bed entry (bedgraph format).
 </dd><dt><b>--original</b></dt><dd><p>
 Add an OA tag with the original data for clipped files.
 </dd><dt><b>--keep-tag</b></dt><dd><p>

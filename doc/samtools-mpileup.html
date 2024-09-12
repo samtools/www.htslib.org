@@ -2,8 +2,8 @@
 permalink: /doc/samtools-mpileup.html
 layout: manpage
 title: samtools-mpileup(1) manual page
-package: samtools-1.20
-date: 15 April 2024
+package: samtools-1.21
+date: 12 September 2024
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-mpileup.1.html
 ---
@@ -166,10 +166,56 @@ See
 below.
 </dd><dt><b>-C, --adjust-MQ</b><em> INT</em></dt><dd><p>
 Coefficient for downgrading mapping quality for reads containing
-excessive mismatches. Given a read with a phred-scaled probability q of
-being generated from the mapped position, the new mapping quality is
-about sqrt((INT-q)/INT)*INT. A zero value disables this
-functionality; if enabled, the recommended value for BWA is 50. [0]
+excessive mismatches.  Mismatches are counted as a proportion of the
+number of aligned bases ("M", "X" or "=" CIGAR operations), along with
+their quality, to derive an upper-bound of the mapping quality.
+Original mapping qualities lower than this are left intact, while
+higher ones are capped at the new adjusted score.
+<p>
+The exact formula is complex and likely tuned to specific instruments
+and specific alignment tools, so this option is disabled by default
+(indicated as having a zero value).  Variables in the formulae and
+their meaning are defined below.
+<p>
+<table>
+<tr><th><b>Variable</b></th><th><b>Meaning / formula</b></th></tr>
+<tr><td><b>M</b></td><td>The number of matching CIGAR bases (operation "M", "X" or "=").</td></tr>
+<tr><td><b>X</b></td><td>The number of substitutions with quality &gt;= 13.</td></tr>
+<tr><td><b>SubQ</b></td><td>The summed quality of substitution bases included in X, capped at a maximum of quality 33 per mismatching base.</td></tr>
+<tr><td><b>ClipQ</b></td><td>The summed quality of soft-clipped or hard-clipped bases. This has no minimum or maximum quality threshold per base.  For hard-clipped bases the per-base quality is taken as 13.</td></tr>
+<tr></tr>
+<tr><td><b>T</b></td><td>SubQ - 10 * log10(M^X / X!) + ClipQ/5</td></tr>
+<tr><td><b>Cap</b></td><td>MAX(0, INT * sqrt((INT - T) / INT))</td></tr>
+</table>
+<p>
+Some notes on the impact of this.
+<p>
+<ul><li>As the number of mismatches increases, the mapping quality cap
+reduces, eventually resulting in discarded alignments.
+<p>
+</li>
+<li>High quality mismatches reduces the cap faster than low quality
+mismatches.
+<p>
+</li>
+<li>The starting INT value also acts as a hard cap on mapping quality,
+even when zero mismatches are observed.
+<p>
+</li>
+<li>Indels have no impact on the mapping quality.
+</li></ul><p>
+The intent of this option is to work around aligners that compute a
+mapping quality using a local alignment without having any regard to
+the degree of clipping required or consideration of potential
+contamination or large scale insertions with respect to the reference.
+A record may align uniquely and have no close second match, but having
+a high number of mismatches may still imply that the reference is not
+the correct site.
+<p>
+However we do not recommend use of this parameter unless you fully
+understand the impact of it and have determined that it is appropriate
+for your sequencing technology.
+<p>
 </dd><dt><b>-d, --max-depth</b><em> INT</em></dt><dd><p>
 At a position, read maximally
 <em>INT</em>

@@ -123,6 +123,10 @@ Haplotype-aware calling of variant consequences (`bcftools csq`):
 
 * Danecek P, McCarthy SA, **BCFtools/csq: Haplotype-aware variant consequences**, *Bioinformatics* (2017) 33(13) 2037-39 [[28205675](http://www.ncbi.nlm.nih.gov/pubmed/28205675)]
 
+### Reference Sequences
+
+* [Reference Sequences](reference_seqs.html): information on efficient usage of external reference sequences for CRAM and other tools.
+
 ### Other
 
 Base alignment quality (BAQ) method improve SNP calling around INDELs:

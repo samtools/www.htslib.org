@@ -96,6 +96,10 @@ The introduction of the **CRAM format**:
 
 * Hsi-Yang Fritz M, Leinonen R, Cochrane G, and Birney E, **Efficient storage of high throughput DNA sequencing data using reference-based compression**, *Genome Research* (2011) 21(5) 734-740. [[21245279](http://www.ncbi.nlm.nih.gov/pubmed/21245279)]
 
+Improvements in the CRAM 3.1 format:
+
+* Bonfield JK, **CRAM 3.1: advances in the CRAM file format**, *Bioinformatics* (2022) 38(6) 1497-1503. [[34999766](https://pubmed.ncbi.nlm.nih.gov/34999766)]
+
 The introduction of the **VCF format**:
 
 * Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA, Handsaker RE, Lunter G, Marth GT, Sherry ST, McVean G, Durbin R, 1000 Genomes Project Analysis Group, **The variant call format and VCFtools**, *Bioinformatics* (2011) 27(15) 2156-8 [[21653522](http://www.ncbi.nlm.nih.gov/pubmed/21653522)]

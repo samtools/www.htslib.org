@@ -65,7 +65,7 @@ or here on the web site:
 * [Zlib implementations](../benchmarks/zlib.html) comparing samtools read and
   write speeds.
 
-* [CRAM comparisons](../benchmarks/CRAM.html) between version 2.1,
+* [CRAM comparisons](../benchmarks/CRAM.html) between version 3.1,
   version 3.0 and BAM formats.
 
 ## Publications

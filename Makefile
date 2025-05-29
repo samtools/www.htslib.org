@@ -40,7 +40,7 @@ bcftools-doc: | $(BCFTOOLS_VERSIONED_DOC)
 	sed 's#href="docbook-xsl\.css"#href="../docbook-xsl.css"#' doc/bcftools.html > $(BCFTOOLS_VERSIONED_DOC)/bcftools.html 
 
 htslib-doc: | $(HTSLIB_VERSIONED_DOC)
-	@ for i in $(HTSLIB)/*.[1-9]; do \
+	@ for i in $(HTSLIB)/*.[1-9] $(HTSLIB)/ref_cache/*.1; do \
 	    case $$i in \
 	    *".so."*) \
 	        ;; \
@@ -60,11 +60,15 @@ $(HTSLIB_VERSIONED_DOC) $(filter-out $(HTSLIB_VERSIONED_DOC),$(SAMTOOLS_VERSIONE
 	vers=$${dir##*/} && \
 	printf -- '---\nlayout: default\ntitle: Samtools - Documentation\n---\n## Manual pages\n\nDocumentation for BCFtools, SAMtools, and HTSlib'"'"'s utilities is available\nby using <code>man <em>command</em></code> on the command line.\n' > $@/index.md && \
 	printf 'The manual pages for the %s release are listed below.\n\n' "$$vers" >> $@/index.md && \
-	( if [ "$(BCFTOOLS_VERSIONED_DOC)" = "$@" ] ; then \
+	( if [ "$(HTSLIB_VERSIONED_DOC)" = "$@" ] ; then \
+            printf '* [annot-tsv](annot-tsv.html)\n' >> "$@"/index.md ; \
+        fi ; \
+	if [ "$(BCFTOOLS_VERSIONED_DOC)" = "$@" ] ; then \
 	    printf '* [bcftools](bcftools.html)\n' >> "$@"/index.md ; \
 	fi ; \
 	if [ "$(HTSLIB_VERSIONED_DOC)" = "$@" ] ; then \
 	    printf '* [bgzip](bgzip.html)\n* [htsfile](htsfile.html)\n' >> "$@"/index.md ; \
+	    printf '* [ref-cache](ref-cache.html)\n' >> "$@"/index.md ; \
 	fi ; \
 	if [ "$(SAMTOOLS_VERSIONED_DOC)" = "$@" ] ; then \
 	    printf '* [samtools](samtools.html)\n' >> "$@"/index.md ; \

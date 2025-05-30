@@ -2,8 +2,8 @@
 permalink: /doc/samtools.html
 layout: manpage
 title: samtools(1) manual page
-package: samtools-1.21
-date: 12 September 2024
+package: samtools-1.22
+date: 30 May 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools.1.html
 ---
@@ -22,6 +22,8 @@ samtools <a href="samtools-bedcov.html">bedcov</a> aln.sorted.bam
 samtools <a href="samtools-calmd.html">calmd</a> in.sorted.bam ref.fasta
 <p>
 samtools <a href="samtools-cat.html">cat</a> out.bam in1.bam in2.bam in3.bam
+<p>
+samtools <a href="samtools-checksum.html">checksum</a> in.bam
 <p>
 samtools <a href="samtools-collate.html">collate</a> -o aln.name_collated.bam aln.sorted.bam
 <p>
@@ -180,6 +182,18 @@ intensive tasks on them.
 This command will exit with a non-zero exit code if any input files don't have a
 valid header or are missing an EOF block. Otherwise it will exit successfully
 (with a zero exit code).
+<p>
+</dd><dt><b>checksum</b></dt><dd><p>
+samtools checksum
+[<em>options</em>]
+<em>in.sam</em>|<em>in.bam</em>|<em>in.cram</em>
+<p>
+samtools checksum produces a CRC32 based checksum of data contained
+within a BAM file.  This can either be order and orientation agnostic
+for purposes of validating all the sequencing data has passed through
+the entire pipeline from FASTQ through alignment and sorting, or full
+alignment information and order aware for the purposes of validating
+format conversions and while file data processing.
 <p>
 </dd><dt><b>head</b></dt><dd><p>
 samtools head
@@ -936,6 +950,42 @@ if it has been explicitly changed already.  Additionally
 <b>bases_per_slice</b> is set to <b>500*seqs_per_slice</b> unless previously
 explicitly set.
 <p>
+</dd><dt><b>fastq_name2</b></dt><dd><p>
+FASTQ input only.  Indicates that the names are not the first word in
+the header, but the second.  This is a FASTQ variant commonly used in
+the SRA and ENA archives.
+<p>
+</dd><dt><b>fastq_casava</b></dt><dd><p>
+FASTQ input and output only.  The Illumina CASAVA identifiers are
+stored in the second word of the FASTQ header lines and store read
+meta-data.  The CASAVA tag defines the data held in the READ1, READ2
+and QCFAIL flags and the barcode auxiliary tag ("BC" by default).
+This option may be used to both read and write CASAVA identifiers.
+<p>
+</dd><dt><b>fastq_barcode=</b><em>TAG</em></dt><dd><p>
+FASTQ input and output only.  When the <b>fastq_casava</b> option is
+used, this controls the name of the barcode aux tag to be used. <em>TAG</em>
+defaults to "BC" if not specified.
+<p>
+</dd><dt><b>fastq_aux=</b><em>LIST</em></dt><dd><p>
+FASTQ input and output only.  Processes SAM format auxiliary tags
+following the other fields on the record identifier lines.  If no
+<b>=</b><em>LIST</em> is specified or <em>LIST</em> is "1" then all aux tags
+listed are copied to/from the SAM record.  Otherwise it is a comma
+separated list of 2-letter tag types and is used to control which tags
+are processed with any others being omitted.
+<p>
+Note as commas are used to separate options in the <b>--output-fmt</b>
+string detailing file format and options combined together, you will
+need to use the <b>--output-fmt-option</b> option if you want to
+specify a comma separated list of tag types.
+<p>
+</dd><dt><b>fastq_rnum</b></dt><dd><p>
+FASTQ output only.  If set, paired reads will have "/1" and "/2"
+appended to their read names.  This has no effect on unpaired reads.
+When reading FASTQ these suffixes are automatically detected
+and processed irrespective of the <b>fastq_rnum</b> option.
+<p>
 </dd></dl>
 <p>
 For example:
@@ -970,34 +1020,6 @@ The <b>--verbosity </b><em>INT</em> option sets the verbosity level for samtools
 and HTSlib.  The default is 3 (HTS_LOG_WARNING); 2 reduces warning messages
 and 0 or 1 also reduces some error messages, while values greater than 3
 produce increasing numbers of additional warnings and logging messages.
-<p>
-<p>
-<h1 id="REFERENCE_SEQUENCES"><a href="#REFERENCE_SEQUENCES">REFERENCE SEQUENCES</a></h1>
-<p>
-The CRAM format requires use of a reference sequence for both reading
-and writing.
-<p>
-When reading a CRAM the <b>@SQ</b> headers are interrogated to identify
-the reference sequence MD5sum (<b>M5:</b> tag) and the local reference
-sequence filename (<b>UR:</b> tag).  Note that <em>http://</em> and
-<em>ftp://</em> based URLs in the UR: field are not used, but local fasta
-filenames (with or without <em>file://</em>) can be used.
-<p>
-To create a CRAM the <b>@SQ</b> headers will also be read to identify
-the reference sequences, but M5: and UR: tags may not be present. In
-this case the <b>-T</b> and <b>-t</b> options of samtools view may be
-used to specify the fasta or fasta.fai filenames respectively
-(provided the .fasta.fai file is also backed up by a .fasta file).
-<p>
-The search order to obtain a reference is:
-<p>
-Use any local file specified by the command line options (eg -T).
-<p>
-Look for MD5 via REF_CACHE environment variable.
-<p>
-Look for MD5 in each element of the REF_PATH environment variable.
-<p>
-Look for a local file listed in the UR: header tag.
 <p>
 <p>
 <h1 id="FILTER_EXPRESSIONS"><a href="#FILTER_EXPRESSIONS">FILTER EXPRESSIONS</a></h1>
@@ -1180,30 +1202,44 @@ to look for sequences identified by their MD5sums.  This can be either
 a list of directories or URLs. Note that if a URL is included then the
 colon in http:// and ftp:// and the optional port number will be
 treated as part of the URL and not a PATH field separator.
-For URLs, the text <b>%s</b> will be replaced by the MD5sum being
-read.
+Alternatively a double colon may be used to indicate a single colon
+character. If REF_PATH includes <b>%</b><em>num</em><b>s</b> then it is
+replaced with the next <em>num</em> elements of the md5sum.  An implicit
+<b>/%s</b> is also added to each path element if any md5sum digits are
+unused.  For example "REF_PATH=/some/dir/%4s/%s" or
+"REF_PATH=/some/dir/%4s" will search a directory structure with the
+first 4 characters of the md5sum as a subdirectory and the remaining
+28 as the filename within that directory.
 <p>
-If no REF_PATH has been specified it will default to
-<b>http://www.ebi.ac.uk/ena/cram/md5/%s</b> and if REF_CACHE is also unset,
-it will be set to <b>$XDG_CACHE_HOME/hts-ref/%2s/%2s/%s</b>.
-If <b>$XDG_CACHE_HOME</b> is unset, <b>$HOME/.cache</b> (or a local system
-temporary directory if no home directory is found) will be used similarly.
+Version 1.21 and earlier defaulted to using the EBI's CRAM reference
+server if no REF_PATH was specified.
+This default has been removed to reduce load on the EBI's service.
+It is recommended that a site-wide proxy is set up to allow better sharing
+of downloaded references,
+for example the
+<em>ref-cache</em>
+server provided with HTSlib.
+The original behaviour can be restored by including
+<b>http://www.ebi.ac.uk/ena/cram/md5/%s</b> in your REF_PATH.
+If that is done,
+it is strongly encouraged you also specify a local REF_CACHE directory.
+<p>
+See &lt;<a href="https://www.htslib.org/doc/reference_seqs.html">https://www.htslib.org/doc/reference_seqs.html</a>&gt; and
+<b>REFERENCE SEQUENCES</b>
+below for more information.
 <p>
 </dd><dt><b>REF_CACHE</b></dt><dd><p>
 This can be defined to a single location housing a local cache of
-references.  Upon downloading a reference it will be stored in the
-location pointed to by REF_CACHE.  REF_CACHE will be searched
-before attempting to load via the REF_PATH search list.  If no
-REF_PATH is defined, both REF_PATH and REF_CACHE will be automatically
-set (see above), but if REF_PATH is defined and REF_CACHE not then no
-local cache is used.
+references.  When REF_CACHE is set any non-local reference will create
+a file in the local REF_CACHE named after the sequence md5sum.  This
+cache will be searched prior to REF_PATH.  If you wish to search
+REF_CACHE but not to further populate it, add the directory to the
+start of REF_PATH instead.
 <p>
-To avoid many files being stored in the same directory, REF_CACHE may
-be defined as a pattern using <b>%</b><em>num</em><b>s</b> to consume <em>num</em>
-characters of the MD5sum and <b>%s</b> to consume all remaining characters.
-If REF_CACHE lacks <b>%s</b> then it will get an implicit <b>/%s</b> appended.
+As per REF_PATH, the percent notation (e.g. "dir/%2s/%2s/%s") may be
+used to avoid too many files within a single directory.
 <p>
-To aid population of the REF_CACHE directory a script
+To pre-populate the REF_CACHE a script
 <b>misc/seq_cache_populate.pl</b> is provided in the Samtools
 distribution. This takes a fasta file or a directory of fasta files
 and generates the MD5sum named files.
@@ -1212,7 +1248,36 @@ For example if you use <b>seq_cache_populate -subdirs 2 -root
 /local/ref_cache</b> to create 2 nested subdirectories (the default),
 each consuming 2 characters of the MD5sum, then REF_CACHE must be set
 to <b>/local/ref_cache/%2s/%2s/%s</b>.
+<p>
 </dd></dl><p>
+<h1 id="REFERENCE_SEQUENCES"><a href="#REFERENCE_SEQUENCES">REFERENCE SEQUENCES</a></h1>
+<p>
+The CRAM format requires use of a reference sequence for both reading
+and writing.
+<p>
+When reading a CRAM the <b>@SQ</b> headers are interrogated to identify
+the reference sequence MD5sum (<b>M5:</b> tag) and the local reference
+sequence filename (<b>UR:</b> tag).  Note that non-local URIs in the UR
+tag are not used, but <em>file://</em> is supported.  This is a change in
+behaviour, but not documentation, to htslib 1.21.
+<p>
+To create a CRAM the <b>@SQ</b> headers will also be read to identify
+the reference sequences, but M5: and UR: tags may not be present. In
+this case the <b>-T</b> and <b>-t</b> options of samtools view may be
+used to specify the fasta or fasta.fai filenames respectively
+(provided the .fasta.fai file is also backed up by a .fasta file).
+<p>
+The search order to obtain a reference is:
+<p>
+Use any local file specified by the command line options (eg -T).
+<p>
+Look for MD5 via REF_CACHE environment variable.
+<p>
+Look for MD5 in each element of the REF_PATH environment variable.
+<p>
+Look for a local file listed in the UR: header tag.
+<p>
+<p>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>
 <ul><li>Import SAM to BAM when
 <b>@SQ</b>
@@ -1260,6 +1325,7 @@ for further authorship.
 <a href="samtools-bedcov.html"><em>samtools-bedcov</em></a> (1),
 <a href="samtools-calmd.html"><em>samtools-calmd</em></a> (1),
 <a href="samtools-cat.html"><em>samtools-cat</em></a> (1),
+<a href="samtools-checksum.html"><em>samtools-checksum</em></a> (1),
 <a href="samtools-collate.html"><em>samtools-collate</em></a> (1),
 <a href="samtools-consensus.html"><em>samtools-consensus</em></a> (1),
 <a href="samtools-coverage.html"><em>samtools-coverage</em></a> (1),
@@ -1296,6 +1362,7 @@ for further authorship.
 <a href="bcftools.html"><em>bcftools</em></a> (1),
 <a href="sam.html"><em>sam</em></a> (5),
 <a href="tabix.html"><em>tabix</em></a> (1)
+<em>ref-cache(1)</em>
 <p>
 Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;
 <br>

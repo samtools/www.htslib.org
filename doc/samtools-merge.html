@@ -2,8 +2,8 @@
 permalink: /doc/samtools-merge.html
 layout: manpage
 title: samtools-merge(1) manual page
-package: samtools-1.21
-date: 12 September 2024
+package: samtools-1.22
+date: 30 May 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-merge.1.html
 ---
@@ -51,7 +51,8 @@ of existing IDs in the output header will have a suffix appended to them to diff
 records from other files and the read records will be updated to reflect this.
 <p>
 The ordering of the records in the input files must match the usage of the
-<b>-n</b>, <b>-N</b> and <b>-t</b> command-line options.  If they do not,
+<b>-n</b>, <b>-N</b>, <b>-t</b> and <b>--template-coordinate</b>
+command-line options.  If they do not,
 the output order will be undefined.  Note this also extends to
 disallowing mixing of "queryname" files with a combination of natural
 and lexicographical sort orders.  See
@@ -110,6 +111,8 @@ files to be merged.
 </dd><dt><b>-t TAG</b></dt><dd><p>
 The input alignments have been sorted by the value of TAG, then by either
 position or name (if <b>-n</b> is given).
+</dd><dt><b>--template-coordinate</b></dt><dd><p>
+Input files are sorted by template-coordinate.
 </dd><dt><b>-R</b><em> STR</em></dt><dd><p>
 Merge files in the specified region indicated by
 <em>STR</em>

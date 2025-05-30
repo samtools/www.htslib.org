@@ -2,8 +2,8 @@
 permalink: /doc/samtools-bedcov.html
 layout: manpage
 title: samtools-bedcov(1) manual page
-package: samtools-1.21
-date: 12 September 2024
+package: samtools-1.22
+date: 30 May 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-bedcov.1.html
 ---
@@ -56,18 +56,23 @@ Specifies the maximum depth used for the mpileup algorithm.
 If <b>-d</b> is used and is larger then this value will be used instead.
 Defaults to 2 billion, but smaller values may be used when we do not
 require an exact count in excessively deep regions and are interested
-in maximising speed of results.
+in maximizing speed of results.
 </dd><dt><b>-c</b></dt><dd><p>
 Print an additional column with the read count for this region.  This
 will be +1 for every read covering the region, not just starting
 within in.  The whole read filtering options <b>-Q</b>, <b>-g</b> and
-<b>-G</b> options will also have an affect on this count, but <b>-d</b>
+<b>-G</b> options will also have an effect on this count, but <b>-d</b>
 will not.
 </dd><dt><b>-X</b></dt><dd><p>
-If this option is set, it will allows user to specify customized index file location(s) if the data
-folder does not contain any index file. Example usage: samtools bedcov [options] -X &lt;in.bed&gt; &lt;/data_folder/in1.bam&gt; [...] &lt;/index_folder/index1.bai&gt; [...]
+If this option is set, it will allows user to specify customized index file
+location(s) if the data folder does not contain any index file. Example usage:
+samtools bedcov [options] -X &lt;in.bed&gt; &lt;/data_folder/in1.bam&gt; [...]
+&lt;/index_folder/index1.bai&gt; [...]
 </dd><dt><b>-H</b></dt><dd><p>
-print a comment/header describing columns
+copied to the output. When it is not available, a header is created with field
+names matching the fields listed in the GA4GH BED specification.
+The <b>-c</b> and <b>-d</b> options can add further per-file columns named
+<em>in1.sam</em>_count and <em>in1.sam</em>_depth along with <em>in1.sam</em>_count.
 <p>
 </dd></dl>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>

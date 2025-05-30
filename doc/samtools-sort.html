@@ -2,8 +2,8 @@
 permalink: /doc/samtools-sort.html
 layout: manpage
 title: samtools-sort(1) manual page
-package: samtools-1.21
-date: 12 September 2024
+package: samtools-1.22
+date: 30 May 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-sort.1.html
 ---
@@ -43,16 +43,15 @@ instead if you need name collated data without a full lexicographical sort.
 Note that if the sorted output file is to be indexed with
 <b>samtools index</b>,
 the default coordinate sort must be used.
-Thus the <b>-n</b>, <b>-N</b>, <b>-t</b> and <b>-M</b> options are
-incompatible with
+Thus the <b>-n</b>, <b>-N</b> and <b>-t</b> options are incompatible with
 <b>samtools index</b>.
 <p>
-When sorting by minimisier (<b>-M</b>), the sort order is defined by
-the whole-read minimiser value and the offset into the read that this
-minimiser was observed.  This produces small clusters (contig-like,
-but unaligned) and helps to improve compression with LZ algorithms.
-This can be improved by supplying a known reference to build a
-minimiser index (<b>-I</b> and <b>-w</b> options).
+When sorting by minimiser (<b>-M</b>), the sort order for unplaced
+data is defined by the whole-read minimiser value and the offset into
+the read that this minimiser was observed.  This produces small
+clusters (contig-like, but unaligned) and helps to improve compression
+with LZ algorithms.  This can be improved by supplying a known
+reference to build a minimiser index (<b>-I</b> and <b>-w</b> options).
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <p>
@@ -109,6 +108,11 @@ option.  Note data compressed in this manner may need to be name
 collated prior to conversion back to fastq.
 <p>
 Mapped sequences are sorted by chromosome and position.
+<p>
+Files with at least one aligned record (being placed at a position on
+a chromosome) use the sort order "coordinate" with a sub-sort of
+"coordinate:minhash".  Files entirely consisting of unaligned data
+use sort order "unsorted" with sub-sort "unsorted:minhash".
 </dd><dt><b>-R </b></dt><dd><p>
 Do not use reverse strand with minimiser sort (only compatible with -M).
 </dd><dt><b>-K </b><em>INT</em></dt><dd><p>

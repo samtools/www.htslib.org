@@ -2,8 +2,8 @@
 permalink: /doc/samtools-stats.html
 layout: manpage
 title: samtools-stats(1) manual page
-package: samtools-1.21
-date: 12 September 2024
+package: samtools-1.22
+date: 30 May 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-stats.1.html
 ---
@@ -89,7 +89,8 @@ The CHK row contains distinct CRC32 checksums of read names, sequences
 and quality values.  The checksums are computed per alignment record
 and summed, meaning the checksum does not change if the input file has
 the sort-order changed.
-<p>
+NOTE: Checksum calculation for quality values was modified and quality checksum
+value will be different from that generated using versions up to 1.21.
 The SN section contains a series of counts, percentages, and averages, in a similar style to
 <b>samtools flagstat</b>,
 but more comprehensive.

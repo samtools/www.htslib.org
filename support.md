@@ -11,6 +11,7 @@ If you have found a bug or would like a new feature, please open a new issue on 
 * [BCFtools](https://github.com/samtools/bcftools/issues) issue tracker
 * [SAMtools](https://github.com/samtools/samtools/issues) issue tracker
 
+For any security related issue, please send a mail to [samtools@sanger.ac.uk](mailto:samtools@sanger.ac.uk) instead of opening issue in GitHub.
 
 # General help
 

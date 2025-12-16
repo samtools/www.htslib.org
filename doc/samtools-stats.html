@@ -2,8 +2,8 @@
 permalink: /doc/samtools-stats.html
 layout: manpage
 title: samtools-stats(1) manual page
-package: samtools-1.22
-date: 30 May 2025
+package: samtools-1.23
+date: 16 December 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-stats.1.html
 ---
@@ -55,6 +55,7 @@ detailed descriptions.
 <tr><td><b>IC</b></td><td>Indels per cycle</td></tr>
 <tr><td><b>COV</b></td><td>Coverage (depth) distribution</td></tr>
 <tr><td><b>GCD</b></td><td>GC-depth</td></tr>
+<tr><td><b>RFS</b></td><td>Reference Statistics</td></tr>
 </table>
 <p>
 The "cycle" terminology used here originates from the Illumina
@@ -353,6 +354,18 @@ of GC content.  Subsequent columns list the coverage depth at 10th,
 percentage, revealing any GC bias in mapping.  These columns are
 averaged depths, so are floating point with no maximum value.
 <p>
+RFS reports statistics of the reference data.  The first line gives the overall
+statistics for the reference.  This comprises of the total number of targets in
+the input file and the number covered; followed by the average GC content,
+minimum, maximum, average and total lengths of targets in the report.
+The second and subsequent lines contain the statistics for each target.  Targets
+are regions either specified on the command line or given in the target file
+(<b>-t</b> option).  If no regions are chosen then all the reference data is used.
+Each line gives the name of target, length, GC content and number of unknown
+bases.  For the GC content and the number of unknown bases a reference file is
+required (<b>-t</b> option), otherwise the value is set to -1.  The lengths are
+from the region specification and from file header.
+<p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-c, --coverage </b><em>MIN</em><b>,</b><em>MAX</em><b>,</b><em>STEP</em></dt><dd><p>
 Set coverage distribution to the specified range (MIN, MAX, STEP all given as integers)
@@ -426,6 +439,10 @@ folder does not contain any index file.
 Example usage: samtools stats [options] -X /data_folder/data.bam /index_folder/data.bai chrM:1-10
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of input/output compression threads to use in addition to main thread [0].
+</dd><dt><b>--ref-stats</b></dt><dd><p>
+Create statistics on reference data.
+</dd><dt><b>--ref-stats-chunk </b><em>INT</em></dt><dd><p>
+Number of reference bases to read at a time, in Mbs, for reference statistics [1].
 <p>
 </dd></dl>
 <h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>

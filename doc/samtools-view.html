@@ -2,8 +2,8 @@
 permalink: /doc/samtools-view.html
 layout: manpage
 title: samtools-view(1) manual page
-package: samtools-1.22
-date: 30 May 2025
+package: samtools-1.23
+date: 16 December 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-view.1.html
 ---
@@ -57,6 +57,7 @@ The
 <b>-N</b>,
 <b>-r</b>,
 <b>-R</b>,
+<b>-n</b>,
 <b>-d</b>,
 <b>-D</b>,
 <b>-s</b>,
@@ -272,6 +273,8 @@ Note that records with no
 <b>RG</b>
 tag will also be output when using this option.
 This behaviour may change in a future release.
+</dd><dt><b>-n</b>, <b>--exclude-no-read-group</b></dt><dd><p>
+Do not output alignments that have no read group.
 </dd><dt><b>-d </b><em>STR1[:STR2]</em><b>, --tag </b><em>STR1[:STR2]</em></dt><dd><p>
 Only output alignments with tag
 <em>STR1</em>

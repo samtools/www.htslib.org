@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fasta.html
 layout: manpage
 title: samtools-fasta(1) manual page
-package: samtools-1.22
-date: 30 May 2025
+package: samtools-1.23
+date: 16 December 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fasta.1.html
 ---
@@ -29,7 +29,7 @@ Note this command is attempting to reverse the alignment process, so
 if the aligner took a single input FASTQ and produced multiple SAM
 records via supplementary and/or secondary alignments, then converting
 back to FASTQ again should produce the original single FASTA / FASTQ
-record.  By default it will not attempt to records for supplementary
+record.  By default it will not attend to records of supplementary
 and secondary alignments, but see the <b>-F</b> option for more details.
 <p>
 If the input contains read-pairs which are to be interleaved or
@@ -110,36 +110,41 @@ Always add either '/1' or '/2' to the end of read names
 even when put into different files.
 </dd><dt><b>-O</b></dt><dd><p>
 Use quality values from OQ tags in preference to standard quality string
-if available.
-</dd><dt><b>-s FILE</b></dt><dd><p>
-Write singleton reads to FILE.
+if available. (FASTQ only)
+</dd><dt><b>-v </b><em>INT</em></dt><dd><p>
+Specifies a default quality score to use for sequences that have no
+quality. Defaults to 1. (FASTQ only)
+</dd><dt><b>-s </b><em>FILE</em></dt><dd><p>
+Write singleton reads to <em>FILE</em>.
 </dd><dt><b>-t</b></dt><dd><p>
 Copy RG, BC and QT tags to the FASTQ header line, if they exist.
-</dd><dt><b>-T TAGLIST</b></dt><dd><p>
+</dd><dt><b>-T </b><em>TAGLIST</em></dt><dd><p>
 Specify a comma-separated list of tags to copy to the FASTQ header line, if
 they exist.
-<b>TAGLIST</b> can be blank or <b>*</b> to indicate all tags should be copied to
+<em>TAGLIST</em> can be blank or <b>*</b> to indicate all tags should be copied to
 the output.
 If using <b>*</b>, be careful to quote it to avoid unwanted shell expansion.
-</dd><dt><b>-1 FILE</b></dt><dd><p>
-Write reads with the READ1 FLAG set (and READ2 not set) to FILE instead of
-outputting them.
+</dd><dt><b>-1 </b><em>FILE</em></dt><dd><p>
+Write reads with the READ1 FLAG set (and READ2 not set) to <em>FILE</em>
+instead of outputting them.
 If the
 <b>-s</b>
 option is used, only paired reads will be written to this file.
-</dd><dt><b>-2 FILE</b></dt><dd><p>
-Write reads with the READ2 FLAG set (and READ1 not set) to FILE instead of
-outputting them.
+</dd><dt><b>-2 </b><em>FILE</em></dt><dd><p>
+Write reads with the READ2 FLAG set (and READ1 not set) to <em>FILE</em>
+instead of outputting them.
 If the
 <b>-s</b>
 option is used, only paired reads will be written to this file.
-</dd><dt><b>-o FILE</b></dt><dd><p>
-Write reads with either READ1 FLAG or READ2 flag set to FILE instead
-of outputting them to stdout.  This is equivalent to <b>-1</b> FILE
-<b>-2</b> FILE.
-</dd><dt><b>-0 FILE</b></dt><dd><p>
+</dd><dt><b>-o </b><em>FILE</em></dt><dd><p>
+Write reads with either READ1 FLAG or READ2 flag set to <em>FILE</em> instead
+of outputting them to stdout.  This is equivalent to <b>-1</b> <em>FILE</em>
+<b>-2</b> <em>FILE</em>.
+</dd><dt><b>-0 </b><em>FILE</em></dt><dd><p>
 Write reads where the READ1 and READ2 FLAG bits set are either both set
-or both unset to FILE instead of outputting them.
+or both unset to <em>FILE</em> instead of outputting them.
+</dd><dt><b>-c </b><em>[0..9]</em></dt><dd><p>
+set compression level when writing gz or bgzf fastq files.
 </dd><dt><b>-f </b><em>INT</em></dt><dd><p>
 Only output alignments with all bits set in
 <em>INT</em>
@@ -147,7 +152,7 @@ present in the FLAG field.
 <em>INT</em>
 can be specified in hex by beginning with `0x' (i.e. /^0x[0-9A-F]+/)
 or in octal by beginning with `0' (i.e. /^0[0-7]+/) [0].
-</dd><dt><b>-F </b><em>INT</em><b>, </b><em>,</em><b>--excl-flags</b><em> INT </em><b>,</b><em>--exclude-flags</em><b> INT </b></dt><dd><p>
+</dd><dt><b>-F </b><em>INT</em><b>, --excl-flags </b><em>INT</em><b>, --exclude-flags </b><em>INT</em></dt><dd><p>
 Do not output alignments with any bits set in
 <em>INT</em>
 present in the FLAG field.
@@ -185,19 +190,23 @@ one line per value.  This is equivalent to specifying <b>-d</b>
 multiple times.
 </dd><dt><b>-i</b></dt><dd><p>
 add Illumina Casava 1.8 format entry to header (eg 1:N:0:ATCACG)
-</dd><dt><b>-c [0..9]</b></dt><dd><p>
-set compression level when writing gz or bgzf fastq files.
-</dd><dt><b>--i1 FILE</b></dt><dd><p>
-write first index reads to FILE
-</dd><dt><b>--i2 FILE</b></dt><dd><p>
-write second index reads to FILE
-</dd><dt><b>--barcode-tag TAG</b></dt><dd><p>
+</dd><dt><b>-U, --UMI </b></dt><dd><p>
+Add UMI sequence to the end of read names, if found in the UMI tag list.
+Non alphabetical characters are converted to the `+' symbol.
+</dd><dt><b>--UMI-tag </b><em>TAGLIST</em></dt><dd><p>
+Specifies which aux tags to search for UMI sequence as a
+comma-separated list.  The first tag found is used. The default is `OX,RX'.
+</dd><dt><b>--i1 </b><em>FILE</em></dt><dd><p>
+write first index reads to <em>FILE</em>
+</dd><dt><b>--i2  FILE</b></dt><dd><p>
+write second index reads to <em>FILE</em>
+</dd><dt><b>--barcode-tag </b><em>TAG</em></dt><dd><p>
 aux tag to find index reads in [default: BC]
-</dd><dt><b>--quality-tag TAG</b></dt><dd><p>
-aux tag to find index quality in [default: QT]
+</dd><dt><b>--quality-tag </b><em>TAG</em></dt><dd><p>
+aux tag to find index quality in [default: QT]. (FASTQ only)
 </dd><dt><b>-@, --threads </b><em>INT</em></dt><dd><p>
 Number of input/output compression threads to use in addition to main thread [0].
-</dd><dt><b>--index-format STR</b></dt><dd><p>
+</dd><dt><b>--index-format </b><em>STR</em></dt><dd><p>
 string to describe how to parse the barcode and quality tags. For example:
 <p>
 <dl><dt><b>i14i8</b></dt><dd><p>
@@ -210,6 +219,17 @@ mean 'read until the separator or end of tag', for example:
 </dd><dt><b>n*i*</b></dt><dd><p>
 ignore the left part of the tag until the separator, then use the second part
 </dd></dl>
+</dd><dt><b>--no-sc</b></dt><dd><p>
+Remove data corresponding to soft-clips from cigar, bases and quality values of
+filtered output. The removed data are added as an aux tag, 'Z' type array, with
+tag 's0', when <b>--no-sc-bkp</b> is absent. The array will contain data in the
+order of cigar before the removal, bases removed and quality values removed,
+separated by ':'. With reversed reads, the cigar, bases and quality values are
+reversed; bases are flipped as well.
+</dd><dt><b>--sc-aux </b><em>TAG</em></dt><dd><p>
+Tag with which to backup the removed soft-clip data, default is 's0'.
+</dd><dt><b>--no-sc-bkp</b></dt><dd><p>
+Avoids backup of data removed as part of soft-clip removal, <b>--no-sc</b> option.
 <p>
 </dd></dl>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>

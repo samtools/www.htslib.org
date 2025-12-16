@@ -2,8 +2,8 @@
 permalink: /doc/samtools-coverage.html
 layout: manpage
 title: samtools-coverage(1) manual page
-package: samtools-1.22
-date: 30 May 2025
+package: samtools-1.23
+date: 16 December 2025
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-coverage.1.html
 ---
@@ -57,6 +57,8 @@ Filter flags: skip reads with mask bits set
 </dd><dt><b>-d, --depth</b><em> INT</em></dt><dd><p>
 Maximum allowed coverage depth [1000000]. If 0, depth is set to the maximum
 integer value effectively removing any depth limit.
+</dd><dt><b>--min-depth </b><em>INT</em></dt><dd><p>
+Minimum coverage depth, below which a position is ignored [1]
 <p>
 </dd></dl><p>
 Output options:

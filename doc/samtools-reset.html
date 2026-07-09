@@ -2,8 +2,8 @@
 permalink: /doc/samtools-reset.html
 layout: manpage
 title: samtools-reset(1) manual page
-package: samtools-1.23
-date: 16 December 2025
+package: samtools-1.24
+date: 9 July 2026
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-reset.1.html
 ---
@@ -76,12 +76,21 @@ By default the PG entry for reset will be present in the output.
 </dd><dt><b>--dupflag</b></dt><dd><p>
 Keep the duplicate flag as it is. This option is absent by default and alignments are marked non-duplicates.
 <p>
-</dd><dt><b>-@, --threads </b><em>N</em></dt><dd><p>
-This gives the number of worker threads to be used.
+</dd><dt><b>--input-fmt-option </b><em>OPT=VAL</em></dt><dd><p>
+Set the input format options.
 <p>
 </dd><dt><b>-O, --output-fmt </b><em>FMT[,options]</em></dt><dd><p>
 Sets the format of the output file and any associated format-specific options.
 If this option is not present, the format is identified from the output file name extension.
+<p>
+</dd><dt><b>--output-fmt-option </b><em>OPT=VAL</em></dt><dd><p>
+Set the output format options.
+<p>
+</dd><dt><b>-T </b><em>FILE</em><b>, --reference </b><em>FILE</em></dt><dd><p>
+A FASTA format reference file for cram files.
+<p>
+</dd><dt><b>-@, --threads </b><em>N</em></dt><dd><p>
+This gives the number of worker threads to be used.
 <p>
 </dd></dl>
 <h1 id="EXAMPLES"><a href="#EXAMPLES">EXAMPLES</a></h1>

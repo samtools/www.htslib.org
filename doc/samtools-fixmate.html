@@ -2,8 +2,8 @@
 permalink: /doc/samtools-fixmate.html
 layout: manpage
 title: samtools-fixmate(1) manual page
-package: samtools-1.23
-date: 16 December 2025
+package: samtools-1.24
+date: 9 July 2026
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-fixmate.1.html
 ---
@@ -19,8 +19,10 @@ samtools <a href="samtools-fixmate.html">fixmate</a>
 <p>
 <h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
 <p>
-Fill in mate coordinates, ISIZE and mate related flags from a
-name-sorted or name-collated alignment.
+Fill in mate coordinates, ISIZE and mate related flags and tags from a
+name-sorted or name-collated alignment.  This includes the mate CIGAR (MC)
+and mate mapping quality (MQ) tags, on both primary and supplementary
+alignments.
 <p>
 <h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
 <dl><dt><b>-r</b></dt><dd><p>

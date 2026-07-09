@@ -1,0 +1,218 @@
+---
+permalink: /doc/1.24/ref-cache.html
+layout: manpage
+title: ref-cache(1) manual page
+package: htslib-1.24
+date: 9 July 2026
+section_text: Bioinformatics tools
+---
+<h1 id="NAME"><a href="#NAME">NAME</a></h1>
+ref-cache &ndash; CRAM reference caching proxy
+<h1 id="SYNOPSIS"><a href="#SYNOPSIS">SYNOPSIS</a></h1>
+<b>ref-cache</b>
+[<b>-bLUv</b>]
+[<b>-l</b>
+<em>LOG_DIR</em>]
+[<b>-u</b>
+<em>URL</em>]
+<b>-d</b><em> CACHE_DIR</em>
+<b>-p</b><em> PORT</em>
+<h1 id="DESCRIPTION"><a href="#DESCRIPTION">DESCRIPTION</a></h1>
+<b>ref-cache</b>
+is a caching proxy for reference sequences,
+for use when encoding and decoding CRAM format sequence alignment files.
+<p>
+CRAM can use reference based compression where individual bases
+in aligned records are compared against a known reference sequence,
+storing only the bases that differ.
+This gives better compression,
+but requires the reference sequence to be supplied from an external source.
+One way to get these sequences is by querying a server implementing the
+GA4GH refget standard &lt;<a href="https://ga4gh.github.io/refget/">https://ga4gh.github.io/refget/</a>&gt;,
+however this can lead to excessive network traffic and server load if,
+as is often the case,
+the same reference is needed more than once.
+<b>ref-cache</b>
+makes reference handling easier by keeping copies of downloaded files,
+allowing them to be reused when they are needed again.
+<p>
+As it has been specifically designed to serve reference sequences for
+CRAM encoders and decoders,
+<b>ref-cache</b>
+behaves rather differently to general-purpose caching web proxies:
+<ul><li>It only makes requests to a single upstream server.
+</li>
+<li>Sequences are requested using MD5 checksum identifiers,
+as stored in the M5 tag in CRAM @SQ header lines.
+</li>
+<li>The requested sequence is returned as a single string in uppercase ASCII text
+with no line terminators or other formatting characters.
+</li>
+<li>Downloaded sequences are checked to ensure they have the correct MD5 checksum
+before being stored in the cache.
+</li>
+<li>Cached sequences are never removed.
+</li>
+<li>Cached sequences are stored in a way that allows them to be accessed
+directly on the filesystem.
+This can allow the web server to be bypassed in some set-ups (for example
+where the cache is on a shared drive),
+allowing already-downloaded files to be accessed more efficiently.
+</li>
+<li>When started,
+<b>ref-cache</b>
+will test to see if it's already running on the specified port,
+and exits silently if it finds that it is.
+This enables a simple way of ensuring the server is up,
+by trying to restart it every few minutes.
+</li></ul>
+<h1 id="QUICK-START_GUIDE"><a href="#QUICK-START_GUIDE">QUICK-START GUIDE</a></h1>
+Create directories for the cache and (optionally) log files.
+Then start up the server in the background,
+listening on port 8080
+and with the EBI's CRAM reference server as the upstream source.
+<pre>
+mkdir cached_refs
+mkdir logs
+ref-cache -b -d cached_refs -l logs -p 8080 -u <a href="https://www.ebi.ac.uk/ena/cram/md5/">https://www.ebi.ac.uk/ena/cram/md5/</a>
+</pre>
+To make SAMtools and HTSlib use the server,
+set its URL in the
+<b>REF_PATH</b>
+environment variable (note that colons should be doubled up in the URL,
+and you should substitute the hostname of your actual server).
+<pre>
+REF_PATH='http:://myserver.example.com::8080/%s'
+export REF_PATH
+</pre>
+If the cache directory can be made visible to SAMtools/HTSlib processes,
+it can also be added directly to
+<b>REF_PATH</b>
+by putting it before the web server URL.
+It is necessary to use the full path to the directory,
+followed by "/%2s/%2s/%s" for the file location due to the way they are stored
+inside the cache.
+<pre>
+REF_PATH='/path/to/cache/%2s/%2s/%s:http:://myserver.example.com::8080/%s'
+export REF_PATH
+</pre>
+This is useful as accessing the files directly is more efficient than using http.
+Files are downloaded to a temporary name and then renamed after validation so
+processes directly using the cache will never try to use a partly downloaded file.
+By putting the URL at the end,
+the web server will pick up any requests for references not already in the cache,
+download them,
+provide them to the requester,
+and store them in the cache.
+<h1 id="OPTIONS"><a href="#OPTIONS">OPTIONS</a></h1>
+<dl><dt><b>-b</b></dt><dd><p>
+Run in the background as a System V-style daemon.
+This option must not be used with
+<b>-s</b>.
+</dd><dt><b>-d</b><em> &lt;dir&gt;</em></dt><dd><p>
+Directory where cached files will be stored
+</dd><dt><b>-h</b></dt><dd><p>
+Show help
+</dd><dt><b>-l</b><em> &lt;dir&gt;</em></dt><dd><p>
+Directory for log files.
+If not set and running in the foreground, logs will be sent to stdout
+</dd><dt><b>-L</b></dt><dd><p>
+Don't log
+</dd><dt><b>-m all</b>|<b>default</b>|<b>localhost</b>|<b>&lt;network-list&gt;</b></dt><dd><p>
+Reply to connections from the listed network(s).
+This option can be given more than once,
+with the final allow list being the union of all listed networks
+along with localhost (which is always enabled).
+See
+<b>CLIENT ADDRESS CHECKING</b>
+below.
+</dd><dt><b>-n</b><em> &lt;1-4&gt;</em></dt><dd><p>
+Number of server processes to run
+</dd><dt><b>-p</b><em> &lt;port&gt;</em></dt><dd><p>
+Port number to listen on
+</dd><dt><b>-r</b><em> &lt;num&gt;</em></dt><dd><p>
+Number of request log files to keep
+</dd><dt><b>-R</b><em> &lt;num&gt;</em></dt><dd><p>
+Maximum size of a request log file (MiB)
+</dd><dt><b>-s</b></dt><dd><p>
+Run as a systemd-style socket service.
+As the service manager handles socket allocation,
+the
+<b>-p</b>
+option is ignored when running in this mode.
+This option must not be used with
+<b>-b</b>.
+</dd><dt><b>-u</b><em> &lt;url&gt;</em></dt><dd><p>
+URL of the upstream server.
+If not set or overridden using
+<b>-U</b>,
+the EBI's server (<a href="https://www.ebi.ac.uk/ena/cram/md5/">https://www.ebi.ac.uk/ena/cram/md5/</a>) will be used.
+</dd><dt><b>-U</b></dt><dd><p>
+Do not attempt to get files from an upstream server.
+Only files already in the local cache will be served.
+</dd><dt><b>-v</b></dt><dd><p>
+Turn on debugging output
+</dd></dl>
+<h1 id="CLIENT_ADDRESS_CHECKING"><a href="#CLIENT_ADDRESS_CHECKING">CLIENT ADDRESS CHECKING</a></h1>
+<b>ref-cache</b>
+is designed to serve references to local networks.
+To ensure that it only responds to the desired clients,
+it has an allow list of address ranges that it will talk to.
+If a connection attempt comes from an IP address not in the allowed set,
+it will be closed immediately.
+(N.B.: Rejected clients will see a connection open and immediately close,
+as it's necessary for connections to be opened for the server to discover
+the peer address.
+If you want to drop or reject unwanted requests without opening them,
+you will need to use your operating system's firewall.)
+<p>
+The address ranges can be set using the
+<b>-m</b>
+option, which may be used more than once.
+Networks can be specified either as a comma-separated list of CIDR-format
+blocks (e.g.
+<em>192.0.2.0/24, 2001:db8::/32</em>)
+or using one of the following synonyms:
+<p>
+Any address (not recommended)
+<p>
+10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16
+(the private ranges listed in RFC 1918);
+fc00::/7 (the local IPv6 Unicast address range in RFC 4193);
+and fe80::/10 (IPv6 link-local addresses)
+<p>
+127.0.0.0/8 and ::1/128 (loop-back addresses)
+<p>
+If no
+<b>-m</b>
+option is given,
+the "default" list will be used,
+as most organisations will be using one or more of these internally.
+This will be overridden if any
+<b>-m</b>
+option appears,
+in which case
+<b>-m default</b>
+will need to be specified explicitly if you also want to reply to
+addresses in the IPv4 and IPv6 private ranges.
+For example:
+<pre>
+ref-cache -m 192.0.2.0/24 -m default ...
+</pre>
+<p>
+<b>ref-cache</b>
+will always listen to the loop-back address,
+even if this was not specified.
+Using
+<b>-m localhost</b>
+will limit it to only respond to loop-back requests.
+<h1 id="AUTHOR"><a href="#AUTHOR">AUTHOR</a></h1>
+Written by Rob Davies from the Wellcome Sanger Institute
+<h1 id="SEE_ALSO"><a href="#SEE_ALSO">SEE ALSO</a></h1>
+<a href="samtools.html"><em>samtools</em></a> (1)
+<p>
+Samtools website: &lt;<a href="http://www.htslib.org/">http://www.htslib.org/</a>&gt;
+<p>
+CRAM specification: &lt;<a href="https://samtools.github.io/hts-specs/CRAMv3.pdf">https://samtools.github.io/hts-specs/CRAMv3.pdf</a>&gt;
+<p>
+Refget website: &lt;<a href="https://ga4gh.github.io/refget/">https://ga4gh.github.io/refget/</a>&gt;

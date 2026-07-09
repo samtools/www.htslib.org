@@ -2,8 +2,8 @@
 permalink: /doc/samtools-markdup.html
 layout: manpage
 title: samtools-markdup(1) manual page
-package: samtools-1.23
-date: 16 December 2025
+package: samtools-1.24
+date: 9 July 2026
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-markdup.1.html
 ---
@@ -129,6 +129,10 @@ Duplicates must now also match the barcode tag.
 Use the UMI/barcode embedded in the read name (eigth colon delimited part).
 </dd><dt><b>--barcode-rgx </b><em>REGEX</em></dt><dd><p>
 Regex for barcode in the readname (alternative to --barcode-name).
+</dd><dt><b>--move-umi-to-tag</b></dt><dd><p>
+Move UMI from read name to RX tag (use with <b>--barcode-name</b> or <b>--barcode-rgx</b>).
+</dd><dt><b>--umi-separator </b><em>CHAR</em></dt><dd><p>
+Character to use as separator for the UMI in the read name (default is ':'). If the UMI is at the end or beginning of the read name, the adjacent separator is removed. If the UMI is in the middle of the read name, it and one adjacent separator are removed, merging the remaining parts.
 </dd><dt><b>--use-read-groups</b></dt><dd><p>
 The @RG tags must now also match to be a duplicate.
 </dd><dt><b>--no-PG</b></dt><dd><p>

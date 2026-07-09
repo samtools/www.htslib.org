@@ -2,8 +2,8 @@
 permalink: /doc/samtools-view.html
 layout: manpage
 title: samtools-view(1) manual page
-package: samtools-1.23
-date: 16 December 2025
+package: samtools-1.24
+date: 9 July 2026
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-view.1.html
 ---
@@ -387,20 +387,35 @@ Output only a proportion of the input alignments, as specified by 0.0 &le;
 &le; 1.0, which gives the fraction of templates/pairs to be kept.
 This subsampling acts in the same way on all of the alignment records in
 the same template or read pair, so it never keeps a read but not its mate.
-</dd><dt><b>--subsample-seed </b><em>INT</em></dt><dd><p>
+</dd><dt><b>--subsample-seed </b><em>INT</em><b>|</b><em>auto</em></dt><dd><p>
 Subsampling seed used to influence
 <em>which</em>
 subset of reads is kept.
-When subsampling data that has previously been subsampled, be sure to use
-a different seed value from those used previously; otherwise more reads
-will be retained than expected.
-[0]
+If the value is the literal string
+<b>auto</b>,
+the seed is derived from a hash of the input file's header text.  Because
+each subsampling run appends an
+<b>@CO</b>
+header line recording the fraction and seed used (and, unless
+<b>--no-PG</b>
+is given, a
+<b>@PG</b>
+line as well), re-subsampling a file in <b>auto</b> mode will automatically
+produce a different seed at each step, ensuring the expected fraction of
+reads is retained.
+When subsampling data that has previously been subsampled using an explicit
+seed, be sure to use a different seed value from those used previously;
+otherwise more reads will be retained than expected.
+[auto]
 </dd><dt><b>-s </b><em>FLOAT</em></dt><dd><p>
 Subsampling shorthand option:
 <b>-s </b><em>INT</em><b>.</b><em>FRAC</em>
 is equivalent to
 <b>--subsample-seed </b><em>INT</em><b> --subsample</b>
 0.<em>FRAC</em>.
+<em>INT</em>
+may also be the literal string
+<b>auto</b>.
 </dd><dt><b>-@ </b><em>INT</em><b>, --threads </b><em>INT</em></dt><dd><p>
 Number of BAM compression threads to use in addition to main thread [0].
 </dd><dt><b>-P</b>, <b>--fetch-pairs</b></dt><dd><p>

@@ -2,8 +2,8 @@
 permalink: /doc/samtools-consensus.html
 layout: manpage
 title: samtools-consensus(1) manual page
-package: samtools-1.23
-date: 16 December 2025
+package: samtools-1.24
+date: 9 July 2026
 section_text: Bioinformatics tools
 redirect_from: /doc/samtools-consensus.1.html
 ---
@@ -102,6 +102,15 @@ General options that apply to both algorithms:
 Limit the query to region
 <em>REG</em>.
 This requires an index.
+This is incompatible with the <b>--regions-file</b> option.
+</dd><dt><b>--regions-file </b><em>BED-FILE</em></dt><dd><p>
+Creates consensus sequences for each region listed in the <em>BED-FILE</em>,
+although not necessarily in the same chromosomal order.
+As with single region queries, without <b>-a</b> the sequences may be
+truncated or absent if not covered.
+Note this does not deduplicate regions or merge overlapping regions.
+This requires an index.
+This is incompatible with the <b>-r</b> option.
 </dd><dt><b>-f </b><em>FMT</em><b>, --format </b><em>FMT</em></dt><dd><p>
 Produce format
 <em>FMT</em>,
